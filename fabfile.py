@@ -564,6 +564,14 @@ def set_SSL():
 
 @task
 @log_call
+def migrate():
+    """
+    migrate.
+    """
+    manage('migrate')
+
+@task
+@log_call
 def set_project():
     """
     Set up project.
