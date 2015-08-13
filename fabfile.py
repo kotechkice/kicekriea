@@ -386,7 +386,7 @@ def all():
     create_virtualenv()
     create_SSH()
     create_git()
-    create_DB()
+    #create_DB()
     set_SSL()
     
     create_django_user()
