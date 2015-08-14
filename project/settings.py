@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'auth_ext',
     'home',
     'stdnt',
+    'mngins',
     'tch',
 )
 

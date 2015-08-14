@@ -10,4 +10,5 @@ urlpatterns = patterns('',
     
     url(r'^stdnt/', include('stdnt.urls', namespace='stdnt')),
     url(r'^tch/', include('tch.urls', namespace='tch')),
+    url(r'^mngins/', include('mngins.urls', namespace='mngins')),
 )
