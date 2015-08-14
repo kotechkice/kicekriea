@@ -1,6 +1,6 @@
 {% extends "stdnt/container/base.html" %}
-{% block title %}Demo 홈페이지{% endblock %}
-{% block nav_brand %}온라인 문항관리 시스템{% endblock %}
+{% block title %}{{ stdnt_string.LOGIN_PAGE }}{% endblock %}
+{% block nav_brand %}{{ home_string.SITE_NAME }}{% endblock %}
 {% block nav_list %}
 {% endblock %}
 {% block style %}
@@ -13,18 +13,18 @@
 {% block containor %}
 <div class="container text-center">
 	<div class="row h3">
-	학생 로그인 
+	{{ stdnt_string.LOGIN_PAGE }}
 	</div><br />
 	<div class="row">
 		<form>
 		Email : &nbsp; &nbsp; &nbsp; &nbsp;
-		<input type="text" name="username">
+		<input type="text" name="email" id="email">
 		<br>
 		Password : 
 		<input type="password" name="psw">
 		</form><br />
-		<button class="btn btn-default">회원가입</button>
-		<button class="btn btn-primary">로그인</button>
+		<button class="btn btn-default" id="register_btn">{{ stdnt_string.REGISTER }}</button>
+		<button class="btn btn-primary" id="login_btn">{{ stdnt_string.LOGIN }}</button>
 	</div>
 </div>
 {% endblock %}

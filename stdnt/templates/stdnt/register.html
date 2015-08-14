@@ -1,0 +1,84 @@
+{% extends "stdnt/container/base.html" %}
+{% block title %}{{ home_string.SITE_NAME }}{% endblock %}
+{% block nav_brand %}{{ stdnt_string.REGISTER_PAGE }}{% endblock %}
+{% block nav_list %}
+{% endblock %}
+{% block style %}
+<style>
+input, select {
+	margin-bottom:10px;
+}
+
+</style>
+{% endblock %}
+{% block script %}
+<script>
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<div class="row">
+		<table align="center">
+			<tr>
+				<td>
+					{{ home_string.EMAIL }}({{ home_string.ID }}) :  &nbsp; &nbsp; 
+				</td>
+				<td>
+					<input type="text" value="bada@never.net"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					{{ home_string.FIRST_NAME }} : 
+				</td>
+				<td>
+					<input type="text" value="남궁"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					{{ home_string.LAST_NAME }} : 
+				</td>
+				<td>
+					<input type="text" value="해오름"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					{{ home_string.SCHOOL }} : 
+				</td>
+				<td>
+					<select>
+						<option>서울고등학교</option>
+						<option>대구고등학교</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					{{ home_string.CLASS }} : 
+				</td>
+				<td>
+					<select>
+						<option>1학년보람반</option>
+						<option>3학년충무반</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					{{ home_string.STDNT_ID_NUM }} : 
+				</td>
+				<td>
+					<input type="number" value="10213"/>
+				</td>
+			</tr>
+		</table>
+	</div> <br />
+	<div class="row text-center">
+		<button class="btn btn-primary">{{ home_string.REG_SEND_MAIL }}</button>
+		<button class="btn btn-default">{{ home_string.CANCEL }}</button>
+	</div>
+</div>
+
+{% endblock %}
