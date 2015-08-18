@@ -14,3 +14,5 @@ STDNT_ID_NUM = "학번"
 
 REG_SEND_MAIL = "가입메일 전송"
 CANCEL = "취소"
+
+LOGIN = "로그인"

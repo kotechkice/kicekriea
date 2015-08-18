@@ -1,6 +1,6 @@
 {% extends "mngins/container/base.html" %}
-{% block title %}Demo 홈페이지{% endblock %}
-{% block nav_brand %}온라인 문항관리 시스템{% endblock %}
+{% block title %}{{ mngins_string.LOGIN_PAGE }}{% endblock %}
+{% block nav_brand %}{{ home_string.SITE_NAME }}{% endblock %}
 {% block nav_list %}
 {% endblock %}
 {% block style %}
@@ -9,21 +9,57 @@
 </style>
 {% endblock %}
 {% block script %}
+<script>
+	var test_dat = '';
+	$(document).on("click", '#submit', function(){
+		$.post("{% url 'mngins:login' %}", { csrfmiddlewaretoken:$.cookie('csrftoken'), email:$("#email").val(), pw : $("#pw").val() })
+		.done(function(data){
+			//console.log(data);
+			//test_dat = data;
+			if(data['status'] === "success"){
+				$(location).attr('href',data['msg']);
+			} else {
+				$("#modal .modal-body").html(data['msg']);
+				$("#modal").modal('show');
+			}
+		});
+	});
+</script>
 {% endblock %}
 {% block containor %}
 <div class="container text-center">
 	<div class="row h3">
-	관리기관 로그인 
+	{{ mngins_string.LOGIN_PAGE }} 
 	</div><br />
 	<div class="row">
 		<form>
+		 {% csrf_token %}
 		Email : &nbsp; &nbsp; &nbsp; &nbsp;
-		<input type="text" name="username">
+		<input type="text" name="email" id="email">
 		<br>
 		Password : 
-		<input type="password" name="psw">
+		<input type="password" name="pw" id="pw">
 		</form><br />
 	</div>
-	<button class="btn btn-primary">로그인</button>
+	
+	<button class="btn btn-primary" id="submit">{{ home_string.LOGIN }}</button>
 </div>
+
+<div class="modal fade" id="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Error!</h4>
+      </div>
+      <div class="modal-body">
+        msg
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+        <!--button type="button" class="btn btn-primary">확인</button-->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 {% endblock %}
