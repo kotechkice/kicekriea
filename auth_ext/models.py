@@ -8,6 +8,9 @@ class UserGroupInfo(models.Model):
     is_groupsuperuser =  models.BooleanField(default=False)
     user_id_of_group = models.CharField(max_length=30, null=True)
     
+    def __unicode__(self):
+        return self.user.username + '-' + self.group.groupdetail.nickname + '(' + self.group.name + ')'
+    
 class GroupDetail(models.Model):
     GroupTypes = (
         ('M', 'Manager Institution'),
@@ -31,8 +34,10 @@ class GroupAddress(models.Model):
     address = models.TextField(null=True)
     
     def clean(self):
-        if len(self.address) > ADDR_LEN_LIMIT:
-            raise ValidationError('The %s length limit is %d bit.' % ('address text', ADDR_LEN_LIMIT))
+        if len(self.address) > self.ADDR_LEN_LIMIT:
+            raise ValidationError('The %s length limit is %d bit.' % ('address text', self.ADDR_LEN_LIMIT))
+    def __unicode__(self):
+        return self.address
     
 class UserDetail(models.Model):
     user = models.OneToOneField(User)

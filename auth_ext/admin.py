@@ -5,3 +5,4 @@ from auth_ext.models import *
 admin.site.register(UserGroupInfo)
 admin.site.register(GroupDetail)
 admin.site.register(UserDetail)
+admin.site.register(GroupAddress)

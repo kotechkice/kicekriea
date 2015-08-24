@@ -1,0 +1,418 @@
+{% extends "mngins/container/base.html" %}
+{% block title %}Demo 홈페이지{% endblock %}
+{% block nav_brand %}관리기관 계정관리{% endblock %}
+{% block nav_list %}
+<li> <a class="nav">홈으로</a></li>
+<li> <a>정보수정</a> </li>
+<li> <a>로그아웃</a> </li>
+{% endblock %}
+{% block style %}
+<style>
+table * {
+	text-align:center;
+}
+
+</style>
+{% endblock %}
+{% block script %}
+
+<script>
+	var test_dat;
+	$(document).on("click", "#add_mng_btn", function(){
+		$("#add_mng_modal").modal("show");
+	});
+	$(document).on("click", "#add_new_mng_btn", function(){
+		var data = {};
+		data['method'] = 'add_new_mng';
+		data['email'] = $("#new_mng_email").val();
+		data['firstname'] = $("#new_mng_firstname").val();
+		data['lastname'] = $("#new_mng_lastname").val();
+		data['comnum'] = $("#new_mng_comnum").val();
+
+		$.ajax({
+			url : "/mngins/modify_auths",
+			dataType : "json",
+			data : data
+		}).done(function(msg) {
+			//console.log(msg);
+			if(msg['status'] == 'success'){
+				location.reload();
+			}
+		});
+	});
+	
+	var del_email;
+	$(document).on("click", ".del_mng", function(){
+		var title_email_ex = "#check_del_mng_modal .modal-title .email_section";
+		del_email = $(this.parentNode.parentNode).find(".email_td").text();
+		$(title_email_ex).text(del_email);
+		$("#check_del_mng_modal").modal("show");
+		
+		return false;
+	});
+	$(document).on("click", "#del_mng_btn", function(){
+		//console.log("enter");
+		var input_code = $(this.parentNode.parentNode).find('.input_code').val();
+		if(input_code == '{{ input_code }}'){
+			//console.log("del");
+			var data = {};
+			data['method'] = 'del_mng';
+			data['email'] = del_email;
+			$.ajax({
+				url : "/mngins/modify_auths",
+				dataType : "json",
+				data : data
+			}).done(function(msg) {
+				//console.log(msg);
+				//location.reload();
+				if(msg['status'] == 'success'){
+					location.reload();
+				}
+			});
+		}
+	});
+	
+	var changepw_email;
+	$(document).on("click", ".send_newpw_mng", function(){
+		var title_email_ex = "#send_newpw_modal .modal-title .email_section";
+		changepw_email = $(this.parentNode.parentNode).find(".email_td").text();
+		$(title_email_ex).text(changepw_email);
+		$("#send_newpw_modal").modal("show");
+		return false;
+	});
+	$(document).on("click", ".send_newpw_school_mng", function(){
+		//test_dat = this;
+		var title_email_ex = "#send_newpw_modal .modal-title .email_section";
+		changepw_email = $(this.parentNode.parentNode).find(".school_mng_email_span").text();
+		$(title_email_ex).text(changepw_email);
+		$("#send_newpw_modal").modal("show");
+		return false;
+	});
+	$(document).on("click", "#send_newpw_btn", function(){
+		//console.log("enter");
+		var input_code = $(this.parentNode.parentNode).find('.input_code').val();
+		if(input_code == '{{ input_code }}'){
+			//console.log("send");
+			var data = {};
+			data['method'] = 'send_newpw';
+			data['email'] = changepw_email;
+			$.ajax({
+				url : "/mngins/modify_auths",
+				dataType : "json",
+				data : data
+			}).done(function(msg) {
+				console.log(msg);
+				//location.reload();
+			});
+		}
+	});
+	
+	$(document).on("click", "#add_school_btn", function(){
+		$("#add_school_modal").modal("show");
+	});
+	$(document).on("click", "#add_new_school_btn", function(){
+		var data = {};
+		data['method'] = 'add_school';
+		data['school_name'] = $("#new_school_name").val();
+		data['school_addr'] = $("#new_school_addr").val();
+		data['email'] = $("#new_school_mng_email").val();
+		data['firstname'] = $("#new_school_mng_firstname").val();
+		data['lastname'] = $("#new_school_mng_lastname").val();
+		data['comnum'] = $("#new_school_mng_comnum").val();
+		$.ajax({
+			url : "/mngins/modify_auths",
+			dataType : "json",
+			data : data
+		}).done(function(msg) {
+			//console.log(msg);
+			if(msg['status'] == 'success'){
+				location.reload();
+			}
+		});
+	});
+	
+	var school_id;
+	$(document).on("click", ".modify_school_info", function(){
+		//test_dat = this;
+		school_id = $(this.parentNode.parentNode).find('.school_id').text();
+		$("#modify_school_name").val($(this.parentNode.parentNode).find('.school_name').text());
+		$("#modify_school_addr").val($(this.parentNode.parentNode).find('.school_addr_td').text());
+		$("#modify_school_info_modal").modal("show");
+		return false;
+	});
+	$(document).on("click", "#modify_school_info_btn", function(){
+		var data = {};
+		data['method'] = 'modify_school_info';
+		data['school_id'] = school_id;
+		data['school_name'] = $("#modify_school_name").val();
+		data['school_addr'] = $("#modify_school_addr").val();
+		$.ajax({
+			url : "/mngins/modify_auths",
+			dataType : "json",
+			data : data
+		}).done(function(msg) {
+			console.log(msg);
+			if(msg['status'] == 'success'){
+				location.reload();
+			}
+		});
+	});
+</script>
+
+{% endblock %}
+{% block containor %}
+
+<div class="container">
+	<div class="row">
+		관리기관 이름 : &nbsp; &nbsp; &nbsp; &nbsp;
+		<input type="text" name="username" value="KICE">
+	</div><br />
+	<div class="row">
+		<span class="table-name h3">관리기관 계정관리</span>&nbsp;&nbsp;
+		<button class="btn btn-primary btn-xs" id="add_mng_btn">추가</button>
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th class="name_td">성명</th>
+					<th class="email_td">이메일</th>
+					<th class="comnum_td">사번</th>
+					<th>관리</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for mngins_member in mngins_members %}
+				<tr>
+					<td class="name_td">{{ mngins_member.userdetail.full_name }}</td>
+					<td class="email_td">{{ mngins_member.email }}</td>
+					<td class="comnum_td">{{ mngins_member.comnum }}</td>
+					<td><a href="#" class="send_newpw_mng">임시비밀번호재생성</a> <a href="#" class="del_mng">삭제</a></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="row">
+		<span class="table-name h3">학교</span>&nbsp;&nbsp;<button class="btn btn-primary btn-xs" id="add_school_btn">추가</button>
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th>학교명(ID)</th>
+					<th>주소</th>
+					<th>학교관리자(이름)</th>
+					<th>관리</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for school in schools %}
+				<tr>
+					<td><span class="school_name">{{ school.groupdetail.nickname }}</span>(<span class="school_id">{{ school.name }}</span>)</td>
+					<td class="school_addr_td">{{ school.groupaddress.address }}</td>
+					<td><span class="school_mng_email_span">{{ school.mng.email }}</span>({{ school.mng.userdetail.full_name }})</td>
+					<td><a href="#" class="send_newpw_school_mng">임시비밀번호재생성</a> <a href="#" class="modify_school_info">수정</a></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+<div class="modal fade" id="add_mng_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">관리기관 매니저 계정 추가</h4>
+      </div>
+      <div class="modal-body">
+      	<table>
+      		<tr>
+      			<td>
+      				 이메일(아이디) : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="new_mng_email"/>
+      			</td>
+      		</tr>
+      		<tr>
+      			<td>
+      				 이름 : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="new_mng_firstname"/>
+      			</td>
+      		</tr>
+      		<tr>
+      			<td>
+      				 성 : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="new_mng_lastname" />
+      			</td>
+      		</tr>
+      		<tr>
+      			<td>
+      				 사번 : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="new_mng_comnum" />
+      			</td>
+      		</tr>
+      	</table><br />
+      	추가를 누르시면 해당 메일로 임시비밀번호가 전송됩니다.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary" id="add_new_mng_btn">추가</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="check_del_mng_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><span class="email_section"> </span> 계정을 삭제하시겠습니까?</h4>
+      </div>
+      <div class="modal-body">
+      	삭제하시려면 아래 코드를 입력하시고 삭제 버튼을 눌러 주십시오.<br /> 
+      	코드 : {{ input_code }}<br />
+      	코드 입력 : <input type="text" class="input_code"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary" id="del_mng_btn">삭제</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="send_newpw_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><span class="email_section"> </span> 계정의 새 비밀번호를 전송하겠습니까?</h4>
+      </div>
+      <div class="modal-body">
+      	해당 계정의 새 비밀 번호를 생성하여 해당 이메일로 전송하시려면 아래 코드를 입력하시고 전송 버튼을 눌러 주십시오.<br /> 
+      	코드 : {{ input_code }}<br />
+      	코드 입력 : <input type="text" class="input_code"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary" id="send_newpw_btn">전송</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="add_school_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">학교 추가</h4>
+      </div>
+      <div class="modal-body">
+      	<b>학교 정보 입력</b>
+      	<table>
+      		<tr>
+      			<td>
+      				학교명 : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="new_school_name"/>
+      			</td>
+      		</tr>
+      		<tr>
+      			<td>
+      				학교 주소 : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="new_school_addr"/>
+      			</td>
+      		</tr>
+      	</table><br />
+      	<b>학교 관리자 정보 입력</b>
+      	<table>
+      		<tr>
+      			<td>
+      				 이메일(아이디) : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="new_school_mng_email"/>
+      			</td>
+      		</tr>
+      		<tr>
+      			<td>
+      				 이름 : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="new_school_mng_firstname"/>
+      			</td>
+      		</tr>
+      		<tr>
+      			<td>
+      				 성 : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="new_school_mng_lastname" />
+      			</td>
+      		</tr>
+      		<tr>
+      			<td>
+      				 사번 : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="new_school_mng_comnum" />
+      			</td>
+      		</tr>
+      	</table><br />
+      	추가를 누르시면 해당 학교관리자 메일로 임시비밀번호가 전송됩니다.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary" id="add_new_school_btn">추가</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="modify_school_info_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">학교 추가</h4>
+      </div>
+      <div class="modal-body">
+      	<b>학교 정보 입력</b>
+      	<table>
+      		<tr>
+      			<td>
+      				학교명 : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="modify_school_name"/>
+      			</td>
+      		</tr>
+      		<tr>
+      			<td>
+      				학교 주소 : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="modify_school_addr"/>
+      			</td>
+      		</tr>
+      	</table><br />
+		학교관리자 변경은 학교 관리자가 변경 가능합니다.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary" id="modify_school_info_btn">수정</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}
