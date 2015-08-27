@@ -53,6 +53,12 @@ def login(request):
     return render_to_response('mngins/login.html', variables)
 
 def main(request):
+    if request.user.is_authenticated():
+        if len(UserGroupInfo.objects.filter(group__name='1', user=request.user)) == 0:
+            return redirect('/mngins/logout')
+    else:
+        return redirect('/mngins/login')
+    
     variables = RequestContext(request, {
         'mngins_string' : mngins_string,
         'home_string' : home_string,
@@ -66,7 +72,7 @@ def logout(request):
 def modify_auths(request):
     if request.user.is_authenticated():
         if len(UserGroupInfo.objects.filter(group__name='1', user=request.user)) == 0:
-            return redirect('/mngins/login')
+            return redirect('/mngins/logout')
     else:
         return redirect('/mngins/login')
     
@@ -115,7 +121,6 @@ def modify_auths(request):
                 firstname = request.GET['firstname']
                 lastname = request.GET['lastname']
                 comnum = request.GET['comnum']
-                
                 if email == '' or school_name == '':
                     data = json.dumps({'status':"fail"})
                 elif len(User.objects.filter(email=email)) != 0:
@@ -126,25 +131,42 @@ def modify_auths(request):
                     new_school = Group()
                     new_school.name = school_name
                     new_school.save()
-                    
-                    new_school_detail = GroupDetail()
-                    new_school_detail.group = new_school
-                    new_school_detail.upper_group = Group.objects.get(name='1')
-                    new_school_detail.nickname = school_name
-                    new_school_detail.type = 'S'
-                    new_school_detail.save()
-                    
-                    new_school_addr = GroupAddress()
-                    new_school_addr.group = new_school
-                    new_school_addr.address = school_addr
-                    new_school_addr.save()
-                    
-                    new_school.groupdetail = new_school_detail
-                    new_school.groupaddress = new_school_addr
-                    new_school.name = str(new_school.id)
-                    new_school.save()
-                    
                     if adduser_createpw_sendmail(email=email, group=new_school, firstname=firstname, lastname=lastname, group_id=comnum, is_groupsuperuser=True):
+                        new_school_detail = GroupDetail()
+                        new_school_detail.group = new_school
+                        new_school_detail.upper_group = Group.objects.get(name='1')
+                        new_school_detail.nickname = school_name
+                        new_school_detail.type = 'S'
+                        new_school_detail.save()
+                        
+                        new_school_addr = GroupAddress()
+                        new_school_addr.group = new_school
+                        new_school_addr.address = school_addr
+                        new_school_addr.save()
+                        
+                        new_school.groupdetail = new_school_detail
+                        new_school.groupaddress = new_school_addr
+                        new_school.name = str(new_school.id)
+                        new_school.save()
+                        
+                        tg = Group()
+                        tg.name = school_name + 't'
+                        tg.save()
+                        
+                        tg.detail = GroupDetail()
+                        tg.detail.group = tg
+                        tg.detail.uppergroup = new_school
+                        tg.detail.nickname = home_string.TEACHER
+                        tg.detail.type = 'T'
+                        tg.detail.save()
+                        
+                        tg.name = str(tg.id)
+                        tg.save()
+                        new_user_group_info = UserGroupInfo()
+                        new_user_group_info.user = User.objects.get(email=email)
+                        new_user_group_info.group = tg
+                        new_user_group_info.save()
+                        
                         data = json.dumps({'status':"success"})
                     else:
                         data = json.dumps({'status':"fail"})
@@ -188,5 +210,39 @@ def modify_auths(request):
     return render_to_response('mngins/modify_auths.html', variables) 
 
 
+def modify_pinfo(request):
+    if request.user.is_authenticated():
+        if len(UserGroupInfo.objects.filter(group__name='1', user=request.user)) == 0:
+            return redirect('/mngins/logout')
+    else:
+        return redirect('/mngins/login')
+    
+    my_info = request.user
+    
+    if request.method == 'POST':
+        if 'origin_pw' in request.POST and 'new_pw' in request.POST and 'first_name' in request.POST and 'last_name' in request.POST and 'comnum' in request.POST:
+            if my_info.check_password(request.POST['origin_pw']):
+                if request.POST['new_pw'] != '':
+                    my_info.set_password(request.POST['new_pw'])
+                my_info.first_name = request.POST['first_name']
+                my_info.last_name = request.POST['last_name']
+                my_info.userdetail.full_name = my_info.last_name + my_info.first_name
+                my_info.userdetail.save()
+                my_info.save()
+                data = json.dumps({'status':"success"})
+            else:
+                data = json.dumps({'status':"fail"})
+        else:
+            data = json.dumps({'status':"fail"})
+        
+        return HttpResponse(data, 'application/json')
 
+    comnum = UserGroupInfo.objects.get(user=my_info, group__name=1).user_id_of_group
+    variables = RequestContext(request, {
+        'mngins_string' : mngins_string,
+        'home_string' : home_string,
+        'my_info' : my_info,
+        'comnum' : comnum
+    })
+    return render_to_response('mngins/modify_pinfo.html', variables) 
 

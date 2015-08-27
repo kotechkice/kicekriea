@@ -1,0 +1,110 @@
+{% extends "mngins/container/base.html" %}
+{% block title %}Demo 홈페이지{% endblock %}
+{% block nav_brand %}관리기관 개인계정 정보수정{% endblock %}
+{% block nav_list %}
+<li> <a href="/mngins" class="nav">홈으로</a></li>
+<li> <a>정보수정</a> </li>
+<li> <a href="/mngins/logout" class="nav">로그아웃</a> </li>
+{% endblock %}
+{% block style %}
+<style>
+input, select {
+  margin-bottom:10px;
+}
+
+</style>
+{% endblock %}
+{% block script %}
+<script>
+	$(document).on("click","#modify_btn", function(){
+		if ($("#check_pw").val() != ''){
+			if($("#check_pw").val() != $("#check_pw").val()){
+				return false;
+			}
+		}
+		$.post("/mngins/modify_pinfo", {
+			csrfmiddlewaretoken:$.cookie('csrftoken'),
+			origin_pw : $("#origin_pw").val(),
+			new_pw:$("#new_pw").val(),
+			first_name:$("#first_name").val(),
+			last_name:$("#last_name").val(),
+			comnum:$("#comnum").val()
+		}).done(function(data){
+			//console.log(data);
+			if(data['status'] === "success"){
+				$(location).attr('href', '/mngins/login');
+			}
+		});
+	});
+</script>
+{% endblock %}
+{% block containor %}
+{% csrf_token %}
+<div class="container">
+  <div class="row">
+    <table align="center">
+      <tr>
+        <td>
+          이메일(아이디) :  &nbsp; &nbsp; 
+        </td>
+        <td>
+          {{ my_info.email }}
+        </td>
+      </tr>
+      <tr>
+        <td>
+          기존 비밀번호(필수) : 
+        </td>
+        <td>
+          <input type="password" id="origin_pw" />
+        </td>
+      </tr>
+      <tr>
+        <td>
+          새 비밀번호(필요시) : 
+        </td>
+        <td>
+          <input type="password" id="new_pw"/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          새 비밀번호 확인 : 
+        </td>
+        <td>
+          <input type="password" id="check_pw"/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          이름 : 
+        </td>
+        <td>
+          <input type="text" id="first_name" value="{{my_info.first_name}}"/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          성 : 
+        </td>
+        <td>
+          <input type="text" id="last_name" value="{{my_info.last_name}}"/>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          사번 : 
+        </td>
+        <td>
+          <input type="text" id="comnum" value="{{comnum}}"/>
+        </td>
+      </tr>
+    </table>
+  </div> <br />
+  <div class="row text-center">
+    <button class="btn btn-primary" id="modify_btn">수정</button>
+    <button class="btn btn-default">취소</button>
+  </div>
+</div>
+
+{% endblock %}

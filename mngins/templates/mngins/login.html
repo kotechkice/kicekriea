@@ -12,8 +12,11 @@
 <script>
 	var test_dat = '';
 	$(document).on("click", '#submit', function(){
-		$.post("{% url 'mngins:login' %}", { csrfmiddlewaretoken:$.cookie('csrftoken'), email:$("#email").val(), pw : $("#pw").val() })
-		.done(function(data){
+		$.post("{% url 'mngins:login' %}", {
+				csrfmiddlewaretoken:$.cookie('csrftoken'), 
+				email:$("#email").val(), 
+				pw : $("#pw").val() 
+		}).done(function(data){
 			//console.log(data);
 			//test_dat = data;
 			if(data['status'] === "success"){
@@ -33,7 +36,7 @@
 	</div><br />
 	<div class="row">
 		<form>
-		 {% csrf_token %}
+		{% csrf_token %}
 		Email : &nbsp; &nbsp; &nbsp; &nbsp;
 		<input type="text" name="email" id="email">
 		<br>

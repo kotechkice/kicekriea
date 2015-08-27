@@ -20,7 +20,10 @@ def createpassword_sendmail(email, password_size=4):
     
     mng_group = Group.objects.get(name='1')
     mng_master = UserGroupInfo.objects.get(group = mng_group, is_groupsuperuser = True).user
-    send_mail(subj_msg, contents_msg, mng_master.email, [email], fail_silently=True)
+    try:
+        send_mail(subj_msg, contents_msg, mng_master.email, [email], fail_silently=True)
+    except:
+        print "error in send_mail"
     return True
 
 
@@ -36,10 +39,8 @@ def adduser_createpw_sendmail(email, group, firstname, lastname, group_id, is_gr
     new_user.last_name = lastname
     new_user.set_password('dummy_password')
     new_user.save()
-    
     if not createpassword_sendmail(email):
         return False
-    
     new_user_detail = UserDetail()
     new_user_detail.user = new_user
     new_user_detail.full_name = lastname+firstname

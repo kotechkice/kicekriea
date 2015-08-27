@@ -1,0 +1,208 @@
+{% extends "tch/container/base.html" %}
+{% block title %}Demo 홈페이지{% endblock %}
+{% block nav_brand %}학교 계정 관리{% endblock %}
+{% block nav_list %}
+<li> <a href="#" class="nav">홈으로</a></li>
+<li> <a>정보수정</a> </li>
+<li> <a>로그아웃</a> </li>
+{% endblock %}
+{% block style %}
+<style>
+table * {
+	text-align:center;
+}
+
+</style>
+{% endblock %}
+{% block script %}
+
+<script>
+	$(document).on("click", "#add_new_tch", function(){
+		$("#add_tch_modal").modal('show');
+	});
+	$(document).on("click", "#add_new_tch_btn", function(){
+		var data = {};
+		data['method'] = 'add_new_tch';
+		data['email'] = $("#new_mng_email").val();
+		data['firstname'] = $("#new_mng_firstname").val();
+		data['lastname'] = $("#new_mng_lastname").val();
+		data['comnum'] = $("#new_mng_comnum").val();
+
+		$.ajax({
+			url : "/tch/modify_auth",
+			dataType : "json",
+			data : data
+		}).done(function(msg) {
+			console.log(msg);
+			if(msg['status'] == 'success'){
+				//location.reload();
+			}
+		});
+	});
+	
+</script>
+
+{% endblock %}
+{% block containor %}
+
+<div class="container">
+	<div class="row">
+		<span class="table-name h3">선생님 계정관리</span>&nbsp;&nbsp;
+		<button class="btn btn-primary btn-xs" id="add_new_tch">추가</button>
+		
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th>성명</th>
+					<th>이메일</th>
+					<th>관리</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for tch in tchs %}
+				<tr>
+					<td>{{ tch.userdetail.full_name }}</td>
+					<td>{{ tch.email }}</td>
+					<td><a>임시비밀번호재생성</a> <a>삭제</a></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="row">
+		<span class="table-name h3">학년반 관리</span>&nbsp;&nbsp;<button class="btn btn-primary btn-xs">추가</button>
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th>학년</th>
+					<th>반</th>
+					<th>학생수</th>
+					<th>관리</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>고1</td>
+					<td>무궁반</td>
+					<td>20</td>
+					<td><a>정보수정</a> <a>삭제</a></td>
+				</tr>
+				<tr>
+					<td>고2</td>
+					<td>너울반</td>
+					<td>23</td>
+					<td><a>정보수정</a> <a>삭제</a></td>
+				</tr>
+				<tr>
+					<td>고2</td>
+					<td>보람반</td>
+					<td>22</td>
+					<td><a>정보수정</a> <a>삭제</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	
+	<div class="row">
+		<span class="table-name h3">학생 계정관리</span>&nbsp;&nbsp;<button class="btn btn-primary btn-xs">선택삭제</button>
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th><input type="checkbox" /></th>
+					<th>성명</th>
+					<th>이메일</th>
+					<th>학년</th>
+					<th>반</th>
+					<th>학번</th>
+					<th>관리</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td>김하나</td>
+					<td>sfdk@never.net</td>
+					<td>1학년</td>
+					<td>무궁반</td>
+					<td>10222</td>
+					<td><a>임시비밀번호재생성</a> <a>삭제</a></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td>최사미</td>
+					<td>a@never.net</td>
+					<td>1학년</td>
+					<td>무궁반</td>
+					<td>10503</td>
+					<td><a>임시비밀번호재생성</a> <a>삭제</a></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td>정나정</td>
+					<td>c@next.co.kr</td>
+					<td>2학년</td>
+					<td>너울반</td>
+					<td>20512</td>
+					<td><a>임시비밀번호재생성</a> <a>삭제</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="modal fade" id="add_tch_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">선생님 계정 추가</h4>
+      </div>
+      <div class="modal-body">
+      	<table>
+      		<tr>
+      			<td>
+      				 이메일(아이디) : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="new_mng_email"/>
+      			</td>
+      		</tr>
+      		<tr>
+      			<td>
+      				 이름 : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="new_mng_firstname"/>
+      			</td>
+      		</tr>
+      		<tr>
+      			<td>
+      				 성 : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="new_mng_lastname" />
+      			</td>
+      		</tr>
+      		<tr>
+      			<td>
+      				 사번 : &nbsp;
+      			</td>
+      			<td>
+      				<input type="text" id="new_mng_comnum" />
+      			</td>
+      		</tr>
+      	</table><br />
+      	추가를 누르시면 해당 메일로 임시비밀번호가 전송됩니다.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary" id="add_new_tch_btn">추가</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+{% endblock %}
