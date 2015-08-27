@@ -39,8 +39,7 @@ def adduser_createpw_sendmail(email, group, firstname, lastname, group_id, is_gr
     new_user.last_name = lastname
     new_user.set_password('dummy_password')
     new_user.save()
-    if not createpassword_sendmail(email):
-        return False
+    
     new_user_detail = UserDetail()
     new_user_detail.user = new_user
     new_user_detail.full_name = lastname+firstname
@@ -56,6 +55,9 @@ def adduser_createpw_sendmail(email, group, firstname, lastname, group_id, is_gr
     new_user_group_info.is_groupsuperuser = is_groupsuperuser
     new_user_group_info.user_id_of_group = group_id
     new_user_group_info.save()
+    
+    if not createpassword_sendmail(email):
+        return False
     
     return True
 
