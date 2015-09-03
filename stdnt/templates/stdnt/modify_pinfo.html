@@ -1,7 +1,10 @@
 {% extends "stdnt/container/base.html" %}
-{% block title %}{{ home_string.SITE_NAME }}{% endblock %}
-{% block nav_brand %}{{ stdnt_string.REGISTER_PAGE }}{% endblock %}
+{% block title %}학생 정보 수정 페이지{% endblock %}
+{% block nav_brand %}학생 정보 수정 페이지{% endblock %}
 {% block nav_list %}
+<li> <a href="/stndt" class="nav">홈으로</a></li>
+<li> <a href="/stdnt/modify_pinfo">정보수정</a> </li>
+<li> <a href="/stdnt/logout">로그아웃</a> </li>
 {% endblock %}
 {% block style %}
 <style>
@@ -14,9 +17,11 @@ input, select {
 {% block script %}
 <script>
 	var test_dat;
+	
+	var school_id = '{{ school_id }}';
 	$(document).on('change', '#school_selector', function(){
 		//console.log(this);
-		var school_id = $(this).find('option:selected').val();
+		school_id = $(this).find('option:selected').val();
 		if(school_id == "None"){
 			$('#grade_selector').html('<option value="None">-----</option>');
 			$('#clas_selector').html('<option value="None">-----</option>');
@@ -69,29 +74,31 @@ input, select {
 		});
 	});
 	
-	var clas_id;
+	var clas_id = '{{ clas_id }}';
 	$(document).on('change', '#clas_selector', function(){
 		//console.log(this);
 		clas_id = $(this).find('option:selected').val();
 	});
 	
 	$(document).on('click','#submit', function(){
-		$.post("/stdnt/register", {
-			csrfmiddlewaretoken:$.cookie('csrftoken'), 
-			email:$("#email").val(),
-			firstname:$("#firstname").val(),
-			lastname:$("#lastname").val(),
+		if ($("#check_pw").val() != ''){
+			if($("#check_pw").val() != $("#check_pw").val()){
+				return false;
+			}
+		}
+		$.post("/stdnt/modify_pinfo", {
+			csrfmiddlewaretoken:$.cookie('csrftoken'),
+			origin_pw : $("#origin_pw").val(),
+			new_pw:$("#new_pw").val(),
+			first_name:$("#firstname").val(),
+			last_name:$("#lastname").val(),
+			school_id:school_id,
 			clas_id:clas_id,
-			std_num:$("#std_num").val(),
+			std_num:$("#std_num").val()
 		}).done(function(data){
 			//console.log(data);
-			//test_dat = data;
 			if(data['status'] === "success"){
-				
-				$(location).attr('href','/stdnt/login');
-			//} else {
-			//	$("#modal .modal-body").html(data['msg']);
-			//	$("#modal").modal('show');
+				$(location).attr('href', '/stdnt/login');
 			}
 		});
 	});
@@ -106,7 +113,31 @@ input, select {
 					{{ home_string.EMAIL }}({{ home_string.ID }}) :  &nbsp; &nbsp; 
 				</td>
 				<td>
-					<input type="text" id="email"/>
+					{{ my_info.email }}
+				</td>
+			</tr>
+			<tr>
+				<td>
+				  기존 비밀번호(필수) : 
+				</td>
+				<td>
+				  <input type="password" id="origin_pw" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+				  새 비밀번호(필요시) : 
+				</td>
+				<td>
+				  <input type="password" id="new_pw"/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				  새 비밀번호 확인 : 
+				</td>
+				<td>
+				  <input type="password" id="check_pw"/>
 				</td>
 			</tr>
 			<tr>
@@ -114,7 +145,7 @@ input, select {
 					{{ home_string.FIRST_NAME }} : 
 				</td>
 				<td>
-					<input type="text" id="firstname"/>
+					<input type="text" id="firstname" value="{{ my_info.first_name }}"/>
 				</td>
 			</tr>
 			<tr>
@@ -122,7 +153,7 @@ input, select {
 					{{ home_string.LAST_NAME }} : 
 				</td>
 				<td>
-					<input type="text" id="lastname"/>
+					<input type="text" id="lastname" value="{{ my_info.last_name }}"/>
 				</td>
 			</tr>
 			<tr>
@@ -133,7 +164,13 @@ input, select {
 					<select id="school_selector">
 						<option value="None">-----</option>
 						{% for school in schools %}
-							<option value="{{ school.name }}">{{ school.groupdetail.nickname }}({{ school.name }})</option>
+							{% if school.id == school_id %}
+							<option value="{{ school.name }}" selected>
+							{% else %}
+							<option value="{{ school.name }}">
+							{% endif %}
+								{{ school.groupdetail.nickname }}({{ school.name }})
+							</option>
 						{% endfor %}
 						
 					</select>
@@ -146,7 +183,15 @@ input, select {
 				<td>
 					<select id="grade_selector">
 						<option value="None">-----</option>
-						
+						{% for grade in grades %}
+							{% if grade.id == grade_id %}
+							<option value="{{ grade.name }}" selected>
+							{% else %}
+							<option value="{{ grade.name }}">
+							{% endif %}
+								{{ grade.groupdetail.nickname }}
+							</option>
+						{% endfor %}
 					</select>
 				</td>
 			</tr>
@@ -157,6 +202,15 @@ input, select {
 				<td>
 					<select id="clas_selector">
 						<option value="None">-----</option>
+						{% for clas in classes %}
+							{% if clas.id == clas_id %}
+							<option value="{{ clas.name }}" selected>
+							{% else %}
+							<option value="{{ clas.name }}">
+							{% endif %}
+								{{ clas.groupdetail.nickname }}
+							</option>
+						{% endfor %}
 					</select>
 				</td>
 			</tr>
@@ -165,13 +219,13 @@ input, select {
 					{{ home_string.STDNT_ID_NUM }} : 
 				</td>
 				<td>
-					<input type="text" id="std_num"/>
+					<input type="text" id="std_num" value="{{ std_num }}"/>
 				</td>
 			</tr>
 		</table>
 	</div> <br />
 	<div class="row text-center">
-		<button class="btn btn-primary" id="submit">{{ home_string.REG_SEND_MAIL }}</button>
+		<button class="btn btn-primary" id="submit">수정</button>
 		<button class="btn btn-default">{{ home_string.CANCEL }}</button>
 	</div>
 </div>

@@ -2,9 +2,9 @@
 {% block title %}Demo 홈페이지{% endblock %}
 {% block nav_brand %}선생님 메인 페이지{% endblock %}
 {% block nav_list %}
-<li> <a href="#" class="nav">홈으로</a></li>
-<li> <a>정보수정</a> </li>
-<li> <a>로그아웃</a> </li>
+<li> <a href="/tch" class="nav">홈으로</a></li>
+<li> <a href="/tch/modify_pinfo">정보수정</a> </li>
+<li> <a href="/tch/logout">로그아웃</a> </li>
 {% endblock %}
 {% block style %}
 <style>
@@ -20,16 +20,16 @@
 {% block containor %}
 <div class="container text-center">
 	<div class="row">
-		<button class="btn btn-primary">과제물 템플릿 관리</button>
+		<!--button class="btn btn-primary">과제물 템플릿 관리</button-->
 	</div>
 	<div class="row">
-		<button class="btn btn-primary">과제 상태 보기</button>
+		<!--button class="btn btn-primary">과제 상태 보기</button-->
 	</div>
 	<div class="row">
-		<button class="btn btn-primary">문항 템플릿 관리</button>
+		<!--button class="btn btn-primary">문항 템플릿 관리</button-->
 	</div>
 	<div class="row">
-		<button class="btn btn-primary">학교 계정 관리</button>
+		<a href="/tch/modify_auth"><button class="btn btn-primary">학교 계정 관리</button></a>
 	</div>
 	
 </div>

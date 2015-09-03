@@ -9,6 +9,25 @@
 </style>
 {% endblock %}
 {% block script %}
+<script>
+	var test_dat = '';
+	$(document).on("click", '#submit', function(){
+		$.post("/stdnt/login", {
+				csrfmiddlewaretoken:$.cookie('csrftoken'), 
+				email:$("#email").val(), 
+				pw : $("#pw").val() 
+		}).done(function(data){
+			console.log(data);
+			//test_dat = data;
+			if(data['status'] === "success"){
+				$(location).attr('href','/stdnt');
+			} else {
+				$("#modal .modal-body").html(data['msg']);
+				$("#modal").modal('show');
+			}
+		});
+	});
+</script>
 {% endblock %}
 {% block containor %}
 <div class="container text-center">
@@ -21,10 +40,28 @@
 		<input type="text" name="email" id="email">
 		<br>
 		Password : 
-		<input type="password" name="psw">
+		<input type="password" name="pw" id="pw">
 		</form><br />
 		<button class="btn btn-default" id="register_btn">{{ stdnt_string.REGISTER }}</button>
-		<button class="btn btn-primary" id="login_btn">{{ stdnt_string.LOGIN }}</button>
+		<button class="btn btn-primary" id="submit">{{ stdnt_string.LOGIN }}</button>
 	</div>
 </div>
+
+<div class="modal fade" id="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Error!</h4>
+      </div>
+      <div class="modal-body">
+        msg
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+        <!--button type="button" class="btn btn-primary">확인</button-->
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 {% endblock %}

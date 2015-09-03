@@ -218,6 +218,7 @@ def modify_pinfo(request):
         return redirect('/mngins/login')
     
     my_info = request.user
+    my_usergroupinfo = my_info.usergroupinfo_set.get(group__name=1)
     
     if request.method == 'POST':
         if 'origin_pw' in request.POST and 'new_pw' in request.POST and 'first_name' in request.POST and 'last_name' in request.POST and 'comnum' in request.POST:
@@ -229,6 +230,8 @@ def modify_pinfo(request):
                 my_info.userdetail.full_name = my_info.last_name + my_info.first_name
                 my_info.userdetail.save()
                 my_info.save()
+                my_usergroupinfo.user_id_of_group = request.POST['comnum']
+                my_usergroupinfo.save()
                 data = json.dumps({'status':"success"})
             else:
                 data = json.dumps({'status':"fail"})
@@ -237,7 +240,8 @@ def modify_pinfo(request):
         
         return HttpResponse(data, 'application/json')
 
-    comnum = UserGroupInfo.objects.get(user=my_info, group__name=1).user_id_of_group
+    comnum = my_usergroupinfo.user_id_of_group
+    
     variables = RequestContext(request, {
         'mngins_string' : mngins_string,
         'home_string' : home_string,

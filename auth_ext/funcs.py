@@ -70,4 +70,39 @@ def del_user(email):
     user.delete()
     return True
 
+def create_class_in_school(school_group, grade_name, class_name):
+    gd_list = GroupDetail.objects.filter(upper_group=school_group, type='G', nickname=grade_name)
+    if len(gd_list) == 0:
+        g = Group()
+        g.name = grade_name
+        g.save()
+        g.groupdetail = GroupDetail()
+        g.groupdetail.group = g
+        g.groupdetail.type = 'G'
+        g.groupdetail.nickname = grade_name
+        g.groupdetail.upper_group = school_group
+        g.groupdetail.save()
+        g.name = str(g.id)
+        g.save()
+        grade_group = g
+    else:
+        grade_group = gd_list[0].group
+    gd_list = GroupDetail.objects.filter(upper_group=grade_group, type='C', nickname=class_name)
+    if len(gd_list) != 0:
+        return False
+    g = Group()
+    g.name = class_name
+    g.save()
+    g.groupdetail = GroupDetail()
+    g.groupdetail.group = g
+    g.groupdetail.type = 'C'
+    g.groupdetail.nickname = class_name
+    g.groupdetail.upper_group = grade_group
+    g.groupdetail.save()
+    g.name = str(g.id)
+    g.save()
+        
+    return True
+
+
 

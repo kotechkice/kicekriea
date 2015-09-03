@@ -4,7 +4,7 @@
 {% block nav_list %}
 <li> <a href="#" class="nav">홈으로</a></li>
 <li> <a>정보수정</a> </li>
-<li> <a>로그아웃</a> </li>
+<li> <a href="/tch/logout">로그아웃</a> </li>
 {% endblock %}
 {% block style %}
 <style>
@@ -33,13 +33,46 @@ table * {
 			dataType : "json",
 			data : data
 		}).done(function(msg) {
-			console.log(msg);
+			//console.log(msg);
 			if(msg['status'] == 'success'){
-				//location.reload();
+				location.reload();
 			}
 		});
 	});
 	
+	var changepw_email;
+	$(document).on("click", ".send_newpw_tch", function(){
+		var title_email_ex = "#send_newpw_modal .modal-title .email_section";
+		changepw_email = $(this.parentNode.parentNode).find(".email_td").text();
+		$(title_email_ex).text(changepw_email);
+		$("#send_newpw_modal").modal("show");
+		return false;
+	});
+	
+	$(document).on("click", "#send_newpw_btn", function(){
+		//console.log("enter");
+		var input_code = $(this.parentNode.parentNode).find('.input_code').val();
+		if(input_code == '{{ input_code }}'){
+			//console.log("send");
+			var data = {};
+			data['method'] = 'send_newpw';
+			data['email'] = changepw_email;
+			$.ajax({
+				url : "/tch/modify_auths",
+				dataType : "json",
+				data : data
+			}).done(function(msg) {
+				//console.log(msg);
+				location.reload();
+			});
+		}
+	});
+	
+	var del_email;
+	$(document).on("click", ".del_tch", function(){
+		
+		return false;
+	});
 </script>
 
 {% endblock %}
@@ -54,7 +87,8 @@ table * {
 			<thead>
 				<tr class="tr-header">
 					<th>성명</th>
-					<th>이메일</th>
+					<th class="email_td">이메일</th>
+					<th>사번</th>
 					<th>관리</th>
 				</tr>
 			</thead>
@@ -62,8 +96,14 @@ table * {
 				{% for tch in tchs %}
 				<tr>
 					<td>{{ tch.userdetail.full_name }}</td>
-					<td>{{ tch.email }}</td>
-					<td><a>임시비밀번호재생성</a> <a>삭제</a></td>
+					<td class="email_td">{{ tch.email }}</td>
+					<td>{{ tch.comnum }}</td>
+					<td>
+						{% if not tch.is_groupsuperuser %}
+						<a href="#" class="send_newpw_tch">임시비밀번호재생성</a> 
+						<a href="#" class="del_tch">삭제</a>
+						{% endif %}
+					</td>
 				</tr>
 				{% endfor %}
 			</tbody>
@@ -81,6 +121,15 @@ table * {
 				</tr>
 			</thead>
 			<tbody>
+				{% for clas in classes %}
+				<tr>
+					<td>{{ clas.groupdetail.upper_group.groupdetail.nickname }}</td>
+					<td>{{ clas.groupdetail.nickname }} </td>
+					<td> clas.num </td>
+					<td><a>정보수정</a> <a>삭제</a></td>
+				</tr>
+				{% endfor %}
+				
 				<tr>
 					<td>고1</td>
 					<td>무궁반</td>
@@ -203,6 +252,44 @@ table * {
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div class="modal fade" id="check_del_tch_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><span class="email_section"> </span> 계정을 삭제하시겠습니까?</h4>
+      </div>
+      <div class="modal-body">
+      	삭제하시려면 아래 코드를 입력하시고 삭제 버튼을 눌러 주십시오.<br /> 
+      	코드 : {{ input_code }}<br />
+      	코드 입력 : <input type="text" class="input_code"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary" id="del_tch_btn">삭제</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
+<div class="modal fade" id="send_newpw_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"><span class="email_section"> </span> 계정의 새 비밀번호를 전송하겠습니까?</h4>
+      </div>
+      <div class="modal-body">
+      	해당 계정의 새 비밀 번호를 생성하여 해당 이메일로 전송하시려면 아래 코드를 입력하시고 전송 버튼을 눌러 주십시오.<br /> 
+      	코드 : {{ input_code }}<br />
+      	코드 입력 : <input type="text" class="input_code"/>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary" id="send_newpw_btn">전송</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 {% endblock %}

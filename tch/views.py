@@ -45,6 +45,8 @@ def login(request):
         else:
             data = json.dumps({'status':"fail", 'msg':'Enter your email'})
         return HttpResponse(data, 'application/json')
+    if request.user.is_authenticated():
+        return redirect('/tch')
     variables = RequestContext(request, {
         'tch_string' : tch_string,                                 
         'home_string' : home_string,
@@ -75,6 +77,9 @@ def modify_auth(request):
             return redirect('/tch/logout')
     else:
         return redirect('/tch/login')
+    
+    my_info = request.user
+    my_usergroupinfo = my_info.usergroupinfo_set.get(group__groupdetail__type='S')
     
     if request.is_ajax():
         data = json.dumps({'status':"fail"})
@@ -113,10 +118,59 @@ def modify_auth(request):
     
     tg = request.user.usergroupinfo_set.get(group__groupdetail__type='T').group
     tchs = map(lambda x:x.user, UserGroupInfo.objects.filter(group=tg))
+    for index in range(len(tchs)):
+        tchs_usergroupinfo =  tchs[index].usergroupinfo_set.get(group__groupdetail__type='S')
+        tchs[index].comnum = tchs_usergroupinfo.user_id_of_group
+        tchs[index].is_groupsuperuser = tchs_usergroupinfo.is_groupsuperuser
+    
+    #grades = Group.objects.filter(groupdetail__upper_group=my_usergroupinfo.group, groupdetail__type="G")
+    classes = Group.objects.filter(groupdetail__upper_group__groupdetail__upper_group=my_usergroupinfo.group, groupdetail__type="C")
+        
+    input_code = code_str_generator(size=4)
     
     variables = RequestContext(request, {
         'tchs' : tchs,
+        'classes' : classes,
+        'input_code' : input_code,
         'tch_string' : tch_string,                                 
         'home_string' : home_string,
     })
     return render_to_response('tch/modify_auth.html', variables)
+
+def modify_pinfo(request):
+    if request.user.is_authenticated():
+        if len(request.user.usergroupinfo_set.filter(group__groupdetail__type='T')) == 0:
+            return redirect('/tch/logout')
+    else:
+        return redirect('/tch/login')
+    
+    my_info = request.user
+    my_usergroupinfo = my_info.usergroupinfo_set.get(group__groupdetail__type='S')
+    
+    if request.method == 'POST':
+        data = json.dumps({'status':"fail"})
+        if 'origin_pw' in request.POST and 'new_pw' in request.POST and 'first_name' in request.POST and 'last_name' in request.POST and 'comnum' in request.POST:
+            if my_info.check_password(request.POST['origin_pw']):
+                if request.POST['new_pw'] != '':
+                    my_info.set_password(request.POST['new_pw'])
+                my_info.first_name = request.POST['first_name']
+                my_info.last_name = request.POST['last_name']
+                my_info.userdetail.full_name = my_info.last_name + my_info.first_name
+                my_info.userdetail.save()
+                my_info.save()
+                my_usergroupinfo.user_id_of_group = request.POST['comnum']
+                my_usergroupinfo.save()
+                data = json.dumps({'status':"success"})
+            else:
+                data = json.dumps({'status':"fail"})
+        return HttpResponse(data, 'application/json')
+    
+    comnum = my_usergroupinfo.user_id_of_group
+    
+    variables = RequestContext(request, {
+        'tch_string' : tch_string,                                 
+        'home_string' : home_string,
+        'my_info' : my_info,
+        'comnum' : comnum,
+    })
+    return render_to_response('tch/modify_pinfo.html', variables)

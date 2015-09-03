@@ -1,10 +1,10 @@
-{% extends "mngins/container/base.html" %}
-{% block title %}관리기관 개인계정 정보수정{% endblock %}
-{% block nav_brand %}관리기관 개인계정 정보수정{% endblock %}
+{% extends "tch/container/base.html" %}
+{% block title %}선생님 개인계정 정보수정{% endblock %}
+{% block nav_brand %}선생님 개인계정 정보수정{% endblock %}
 {% block nav_list %}
-<li> <a href="/mngins" class="nav">홈으로</a></li>
-<li> <a>정보수정</a> </li>
-<li> <a href="/mngins/logout" class="nav">로그아웃</a> </li>
+<li> <a href="/tch" class="nav">홈으로</a></li>
+<li> <a href="/tch/modify_pinfo">정보수정</a> </li>
+<li> <a href="/tch/logout">로그아웃</a> </li>
 {% endblock %}
 {% block style %}
 <style>
@@ -14,6 +14,7 @@ input, select {
 
 </style>
 {% endblock %}
+
 {% block script %}
 <script>
 	$(document).on("click","#modify_btn", function(){
@@ -22,7 +23,7 @@ input, select {
 				return false;
 			}
 		}
-		$.post("/mngins/modify_pinfo", {
+		$.post("/tch/modify_pinfo", {
 			csrfmiddlewaretoken:$.cookie('csrftoken'),
 			origin_pw : $("#origin_pw").val(),
 			new_pw:$("#new_pw").val(),
@@ -32,12 +33,13 @@ input, select {
 		}).done(function(data){
 			//console.log(data);
 			if(data['status'] === "success"){
-				$(location).attr('href', '/mngins/login');
+				$(location).attr('href', '/tch/login');
 			}
 		});
 	});
 </script>
 {% endblock %}
+
 {% block containor %}
 {% csrf_token %}
 <div class="container">
@@ -106,5 +108,4 @@ input, select {
     <button class="btn btn-default">취소</button>
   </div>
 </div>
-
 {% endblock %}
