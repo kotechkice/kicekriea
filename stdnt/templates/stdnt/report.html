@@ -1,0 +1,216 @@
+{% extends "stdnt/container/base.html" %}
+{% block title %}풀이 보기{% endblock %}
+{% block nav_brand %}풀이 보기{% endblock %}
+{% block style %}
+<style>
+	.correct{
+		color: blue;
+	}
+	.incorrect{
+		color: red;
+	}
+	#cop-choice{
+		width:100%;
+	}
+	#cop-choice>label{
+		width : 100%;
+		text-align:left;
+	}
+</style>
+{% endblock %}
+{% block script %}
+<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	//	jax: ["input/TeX", "output/HTML-CSS"],
+	jax: ["input/TeX", "output/SVG"],
+	tex2jax: {
+	inlineMath: [['$','$']],
+	displayMath: [ ['$$','$$']],
+	processEscapes: true,
+	processEnvironments: true,
+	preview: "TeX"
+	},
+	"HTML-CSS": { availableFonts: ["STIX", "TeX"],
+	webFont: null },
+	"SVG": {
+	availableFonts: ["TeX"],
+	blacker: 0,
+	scale: 90
+	},
+	showMathMenu: false
+	});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
+
+<script>
+	{% include 'stdnt/container/manage_probs.js' %}
+
+	var alphabet = 'ABCDEF';
+	var circle_num = '①②③④⑤⑥';
+	var num_from_alpha = {'A':1, 'B':2, 'C':3, 'D':4, 'E':5};
+	var test_dat;
+	
+	function set_item_html(index, item_num){
+		var itemID = $('.one_prob:eq('+index+')').attr('itemid');
+		var seed = $('.one_prob:eq('+index+')').attr('seed');
+		var permutation = $('.one_prob:eq('+index+')').attr('permutation');
+		var choices_in_a_row = $('.one_prob:eq('+index+')').attr('choices_in_a_row');
+			
+		url = 'http://cafalab.com/asp/GradeItem.asp?clientID=XXXX&item='+itemID+'&seed='+seed;
+		$.get(url, function (data) {
+			var q = getitem_to_json(data);
+			q = change_choices_as_permutation_str(q, permutation);
+			var s = gradeitem_to_json(data);
+			
+			var html_dat = '';
+			//var html_dat = String(index+1) + '. ';
+			//if($('.one_prob:eq('+index+') .response').text() == $('.one_prob:eq('+index+') .answer').text()){
+			//	html_dat += '<span class="correct">O</span>';
+			//} else {
+			//	html_dat += '<span class="incorrect">X</span>';
+			//}
+			//html_dat += ' (<a href="#" class="train" itemid="'+itemID+'">연습하기</a>)<br />';
+			html_dat += q['question'];
+			var per_value = Math.floor(100/choices_in_a_row);
+			html_dat += '<br /><br /><table width="100%"><tr>';
+			for(var j=0; j<5; j++){
+				html_dat += '<td class="choice width="'+per_value+'%" valign="top">'+circle_num[j] +'. ' + q['choice'][j]+'</td>';
+				if((j+1)%choices_in_a_row === 0){
+					html_dat += '</tr><tr>';
+				}
+			}
+			html_dat += '</tr></table>';
+			$('.one_prob:eq('+index+')>.prob_area').html(html_dat);
+			$('.one_prob:eq('+index+') .response').text(circle_num[num_from_alpha[$('.one_prob:eq('+index+') .response').text()]-1]);
+			$('.one_prob:eq('+index+') .answer').text(circle_num[num_from_alpha[$('.one_prob:eq('+index+') .answer').text()]-1] + ' ' +s['answer_text']);
+			
+			$('.one_prob:eq('+index+') .sol_area').html(s['solution']);
+		}).done(function(mgs){
+			MathJax.Hub.Typeset();
+			if(index+1 >= item_num) {
+				return false;
+			}
+			set_item_html(index+1, item_num, itemID, seed, permutation, choices_in_a_row);
+		});
+		return true;
+	}
+	
+	$(document).ready(function(){
+		console.log('start');
+		set_item_html(0,$('.one_prob').length);
+	});
+	$(document).on('click', '.panel-heading', function(){
+		$(this).parent().find('.panel-body').toggle();
+	});
+	var train_ans;
+	$(document).on('click', '.train', function(){
+		$('#cop-question').text('문항을 불러오는 중입니다');
+		$("#result_msg").text('');
+		for(var i=0; i<5; i++){
+			$("#cop-choice label:eq("+i+")").removeClass("active");
+        }
+        
+		var itemid = $(this).attr('itemid');
+		test_dat = this;
+		var seed = Math.floor(Math.random() * (500 - 1)) + 1;
+		var url = 'http://cafalab.com/asp/GradeItem.asp?clientID=XXXX&item='+itemid+'&seed='+seed;
+		//console.log(url);
+		$.get(url, function (data) {
+			var q = getitem_to_json(data);
+			var s = gradeitem_to_json(data);
+			//test_dat = q;
+			train_ans = s['answer'];
+			getitem_json_to_html(q);
+			MathJax.Hub.Typeset();
+		});
+		$('#modal').modal("show");
+		return false;
+	});
+	$(document).on('change', '#cop-choice', function(){
+        var response = $("input[name='options']:checked").val();
+		if(alphabet[train_ans-1] == response){
+			$("#result_msg").text('맞았습니다.');
+		} else {
+			$("#result_msg").text('틀렸습니다.');
+		}
+    });
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	{% for gui in guis %}
+	<div class="row one_prob" 
+			itemid="{{ gui.it.cafa_it_id }}" seed="{{ gui.seed }}" 
+			permutation="{{ gui.permutation }}" choices_in_a_row="{{ gui.it.choices_in_a_row }}">
+		{{ gui.order }}. 
+		{% if gui.response == gui.correctanswer %}
+		<span class="correct">O</span>
+		{% else %}
+		<span class="incorrect">X</span>
+		{% endif %}
+		(<a href="#" class="train" itemid="{{ gui.it.cafa_it_id }}">연습하기</a>)<br />
+		<div class="prob_area">
+		</div>
+		<br /><br />
+		<div class="panel panel-default">
+	        <div class="panel-heading text-center">
+				답보기
+	        </div>
+	        <div class="panel-body answer_area" hidden>
+	        	나의 답 : <span class="response">{{ gui.response }}</span><br />
+				정답 : <span class="answer">{{ gui.correctanswer }}</span>
+	        </div>
+	    </div>
+		<div class="panel panel-default">
+	        <div class="panel-heading text-center">
+				해설 보기
+	        </div>
+	        <div class="panel-body sol_area" hidden>
+	        </div>
+	    </div>
+	</div>
+	{% endfor %}
+</div>
+
+<div class="modal fade" id="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">연습하기</h4>
+      </div>
+      <div class="modal-body">
+        <div id="cop-question">
+		문항을 불러오는 중입니다
+		</div><br />
+		<!--div id="choice-area" class="text-center"-->
+		<div id="choice-area">
+			<div id="cop-choice" class="btn-group-vertical" data-toggle="buttons">
+				<label class='btn btn-default text-left'>
+					<input type='radio' name='options' autocomplete='off' value='A'/>① <span id="choice-1"> </span></label>
+				<label class='btn btn-default text-left'>
+					<input type='radio' name='options' autocomplete='off' value='B'/>② <span id="choice-2"> </span></label>
+				<label class='btn btn-default text-left'>
+					<input type='radio' name='options' autocomplete='off' value='C'/>③ <span id="choice-3"> </span></label>
+				<label class='btn btn-default text-left'>
+					<input type='radio' name='options' autocomplete='off' value='D'/>④ <span id="choice-4"> </span></label>
+				<label class='btn btn-default text-left'>
+					<input type='radio' name='options' autocomplete='off' value='E'/>⑤ <span id="choice-5"> </span></label>
+			</div>
+		</div>
+		<div id="result_msg">
+		</div>
+		<!--div class="row text-right" id="cafa-logo">
+			powered by <a href="http://eMathTest.com/CAFA" target="_blank">CAFA</a>
+		</div-->
+		<br />
+      </div>
+      <div class="modal-footer">
+      	<!--button type="button" class="btn btn-primary">확인</button-->
+        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}

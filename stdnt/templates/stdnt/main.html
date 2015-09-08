@@ -3,7 +3,8 @@
 {% block nav_brand %}학생 메인 페이지{% endblock %}
 {% block style %}
 <style>
-	button{
+
+	.btn-primary{
 		width : 30%;
 		height : 40px;
 		margin : 10px;
@@ -18,7 +19,7 @@
 		<!--button class="btn btn-primary">형성 평가</button-->
 	</div>
 	<div class="row">
-		<button class="btn btn-primary">진단 평가</button>
+		<a href="/stdnt/exam_list"><button class="btn btn-primary btn-lg">진단 평가</button></a>
 	</div>
 </div>
 {% endblock %}

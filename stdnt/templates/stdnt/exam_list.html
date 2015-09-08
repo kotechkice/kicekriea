@@ -1,0 +1,280 @@
+{% extends "stdnt/container/base.html" %}
+{% block title %}진단 평가 리스트{% endblock %}
+{% block nav_brand %}진단 평가 리스트{% endblock %}
+
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+<script type="text/javascript" src="https://www.google.com/jsapi"> </script>
+<script>
+	{% include "stdnt/container/base.js" %}
+	{% include "stdnt/container/manage_probs.js" %}
+	
+	var num_from_level = {
+		'{{ stdnt_string.LEVEL.H }}':4, 
+		'{{ stdnt_string.LEVEL.M }}':3, 
+		'{{ stdnt_string.LEVEL.L }}':2, 
+		'{{ stdnt_string.LEVEL.F }}':1
+	};
+	var test_dat;
+	
+	function setTable(){
+		switch(findBootstrapEnvironment()){
+			case 'xs':
+				$('.td-contents').hide();
+				
+				break;
+			default:
+				$('.td-contents').show();
+		}
+	}
+	$(document).ready(function(){
+		setTable();
+	});
+	//$(document).on('click', 'tr', function(){
+	//	console.log('hello');
+	//});
+	$(window).resize(function(){
+		//console.log('windows resized');
+		setTable();
+	});
+	
+	var solve_mode='m';
+	var ua_id;
+	$(document).on('click', '.exam_m', function(){
+		//test_dat = this;
+		//console.log($(this).val());
+		solve_mode='m';
+		//at_id = $(this).attr("value");
+		//console.log($(this).attr("value"));
+		var at_id = $(this).attr("value");
+		var data = {};
+		data['method'] = 'call_ua';
+		data['at_id'] = at_id;
+		$.ajax({
+			url : '/stdnt/exam_list',
+			dataType:"json",
+			data : data
+		}).done(function(msg){
+			console.log(msg);
+			if(msg['status'] == 'success'){
+				if(msg['ua_id'] == 'empty'){
+					url = 'http://cafalab.com/asp/CreateCartridgeInstance.asp?ID='+msg['ct_id']+'&user={{ my_info.email }}';
+					console.log(url);
+					$.get(url, function (get_data) {
+						//console.log(get_data);
+						var ci_id = $($(get_data).find('ID')[0]).text();
+						//ci_id = 'KWS9/7/2015-7:35:48 AM-wogud86@naver.com-2627';
+						var getci_url = 'http://cafalab.com/asp/GetCartridgeInstance.asp?id='+ci_id;
+						console.log(getci_url);
+						$.get(getci_url, function (getci_data) {
+							//console.log(getci_data);
+							var json = getci_to_json(getci_data);
+							console.log(json);
+							$.ajax({
+								url : '/stdnt/exam_list',
+								dataType:"json",
+								data : {
+									'method':'create_ua', 
+									'items':JSON.stringify(json),
+									'at_id':at_id,
+									'ci_id':ci_id
+								}
+							}).done(function(create_ua_msg){
+								console.log(create_ua_msg);
+								ua_id = create_ua_msg['ua_id'];
+								switch(solve_mode){
+								case 'm':
+									$(location).attr('href','/stdnt/solve_itemeach/'+ua_id);
+								}
+							});
+						});
+					});
+				} else {
+					ua_id = msg['ua_id'];
+					$("#go_exist_exam_modal").modal('show');
+				}
+			}
+		});
+		return false;
+	});
+	$(document).on('click', '#go_exist_exam_modal .submit_btn', function(){
+		switch(solve_mode){
+		case 'm':
+			$(location).attr('href','/stdnt/solve_itemeach/'+ua_id);
+		}
+	});
+	google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawVisualization);
+    google.setOnLoadCallback(drawChart);
+	function drawVisualization() {
+        // Some raw data (not necessarily accurate)
+        var data = google.visualization.arrayToDataTable([
+         ['Month', '내 수준', '학교평균'],
+         {% for exam in examlist%}
+         {% if exam.is_finished %}
+         ['{{ exam.standard }}', num_from_level['{{ exam.level }}'], Math.floor(Math.random() * 4)+1],
+         {% else %}
+         ['{{ exam.standard }}', 0, Math.floor(Math.random() * 4)+1],
+         {% endif %}
+         {% endfor %}
+      	]);
+      	var options = {
+	      title : '성취기준별 도달수준',
+	      chartArea:{left:40, width:'60%'},
+	      vAxis: {title: '도달수준',textPosition: 'none', maxValue:4, minValue:0},
+	      hAxis: {title: '성취수준',textPosition: 'in'},
+	      seriesType: 'bars',
+	      series: {
+	      	0: {color: '#0000FF'},
+	      	1: {color: '#9999FF'}
+	      },
+	      //curveType: 'function',
+	    };
+	
+	    var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+	    chart.draw(data, options);
+      }
+      function drawChart() {
+	    var data = google.visualization.arrayToDataTable([
+	      [
+	      	'회차',
+	      	{% for exam in examlist%}
+	      	'{{ exam.standard }}',
+	      	{% endfor %}
+	      ],
+	      [
+	      	'4회 전',  
+	      	{% for exam in examlist%}
+	      	Math.floor(Math.random() * 4)+1,
+	      	{% endfor %}
+	      ],
+	      ['3회 전',
+	      	{% for exam in examlist%}
+	      	Math.floor(Math.random() * 4)+1,
+	      	{% endfor %}
+	      ],
+	      ['2회 전',
+	      	{% for exam in examlist%}
+	      	Math.floor(Math.random() * 4)+1,
+	      	{% endfor %}
+	      ],
+	      ['1회 전',
+	      	{% for exam in examlist%}
+	      	Math.floor(Math.random() * 4)+1,
+	      	{% endfor %}
+	      ],
+	      ['최근',
+	      	{% for exam in examlist%}
+	      	{% if exam.is_finished %}
+	      	num_from_level['{{ exam.level }}'],
+	      	{% else %}
+	      	0,
+	      	{% endif %}
+	      	{% endfor %}
+	      ],
+	    ]);
+	    var series_dat = {};
+	    var el_len = {{examlist_len}};
+	    var color_term = 0;
+	    var color_base = 16;
+	    if(el_len != 0){
+	    	color_term = Math.floor((255-color_base)/el_len);
+	    }
+	    for(var i=0; i<el_len; i++){
+	    	var color_str = color_base+color_term*i;
+	    	series_dat[i] = {color:'#'+color_str.toString(16)+color_str.toString(16)+'FF'};
+	    }
+		test_dat = data;
+	    var options = {
+	      title: '최근 5회차 도달수준 변화',
+	      chartArea:{left:40, width:'55%'},
+	      vAxis: {title: '도달수준',textPosition: 'none', maxValue:3, minValue:0},
+	      hAxis: {title: '회차',textPosition: 'out'},
+	      //seriesType: 'bars',
+	      curveType: 'function',
+	      //legend: { position: 'bottom' }
+	      series: series_dat,
+	  	};
+	  	//var chart = new google.visualization.ColumnChart(document.getElementById('curve_chart'));
+	    //chart.draw(data, options);
+	    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+	    chart.draw(data, options);
+	  }
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<div class="row">
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th class="td-standard">성취기준ID</th>
+					<th class="td-contents">내용</th>
+					<th class="td-itemnum">문제수</th>
+					<th class="td-result">진단</th>
+					<th class="td-solve">풀기</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for exam in examlist%}
+				<tr>
+					<th class="td-standard">{{ exam.standard }}</th>
+					<th class="td-contents">{{ exam.context }}</th>
+					<td class="td-itemnum">{{ exam.at.num_item}}</td>
+					<td class="td-result">
+						{% if exam.is_finished %}
+						{{ exam.level }}(<a href="/stdnt/report/{{exam.at.id}}">풀이보기</a>)
+						{% else %}
+						진단 안됨
+						{% endif %}
+					</td>
+					<td class="td-solve">
+						{% if not exam.is_finished %}
+						<a href="#" value="{{ exam.at.id }}" class="exam_m">풀기</a>
+						{% endif %}
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<h3>성취기준별 학습 도움말</h3>
+	<ul class="list-group">
+		{% for exam in examlist%}
+		{% if exam.is_finished %}
+		<li class="list-group-item">
+			<b>{{ exam.standard }}({{ exam.context }})에서 '{{ exam.level }}' 수준입니다.</b> <br />
+			{{ exam.help_str }}
+		</li>
+		{% endif %}
+		{% endfor %}
+	</ul>
+	<div id="chart_div" style="width: 100%; height: 120px;"> </div>
+	<div id="curve_chart" style="width: 100%; height: 500px"> </div>
+	※ 학교 평균과 전 회차의 데이터는 임의의 데이터입니다.
+</div>
+
+<div class="modal fade" id="go_exist_exam_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">진행하던 데이터가 있습니다.</h4>
+      </div>
+      <div class="modal-body">
+        계속 이어서 진행하시겠습니까?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary submit_btn">확인</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+{% endblock %}
