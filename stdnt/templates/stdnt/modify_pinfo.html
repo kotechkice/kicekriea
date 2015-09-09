@@ -86,7 +86,7 @@ input, select {
 				return false;
 			}
 		}
-		$.post("/stdnt/modify_pinfo", {
+		$.post("/stdnt/modify_pinfo/", {
 			csrfmiddlewaretoken:$.cookie('csrftoken'),
 			origin_pw : $("#origin_pw").val(),
 			new_pw:$("#new_pw").val(),
@@ -107,6 +107,7 @@ input, select {
 {% block containor %}
 <div class="container">
 	<div class="row">
+		{% csrf_token %}
 		<table align="center">
 			<tr>
 				<td>
