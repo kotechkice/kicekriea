@@ -6,7 +6,7 @@ class ExamList(models.Model):
     at = models.ForeignKey(AssessmentTemplate)
     exam_order = models.IntegerField(null=True)
     
-    standard = models.CharField(max_length=25)
+    standard = models.CharField(max_length=25, null=True)
     context = models.TextField(null=True)
     
     help_h = models.TextField(null=True)
