@@ -1,7 +1,8 @@
 {% extends "tch/container/base.html" %}
-{% block title %}Demo 홈페이지{% endblock %}
+{% block title %}온라인 문항관리 시스템{% endblock %}
 {% block nav_brand %}온라인 문항관리 시스템{% endblock %}
 {% block nav_list %}
+<li> <a href="/" class="nav">메인으로</a></li>
 {% endblock %}
 {% block style %}
 <style>
@@ -11,7 +12,10 @@
 {% block script %}
 <script>
 	var test_dat = '';
-	$(document).on("click", '#submit', function(){
+	function do_login(){
+		if($("#email").val() =='' || $("#pw").val() == ''){
+			return false;
+		}
 		$.post("/tch/login/", {
 				csrfmiddlewaretoken:$.cookie('csrftoken'), 
 				email:$("#email").val(), 
@@ -26,6 +30,15 @@
 				$("#modal").modal('show');
 			}
 		});
+	}
+	$(document).on("click", '#submit', function(){
+		do_login();
+	});
+	$(document).on('keypress', '#pw', function(e){
+		//console.log(e);
+		if(e.keyCode==13){
+			do_login();
+		}
 	});
 </script>
 {% endblock %}
@@ -37,11 +50,16 @@
 	<div class="row">
 		<form>
 		{% csrf_token %}
-		Email : &nbsp; &nbsp; &nbsp; &nbsp;
-		<input type="text" name="email" id="email">
-		<br>
-		Password : 
-		<input type="password" name="ps" id="pw">
+		<table align="center">
+			<tr>
+				<td>Email : &nbsp; &nbsp; &nbsp; &nbsp;</td>
+				<td><input type="text" name="email" id="email"></td>
+			</tr>
+			<tr>
+				<td>Password : </td>
+				<td><input type="password" name="pw" id="pw"></td>
+			</tr>
+		</table>
 		</form><br />
 	</div>
 	<button class="btn btn-primary" id="submit">로그인</button>

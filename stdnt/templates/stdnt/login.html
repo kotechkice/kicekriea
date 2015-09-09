@@ -2,16 +2,19 @@
 {% block title %}{{ stdnt_string.LOGIN_PAGE }}{% endblock %}
 {% block nav_brand %}{{ home_string.SITE_NAME }}{% endblock %}
 {% block nav_list %}
+<li> <a href="/" class="nav">메인으로</a></li>
 {% endblock %}
 {% block style %}
 <style>
-	
 </style>
 {% endblock %}
 {% block script %}
 <script>
 	var test_dat = '';
-	$(document).on("click", '#submit', function(){
+	function do_login(){
+		if($("#email").val() =='' || $("#pw").val() == ''){
+			return false;
+		}
 		$.post("/stdnt/login/", {
 				csrfmiddlewaretoken:$.cookie('csrftoken'), 
 				email:$("#email").val(), 
@@ -26,6 +29,15 @@
 				$("#modal").modal('show');
 			}
 		});
+	}
+	$(document).on("click", '#submit', function(){
+		do_login();
+	});
+	$(document).on('keypress', '#pw', function(e){
+		//console.log(e);
+		if(e.keyCode==13){
+			do_login();
+		}
 	});
 </script>
 {% endblock %}
@@ -37,13 +49,18 @@
 	<div class="row">
 		<form>
 		{% csrf_token %}
-		Email : &nbsp; &nbsp; &nbsp; &nbsp;
-		<input type="text" name="email" id="email">
-		<br>
-		Password : 
-		<input type="password" name="pw" id="pw">
+		<table align="center">
+			<tr>
+				<td>Email : &nbsp; &nbsp; &nbsp; &nbsp;</td>
+				<td><input type="text" name="email" id="email"></td>
+			</tr>
+			<tr>
+				<td>Password : </td>
+				<td><input type="password" name="pw" id="pw"></td>
+			</tr>
+		</table>
 		</form><br />
-		<button class="btn btn-default" id="register_btn">{{ stdnt_string.REGISTER }}</button>
+		<a href="/stdnt/register"><button class="btn btn-default" id="register_btn">{{ stdnt_string.REGISTER }}</button></a>
 		<button class="btn btn-primary" id="submit">{{ stdnt_string.LOGIN }}</button>
 	</div>
 </div>
