@@ -120,6 +120,10 @@ def modify_auth(request):
                     data = json.dumps({'status':"fail"})
             else:
                 data = json.dumps({'status':"fail"})
+        elif request.GET['method'] == 'add_new_class':
+            if 'grade' in request.GET and 'class' in request.GET:
+                create_class_in_school(my_usergroupinfo.group, request.GET['grade'], request.GET['class'])
+                data = json.dumps({'status':"success"})
         else:
             data = json.dumps({'status':"fail"})
         return HttpResponse(data, 'application/json')
