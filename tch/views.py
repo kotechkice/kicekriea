@@ -60,9 +60,14 @@ def main(request):
     else:
         return redirect('/tch/login')
     
+    my_info = request.user
+    my_usergroupinfo = my_info.usergroupinfo_set.get(group__groupdetail__type='S')
+    my_info.is_groupsuperuser = my_usergroupinfo.is_groupsuperuser
+    
     variables = RequestContext(request, {
         'tch_string' : tch_string,                                 
         'home_string' : home_string,
+        'my_info' : my_info,
     })
     return render_to_response('tch/main.html', variables)
 
@@ -81,6 +86,9 @@ def modify_auth(request):
     my_info = request.user
     my_usergroupinfo = my_info.usergroupinfo_set.get(group__groupdetail__type='S')
     
+    if not my_usergroupinfo.is_groupsuperuser:
+        return redirect('/mngins/logout')
+     
     if request.is_ajax():
         data = json.dumps({'status':"fail"})
         if not 'method' in request.GET:

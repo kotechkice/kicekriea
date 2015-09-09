@@ -80,7 +80,7 @@
 			dataType:"json",
 			data : data
 		}).done(function(msg){
-			//console.log(msg);
+			//.log(msg);
 			if(msg['status'] == 'success'){
 				var itemid = msg['itemid'];
 				var permutation_str = msg['permutation'];
@@ -91,13 +91,25 @@
 					//console.log(data);
 					var json_one = getitem_to_json(data);
 					//console.log(json_one);
-					//console.log(permutation_str);
-					//test_dat = json_one;
-					json_one = change_choices_as_permutation_str(json_one, permutation_str);
-					//console.log(json_one);
-					getitem_json_to_html(json_one);
 					
-					MathJax.Hub.Typeset();
+					$.ajax({
+						url : '/stdnt/solve_itemeach/'+ua_id,
+						dataType:"json",
+						data : {
+							'method':'set_permutation', 
+							'order':order_num,
+							'permutation_str':json_one['permutation']
+						}
+					}).done(function(msg){
+						if(msg['status'] == 'success'){
+							//console.log(msg);
+							var item_permutation_str = msg['item_permutation'];
+							//console.log(item_permutation_str);
+							json_one = change_choices_as_permutation_str(json_one, permutation_str, item_permutation_str);
+							getitem_json_to_html(json_one);
+							MathJax.Hub.Typeset();
+						}
+					});
 				});
 				order = order_num;
 				$("#cop-count").text(String(order)+'/'+String(num_of_item));

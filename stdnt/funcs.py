@@ -2,10 +2,6 @@ from stdnt.models import *
 from django.db.models import F
 
 def set_it_level_from_itnum_str(at, itnum_str, leveltype):
-    #mat = MappedItemAssessmentTemplate()
-    #print 'create_it_str_in_at'
-    #print at.name
-    #print itnum_str
     itnum_list = map(lambda x:int(x), itnum_str.split(','))
     set_it_level_from_itnum_list(at, itnum_list, leveltype)
     

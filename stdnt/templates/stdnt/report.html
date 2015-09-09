@@ -56,11 +56,14 @@
 		var seed = $('.one_prob:eq('+index+')').attr('seed');
 		var permutation = $('.one_prob:eq('+index+')').attr('permutation');
 		var choices_in_a_row = $('.one_prob:eq('+index+')').attr('choices_in_a_row');
-			
+		var item_permutation = $('.one_prob:eq('+index+')').attr('item_permutation');
+		
 		url = 'http://cafalab.com/asp/GradeItem.asp?clientID=XXXX&item='+itemID+'&seed='+seed;
 		$.get(url, function (data) {
 			var q = getitem_to_json(data);
-			q = change_choices_as_permutation_str(q, permutation);
+			//console.log(q);
+			q = change_choices_as_permutation_str(q, permutation, item_permutation);
+			//console.log(q);
 			var s = gradeitem_to_json(data);
 			
 			var html_dat = '';
@@ -75,7 +78,7 @@
 			var per_value = Math.floor(100/choices_in_a_row);
 			html_dat += '<br /><br /><table width="100%"><tr>';
 			for(var j=0; j<5; j++){
-				html_dat += '<td class="choice width="'+per_value+'%" valign="top">'+circle_num[j] +'. ' + q['choice'][j]+'</td>';
+				html_dat += '<td class="choice width="'+per_value+'%" valign="top">'+circle_num[j] +' ' + q['choice'][j]+'</td>';
 				if((j+1)%choices_in_a_row === 0){
 					html_dat += '</tr><tr>';
 				}
@@ -167,7 +170,8 @@
 	{% for gui in guis %}
 	<div class="row one_prob" 
 			itemid="{{ gui.it.cafa_it_id }}" seed="{{ gui.seed }}" 
-			permutation="{{ gui.permutation }}" choices_in_a_row="{{ gui.it.choices_in_a_row }}">
+			permutation="{{ gui.permutation }}" choices_in_a_row="{{ gui.it.choices_in_a_row }}"
+			item_permutation="{{ gui.item_permutation }}">
 		{{ gui.order }}. 
 		{% if gui.response == gui.correctanswer %}
 		<span class="correct">O</span>

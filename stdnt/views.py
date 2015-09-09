@@ -310,6 +310,11 @@ def solve_itemeach(request, ua_id):
                     gui.save()
                 assess_user_by_exam(ua)
                 data = json.dumps({'status':"success"});
+        elif request.GET['method'] == 'set_permutation':
+            if 'order' in request.GET and 'permutation_str' in request.GET:
+                gui = ua.gradeduseritem_set.get(order=request.GET['order'])
+                set_item_permutation_in_gui(gui, request.GET['permutation_str'])
+                data = json.dumps({'status':"success", 'item_permutation':gui.item_permutation});
         return HttpResponse(data, 'application/json')
     
     

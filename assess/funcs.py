@@ -34,15 +34,17 @@ def create_ua_from_itemdict_N_at(at, itemdict, user, ci_id):
         gui.save()
     return ua.id
 
+def set_item_permutation_in_gui(gui, item_permutation_str):
+    gui.item_permutation = ''.join(item_permutation_str.split(',')) 
+    gui.save()
+    return True
+
 def create_its_from_itnum_str_N_at(at, itnum_str):
-    #mat = MappedItemAssessmentTemplate()
-    #print 'create_it_str_in_at'
-    #print at.name
-    #print itnum_str
     itnum_list = map(lambda x:int(x), itnum_str.split(','))
-    create_itnum_list_in_at(at, itnum_list)
+    create_its_from_itnum_list_N_at(at, itnum_list)
     
 def create_its_from_itnum_list_N_at(at, itnum_list):
+    order = 1
     for itnum in itnum_list:
         exist_list = ItemTemplate.objects.filter(cafa_it_id=itnum)
         if len(exist_list) == 0:
@@ -54,4 +56,6 @@ def create_its_from_itnum_list_N_at(at, itnum_list):
         miat = MappedItemAssessmentTemplate()
         miat.at = at
         miat.it = it
+        miat.order = order
         miat.save()
+        order = order + 1

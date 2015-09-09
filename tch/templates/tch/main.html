@@ -26,9 +26,10 @@
 	<div class="row">
 		<a href="/tch/exam_result"><button class="btn btn-primary">진단평가 수행상태 보기</button></a>
 	</div>
+	{% if my_info.is_groupsuperuser %}
 	<div class="row">
 		<a href="/tch/modify_auth"><button class="btn btn-primary">학교 계정 관리</button></a>
 	</div>
-	
+	{% endif %}
 </div>
 {% endblock %}

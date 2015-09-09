@@ -38,7 +38,7 @@ function getci_to_json(xml_data){
 function getitem_to_json(xml_data){
     xml_data = $(xml_data).find('Item')[0];
     var prob_dict = {};       
-    var prob_tag = ["seed", "question", "choice"];
+    var prob_tag = ["seed", "question", "choice", "permutation"];
     for(index in prob_tag){
         if(prob_tag[index] == "choice"){
             prob_dict['choice'] = [];
@@ -53,14 +53,18 @@ function getitem_to_json(xml_data){
     }
     return prob_dict;
 }
-function change_choices_as_permutation_str(json_data, permutation_str){
+function change_choices_as_permutation_str(json_data, permutation_str, item_permutation_str){
     var origin_choice_data = [];
+    var base_choice_data = [];
     for(var index=0; index<5; index++){
         origin_choice_data.push(json_data['choice'][index]);
+        base_choice_data.push(json_data['choice'][index]);
     }
-    //console.log(origin_choice_data);
     for(var index=0; index<5; index++){
-        json_data['choice'][index] = origin_choice_data[Number(permutation_str[index])-1];
+        base_choice_data[Number(item_permutation_str[index])-1] = origin_choice_data[index];
+    }
+    for(var index=0; index<5; index++){
+        json_data['choice'][index] = base_choice_data[Number(permutation_str[index])-1];
     }
     return json_data;
 }

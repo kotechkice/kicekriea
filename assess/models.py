@@ -61,6 +61,7 @@ class GradedUserItem(models.Model):
     order = models.IntegerField(null=True)
     seed = models.IntegerField(null=True)
     permutation = models.CharField(max_length=10, null=True)
+    item_permutation = models.CharField(max_length=10, null=True)
     response = models.CharField(max_length=50, null=True)
     correctanswer = models.CharField(max_length=50, null=True)
     elapsed_time = models.IntegerField(null=True)
