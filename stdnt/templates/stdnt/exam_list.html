@@ -10,6 +10,30 @@
 </style>
 {% endblock %}
 {% block script %}
+<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	//	jax: ["input/TeX", "output/HTML-CSS"],
+	jax: ["input/TeX", "output/SVG"],
+	tex2jax: {
+	inlineMath: [['$','$']],
+	displayMath: [ ['$$','$$']],
+	processEscapes: true,
+	processEnvironments: true,
+	preview: "TeX"
+	},
+	"HTML-CSS": { availableFonts: ["STIX", "TeX"],
+	webFont: null },
+	"SVG": {
+	availableFonts: ["TeX"],
+	blacker: 0,
+	scale: 90
+	},
+	showMathMenu: false
+	});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
+
 <script type="text/javascript" src="https://www.google.com/jsapi"> </script>
 <script>
 	{% include "stdnt/container/base.js" %}
