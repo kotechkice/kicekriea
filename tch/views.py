@@ -125,12 +125,22 @@ def modify_auth(request):
     
     #grades = Group.objects.filter(groupdetail__upper_group=my_usergroupinfo.group, groupdetail__type="G")
     classes = Group.objects.filter(groupdetail__upper_group__groupdetail__upper_group=my_usergroupinfo.group, groupdetail__type="C")
+    for index in range(len(classes)):
+        classes[index].members_length = len(classes[index].usergroupinfo_set.all())
         
+    ugi = UserGroupInfo.objects.filter(group__groupdetail__upper_group__groupdetail__upper_group=my_usergroupinfo.group, group__groupdetail__type="C")
+    students = map(lambda x:x.user, ugi)
+    
+    for index in range(len(students)):
+        students[index].classname = students[index].usergroupinfo_set.get(group__groupdetail__type="C").group.groupdetail.nickname
+        students[index].gradename = students[index].usergroupinfo_set.get(group__groupdetail__type="C").group.groupdetail.upper_group.groupdetail
+        students[index].stdnum = students[index].usergroupinfo_set.get(group__groupdetail__type="S").user_id_of_group
     input_code = code_str_generator(size=4)
     
     variables = RequestContext(request, {
         'tchs' : tchs,
         'classes' : classes,
+        'students' : students,
         'input_code' : input_code,
         'tch_string' : tch_string,                                 
         'home_string' : home_string,
@@ -174,3 +184,33 @@ def modify_pinfo(request):
         'comnum' : comnum,
     })
     return render_to_response('tch/modify_pinfo.html', variables)
+
+def exam_result(request):
+    if request.user.is_authenticated():
+        if len(request.user.usergroupinfo_set.filter(group__groupdetail__type='T')) == 0:
+            return redirect('/tch/logout')
+    else:
+        return redirect('/tch/login')
+    
+    my_info = request.user
+    my_usergroupinfo = my_info.usergroupinfo_set.get(group__groupdetail__type='S')
+    
+    ugi = UserGroupInfo.objects.filter(group__groupdetail__upper_group__groupdetail__upper_group=my_usergroupinfo.group, group__groupdetail__type="C")
+    students = map(lambda x:x.user, ugi)
+    
+    from stdnt.models import *
+    from stdnt import strings as stdnt_string
+    
+    aes = AssessEaxm.objects.filter(user__in = students)
+    for index in range(len(aes)):
+        aes[index].std_classname = aes[index].user.usergroupinfo_set.get(group__groupdetail__type="C").group.groupdetail.nickname
+        aes[index].std_gradename = aes[index].user.usergroupinfo_set.get(group__groupdetail__type="C").group.groupdetail.upper_group.groupdetail
+        aes[index].std_num = aes[index].user.usergroupinfo_set.get(group__groupdetail__type="S").user_id_of_group
+        aes[index].standard = ExamList.objects.filter(at=aes[index].ua.at)[0].standard
+        aes[index].level_str = stdnt_string.LEVEL[aes[index].level]
+    variables = RequestContext(request, {
+        'tch_string' : tch_string,                                 
+        'home_string' : home_string,
+        'aes' : aes,
+    })
+    return render_to_response('tch/exam_result.html', variables)

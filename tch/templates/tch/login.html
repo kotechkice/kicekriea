@@ -12,7 +12,7 @@
 <script>
 	var test_dat = '';
 	$(document).on("click", '#submit', function(){
-		$.post("/tch/login", {
+		$.post("/tch/login/", {
 				csrfmiddlewaretoken:$.cookie('csrftoken'), 
 				email:$("#email").val(), 
 				pw : $("#pw").val() 

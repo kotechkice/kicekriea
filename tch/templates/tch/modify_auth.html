@@ -1,11 +1,6 @@
 {% extends "tch/container/base.html" %}
 {% block title %}Demo 홈페이지{% endblock %}
 {% block nav_brand %}학교 계정 관리{% endblock %}
-{% block nav_list %}
-<li> <a href="#" class="nav">홈으로</a></li>
-<li> <a>정보수정</a> </li>
-<li> <a href="/tch/logout">로그아웃</a> </li>
-{% endblock %}
 {% block style %}
 <style>
 table * {
@@ -29,7 +24,7 @@ table * {
 		data['comnum'] = $("#new_mng_comnum").val();
 
 		$.ajax({
-			url : "/tch/modify_auth",
+			url : "/tch/modify_auth/",
 			dataType : "json",
 			data : data
 		}).done(function(msg) {
@@ -58,7 +53,7 @@ table * {
 			data['method'] = 'send_newpw';
 			data['email'] = changepw_email;
 			$.ajax({
-				url : "/tch/modify_auths",
+				url : "/tch/modify_auths/",
 				dataType : "json",
 				data : data
 			}).done(function(msg) {
@@ -125,29 +120,10 @@ table * {
 				<tr>
 					<td>{{ clas.groupdetail.upper_group.groupdetail.nickname }}</td>
 					<td>{{ clas.groupdetail.nickname }} </td>
-					<td> clas.num </td>
+					<td>{{ clas.members_length }} </td>
 					<td><a>정보수정</a> <a>삭제</a></td>
 				</tr>
 				{% endfor %}
-				
-				<tr>
-					<td>고1</td>
-					<td>무궁반</td>
-					<td>20</td>
-					<td><a>정보수정</a> <a>삭제</a></td>
-				</tr>
-				<tr>
-					<td>고2</td>
-					<td>너울반</td>
-					<td>23</td>
-					<td><a>정보수정</a> <a>삭제</a></td>
-				</tr>
-				<tr>
-					<td>고2</td>
-					<td>보람반</td>
-					<td>22</td>
-					<td><a>정보수정</a> <a>삭제</a></td>
-				</tr>
 			</tbody>
 		</table>
 	</div>
@@ -168,33 +144,17 @@ table * {
 				</tr>
 			</thead>
 			<tbody>
+				{% for student in students %}
 				<tr>
 					<td><input type="checkbox" /></td>
-					<td>김하나</td>
-					<td>sfdk@never.net</td>
-					<td>1학년</td>
-					<td>무궁반</td>
-					<td>10222</td>
+					<td>{{ student.userdetail.full_name }}</td>
+					<td>{{ student.email }}</td>
+					<td>{{ student.gradename }}</td>
+					<td>{{ student.classname }}</td>
+					<td>{{ student.stdnum }}</td>
 					<td><a>임시비밀번호재생성</a> <a>삭제</a></td>
 				</tr>
-				<tr>
-					<td><input type="checkbox" /></td>
-					<td>최사미</td>
-					<td>a@never.net</td>
-					<td>1학년</td>
-					<td>무궁반</td>
-					<td>10503</td>
-					<td><a>임시비밀번호재생성</a> <a>삭제</a></td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" /></td>
-					<td>정나정</td>
-					<td>c@next.co.kr</td>
-					<td>2학년</td>
-					<td>너울반</td>
-					<td>20512</td>
-					<td><a>임시비밀번호재생성</a> <a>삭제</a></td>
-				</tr>
+				{% endfor %}
 			</tbody>
 		</table>
 	</div>

@@ -13,7 +13,11 @@
 		</div>
 		<div id="navbar" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
-				{% block nav_list %}{% endblock %}
+				{% block nav_list %}
+				<li> <a href="/tch" class="nav">홈으로</a></li>
+				<li> <a href="/tch/modify_pinfo">정보수정</a> </li>
+				<li> <a href="/tch/logout">로그아웃</a> </li>
+				{% endblock %}
 			</ul>
 		</div>
 	</div>

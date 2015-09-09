@@ -104,6 +104,7 @@
 		$(this).parent().find('.panel-body').toggle();
 	});
 	var train_ans;
+	var train_itemid;
 	$(document).on('click', '.train', function(){
 		$('#cop-question').text('문항을 불러오는 중입니다');
 		$("#result_msg").text('');
@@ -112,7 +113,8 @@
         }
         
 		var itemid = $(this).attr('itemid');
-		test_dat = this;
+		train_itemid = itemid;
+		//test_dat = this;
 		var seed = Math.floor(Math.random() * (500 - 1)) + 1;
 		var url = 'http://cafalab.com/asp/GradeItem.asp?clientID=XXXX&item='+itemid+'&seed='+seed;
 		//console.log(url);
@@ -127,6 +129,27 @@
 		$('#modal').modal("show");
 		return false;
 	});
+	$(document).on('click', '#repeat_train', function(){
+		$('#cop-question').text('문항을 불러오는 중입니다');
+		$("#result_msg").text('');
+		for(var i=0; i<5; i++){
+			$("#cop-choice label:eq("+i+")").removeClass("active");
+        }
+        
+		var itemid = train_itemid;
+		var seed = Math.floor(Math.random() * (500 - 1)) + 1;
+		var url = 'http://cafalab.com/asp/GradeItem.asp?clientID=XXXX&item='+itemid+'&seed='+seed;
+		//console.log(url);
+		$.get(url, function (data) {
+			var q = getitem_to_json(data);
+			var s = gradeitem_to_json(data);
+			//test_dat = q;
+			train_ans = s['answer'];
+			getitem_json_to_html(q);
+			MathJax.Hub.Typeset();
+		});
+	});
+	
 	$(document).on('change', '#cop-choice', function(){
         var response = $("input[name='options']:checked").val();
 		if(alphabet[train_ans-1] == response){
@@ -135,6 +158,8 @@
 			$("#result_msg").text('틀렸습니다.');
 		}
     });
+    
+    
 </script>
 {% endblock %}
 {% block containor %}
@@ -207,7 +232,7 @@
 		<br />
       </div>
       <div class="modal-footer">
-      	<!--button type="button" class="btn btn-primary">확인</button-->
+      	<button type="button" class="btn btn-primary" id="repeat_train">다시 풀기</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
       </div>
     </div><!-- /.modal-content -->

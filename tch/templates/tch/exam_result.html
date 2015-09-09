@@ -1,0 +1,42 @@
+{% extends "tch/container/base.html" %}
+{% block title %}진단평가 수행결과 페이지{% endblock %}
+{% block nav_brand %}진단평가 수행결과 페이지{% endblock %}
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+{% endblock %}
+{% block containor %}
+<div class="container text-center">
+	<div class="row">
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th class="td-stdname">이름</th>
+					<th class="td-grade">학년</th>
+					<th class="td-class">반</th>
+					<th class="td-stdnum">학번</th>
+					<th class="td-standard">성취기준</th>
+					<th class="td-status">진단결과</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for ae in aes %}
+				<tr>
+					<td class="td-stdname">{{ ae.user.userdetail.full_name }}</td>
+					<td class="td-grade">{{ ae.std_gradename }}</td>
+					<td class="td-class">{{ ae.std_classname }}</td>
+					<td class="td-stdnum">{{ ae.std_num }}</td>
+					<td class="td-standard">{{ ae.standard }}</td>
+					<td class="td-status">{{ ae.level_str }}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}
