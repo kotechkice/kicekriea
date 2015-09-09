@@ -86,7 +86,7 @@ def register(request):
                     new_std_group_info = UserGroupInfo()
                     new_std_group_info.user = User.objects.get(email=email)
                     new_std_group_info.group = clas_group
-                    new_std_group_info.save()
+                    #new_std_group_info.save()
                     data = json.dumps({'status':"success"})
                 else:
                     data = json.dumps({'status':"fail", 'msg':'create error'})

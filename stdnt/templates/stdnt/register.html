@@ -76,7 +76,12 @@ input, select {
 	});
 	
 	$(document).on('click','#submit', function(){
-		$.post("/stdnt/register", {
+		if($("#email").val() == ''){
+			return false;
+		} else if($('#clas_selector').val() == "None"){
+			return false;
+		}
+		$.post("/stdnt/register/", {
 			csrfmiddlewaretoken:$.cookie('csrftoken'), 
 			email:$("#email").val(),
 			firstname:$("#firstname").val(),
@@ -100,6 +105,7 @@ input, select {
 {% block containor %}
 <div class="container">
 	<div class="row">
+		{% csrf_token %}
 		<table align="center">
 			<tr>
 				<td>
