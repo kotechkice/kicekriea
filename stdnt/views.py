@@ -223,6 +223,31 @@ def exam_list(request):
                 at_list = AssessmentTemplate.objects.filter(pk=request.GET['at_id'])
                 ua_id = create_ua_from_itemdict_N_at(at_list[0], items, my_info, request.GET['ci_id'])
                 data = json.dumps({'status':"success", 'ua_id':ua_id})
+        elif request.GET['method'] == 'get_itmes':
+            if 'exam_order' in request.GET:
+                items = {}
+                el_list = ExamList.objects.filter(exam_order = request.GET['exam_order'])
+                if len(el_list) != 0:
+                    el = el_list[0]
+                    ua_list = UserAssessment.objects.filter(at = el.at, user=my_info)
+                    guis=[]
+                    
+                    if len(ua_list) != 0:
+                        ua = ua_list[0]
+                        guis = ua.gradeduseritem_set.order_by('order').all()
+                        items['length'] = len(guis)
+                        for gui in guis:
+                            items[gui.order] ={
+                                'item_id' : gui.it.cafa_it_id,
+                                'seed' : gui.seed,
+                                'permutation' : gui.permutation,
+                                'item_permutation' : gui.item_permutation,
+                                'choices_in_a_row' : gui.it.choices_in_a_row,
+                                'response' : gui.response,
+                                'correctanswer' : gui.correctanswer,
+                                'is_correct' : gui.response == gui.correctanswer,
+                            }
+                    data = json.dumps({'status':"success", 'items':items})
         return HttpResponse(data, 'application/json')
     
     examlist = ExamList.objects.all()
@@ -236,14 +261,22 @@ def exam_list(request):
                 ae_list = AssessEaxm.objects.filter(ua=ua)
                 if len(ae_list) != 0:
                     ae = ae_list[0]
+                    examlist[i].is_high = False
+                    examlist[i].is_middle = False
+                    examlist[i].is_low = False
+                    examlist[i].is_fail = False
                     if ae.level == 'H':
                         examlist[i].help_str = examlist[i].help_h
+                        examlist[i].is_high = True
                     elif ae.level == 'M':
                         examlist[i].help_str = examlist[i].help_m
+                        examlist[i].is_middle = True
                     elif ae.level == 'L':
                         examlist[i].help_str = examlist[i].help_l
+                        examlist[i].is_low = True
                     elif ae.level == 'F':
                         examlist[i].help_str = examlist[i].help_f
+                        examlist[i].is_fail = True
                     examlist[i].level = stdnt_string.LEVEL[ae.level]
                 
     variables = RequestContext(request, {

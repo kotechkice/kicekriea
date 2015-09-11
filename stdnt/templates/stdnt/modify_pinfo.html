@@ -1,6 +1,5 @@
 {% extends "stdnt/container/base.html" %}
 {% block title %}학생 정보 수정 페이지{% endblock %}
-{% block nav_brand %}학생 정보 수정 페이지{% endblock %}
 {% block style %}
 <style>
 input, select {
@@ -101,6 +100,9 @@ input, select {
 {% endblock %}
 {% block containor %}
 <div class="container">
+	<div class="row h3 text-center">
+	학생 정보 수정 페이지
+	</div><br />
 	<div class="row">
 		{% csrf_token %}
 		<table align="center">

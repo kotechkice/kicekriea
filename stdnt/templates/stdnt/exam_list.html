@@ -1,12 +1,22 @@
 {% extends "stdnt/container/base.html" %}
 {% block title %}진단 평가 리스트{% endblock %}
-{% block nav_brand %}진단 평가 리스트{% endblock %}
 
 {% block style %}
 <style>
-	  td, th {
-	  	text-align:center;
-	  }
+  td, th {
+  	text-align:center;
+  }
+  #item-details, .modal-body {
+  	max-width:450px;
+  }
+  #cop-choice{
+	width:100%;
+  }
+  #cop-choice>label{
+	width : 100%;
+	text-align:left;
+  }
+  
 </style>
 {% endblock %}
 {% block script %}
@@ -39,6 +49,9 @@
 	{% include "stdnt/container/base.js" %}
 	{% include "stdnt/container/manage_probs.js" %}
 	
+	var alphabet = 'ABCDEF';
+	var circle_num = '①②③④⑤⑥';
+	var num_from_alpha = {'A':1, 'B':2, 'C':3, 'D':4, 'E':5};
 	var num_from_level = {
 		'{{ stdnt_string.LEVEL.H }}':4, 
 		'{{ stdnt_string.LEVEL.M }}':3, 
@@ -59,6 +72,7 @@
 	}
 	$(document).ready(function(){
 		setTable();
+		//set_item_html();
 	});
 	//$(document).on('click', 'tr', function(){
 	//	console.log('hello');
@@ -75,7 +89,7 @@
 		//console.log($(this).val());
 		solve_mode='m';
 		//at_id = $(this).attr("value");
-		//console.log($(this).attr("value"));
+		console.log($(this).attr("value"));
 		var at_id = $(this).attr("value");
 		var data = {};
 		data['method'] = 'call_ua';
@@ -133,116 +147,174 @@
 			$(location).attr('href','/stdnt/solve_itemeach/'+ua_id);
 		}
 	});
-	google.load("visualization", "1", {packages:["corechart"]});
-    google.setOnLoadCallback(drawVisualization);
-    google.setOnLoadCallback(drawChart);
-	function drawVisualization() {
-        // Some raw data (not necessarily accurate)
-        var data = google.visualization.arrayToDataTable([
-         ['Month', '내 수준', '학교평균'],
-         {% for exam in examlist%}
-         {% if exam.is_finished %}
-         ['{{ exam.standard }}', num_from_level['{{ exam.level }}'], Math.floor(Math.random() * 4)+1],
-         {% else %}
-         ['{{ exam.standard }}', 0, Math.floor(Math.random() * 4)+1],
-         {% endif %}
-         {% endfor %}
-      	]);
-      	var options = {
-	      title : '성취기준별 도달수준',
-	      chartArea:{left:40, width:'60%'},
-	      vAxis: {title: '도달수준',textPosition: 'none', maxValue:4, minValue:0},
-	      hAxis: {title: '성취수준',textPosition: 'in'},
-	      seriesType: 'bars',
-	      series: {
-	      	0: {color: '#0000FF'},
-	      	1: {color: '#9999FF'}
-	      },
-	      //curveType: 'function',
-	    };
+	//var item_details_html = '';
+	$(document).on('click', '.panel-heading', function(){
+		$(this).parent().find('.panel-body').toggle();
+	});
 	
-	    var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
-	    chart.draw(data, options);
-      }
-      function drawChart() {
-	    var data = google.visualization.arrayToDataTable([
-	      [
-	      	'회차',
-	      	{% for exam in examlist%}
-	      	'{{ exam.standard }}',
-	      	{% endfor %}
-	      ],
-	      [
-	      	'4회 전',  
-	      	{% for exam in examlist%}
-	      	Math.floor(Math.random() * 4)+1,
-	      	{% endfor %}
-	      ],
-	      ['3회 전',
-	      	{% for exam in examlist%}
-	      	Math.floor(Math.random() * 4)+1,
-	      	{% endfor %}
-	      ],
-	      ['2회 전',
-	      	{% for exam in examlist%}
-	      	Math.floor(Math.random() * 4)+1,
-	      	{% endfor %}
-	      ],
-	      ['1회 전',
-	      	{% for exam in examlist%}
-	      	Math.floor(Math.random() * 4)+1,
-	      	{% endfor %}
-	      ],
-	      ['최근',
-	      	{% for exam in examlist%}
-	      	{% if exam.is_finished %}
-	      	num_from_level['{{ exam.level }}'],
-	      	{% else %}
-	      	0,
-	      	{% endif %}
-	      	{% endfor %}
-	      ],
-	    ]);
-	    var series_dat = {};
-	    var el_len = {{examlist_len}};
-	    var color_term = 0;
-	    var color_base = 16;
-	    if(el_len != 0){
-	    	color_term = Math.floor((255-color_base)/el_len);
-	    }
-	    for(var i=0; i<el_len; i++){
-	    	var color_str = color_base+color_term*i;
-	    	series_dat[i] = {color:'#'+color_str.toString(16)+color_str.toString(16)+'FF'};
-	    }
-		test_dat = data;
-	    var options = {
-	      title: '최근 5회차 도달수준 변화',
-	      chartArea:{left:40, width:'55%'},
-	      vAxis: {title: '도달수준',textPosition: 'none', maxValue:3, minValue:0},
-	      hAxis: {title: '회차',textPosition: 'out'},
-	      //seriesType: 'bars',
-	      curveType: 'function',
-	      //legend: { position: 'bottom' }
-	      series: series_dat,
-	  	};
-	  	//var chart = new google.visualization.ColumnChart(document.getElementById('curve_chart'));
-	    //chart.draw(data, options);
-	    var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
-	    chart.draw(data, options);
-	  }
+	$(document).on('click', '.train', function(){
+		$('#cop-question').text('문항을 불러오는 중입니다');
+		$("#result_msg").text('');
+		for(var i=0; i<5; i++){
+			$("#cop-choice label:eq("+i+")").removeClass("active");
+        }
+        
+		var itemid = $(this).attr('itemid');
+		train_itemid = itemid;
+		//test_dat = this;
+		var seed = Math.floor(Math.random() * (500 - 1)) + 1;
+		var url = 'http://cafalab.com/asp/GradeItem.asp?clientID=XXXX&item='+itemid+'&seed='+seed;
+		//console.log(url);
+		$.get(url, function (data) {
+			var q = getitem_to_json(data);
+			var s = gradeitem_to_json(data);
+			//test_dat = q;
+			train_ans = s['answer'];
+			getitem_json_to_html(q);
+			MathJax.Hub.Typeset();
+		});
+		$('#modal').modal("show");
+		return false;
+	});
+	
+	function set_item_html_from_items(index, items){
+		var item = items[index];
+		var length = items['length'];
+		url = 'http://cafalab.com/asp/GradeItem.asp?clientID=XXXX&item='+item['item_id']+'&seed='+item['seed'];
+		//console.log(url);
+		$.get(url, function (data) {
+			var q = getitem_to_json(data);
+			q = change_choices_as_permutation_str(q, item['permutation'], item['item_permutation']);
+			var s = gradeitem_to_json(data);
+			//var html_dat = '';
+			var html_dat ='<div id=item-detail-'+ String(index) + '>';
+			
+			html_dat += String(index) + '. ';
+			if(item['is_correct']){
+				html_dat += '<span class="correct">O</span>';
+			} else {
+				html_dat += '<span class="incorrect">X</span>';
+			}
+			html_dat += ' (<a href="#" class="train" itemid="'+item['item_id']+'">연습하기</a>)<br />';
+			html_dat += q['question'];
+			var per_value = Math.floor(100/item['choices_in_a_row']);
+			html_dat += '<br /><br /><table width="100%"><tr>';
+			for(var j=0; j<5; j++){
+				html_dat += '<td class="choice width="'+per_value+'%" valign="top">'+circle_num[j] +' ' + q['choice'][j]+'</td>';
+				if((j+1)%item['choices_in_a_row'] === 0){
+					html_dat += '</tr><tr>';
+				}
+			}
+			html_dat += '</tr></table><br />';
+			html_dat += '<div class="panel panel-default">';
+			html_dat += '    <div class="panel-heading text-center">답보기</div>';
+			html_dat += '    <div class="panel-body answer_area" hidden>';
+			html_dat += '        나의 답 : <span class="response">'+circle_num[num_from_alpha[item['response']]-1]+'</span><br />';
+			html_dat += '        정답 : <span class="answer">'+circle_num[num_from_alpha[item['correctanswer']]-1]+' '+ s['answer_text'] + '</span>';
+			html_dat += '    </div>';
+			html_dat += '</div>';
+			html_dat += '<div class="panel panel-default">';
+			html_dat += '    <div class="panel-heading text-center">해설 보기</div>';
+			html_dat += '    <div class="panel-body sol_area" hidden>' + s['solution'] + '</div>';
+			html_dat += '</div>';
+			
+			html_dat += '</div>';
+			//item_details_html += html_dat;
+			//$('#item-details').html(item_details_html);
+			$('#item-details').append(html_dat);
+			$('#ox-tr-num').append('<th><a href=#item-detail-'+ String(index) + '>' + String(index) + '</a></th>');
+			if(item['is_correct']){
+				$('#ox-tr-ox').append('<td>O</td>');
+			} else {
+				$('#ox-tr-ox').append('<td>X</td>');
+			}
+			MathJax.Hub.Typeset();
+		}).done(function(){
+			if(index < length){
+				set_item_html_from_items(index+1, items);
+			}
+		});
+	}
+	function set_item_html_from_order(exam_order){
+		////var exam_order = '1';
+		$('#ox-tr-num').html('');
+		$('#ox-tr-ox').html('');
+		$('#item-details').html('');
+		item_details_html = '';
+		var data = {};
+		data['method'] = 'get_itmes';
+		data['exam_order'] = exam_order;
+		$.ajax({
+			url : '/stdnt/exam_list',
+			dataType:"json",
+			data : data
+		}).done(function(msg){
+			//console.log(msg);
+			if(msg['status'] == 'success'){
+				set_item_html_from_items(1, msg['items']);
+			}
+		});
+		
+		
+	}
+	$(document).on('click', '.as-btn', function(){
+		$("#standard-help").hide(); 
+		$("#solution-help").show();
+		set_item_html_from_order($(this).attr('value'));
+	});
+	$(document).on('click', '.ae-btn', function(){
+		$("#solution-help").hide();
+		$("#standard-help table").hide();
+		$('#exam-report-'+$(this).attr('value')).show();
+		$("#standard-help").show();
+		console.log('hi');
+	});	
+	$(document).on('click', '#repeat_train', function(){
+		$('#cop-question').text('문항을 불러오는 중입니다');
+		$("#result_msg").text('');
+		for(var i=0; i<5; i++){
+			$("#cop-choice label:eq("+i+")").removeClass("active");
+        }
+        
+		var itemid = train_itemid;
+		var seed = Math.floor(Math.random() * (500 - 1)) + 1;
+		var url = 'http://cafalab.com/asp/GradeItem.asp?clientID=XXXX&item='+itemid+'&seed='+seed;
+		//console.log(url);
+		$.get(url, function (data) {
+			var q = getitem_to_json(data);
+			var s = gradeitem_to_json(data);
+			//test_dat = q;
+			train_ans = s['answer'];
+			getitem_json_to_html(q);
+			MathJax.Hub.Typeset();
+		});
+	});
+	
+	$(document).on('change', '#cop-choice', function(){
+        var response = $("input[name='options']:checked").val();
+		if(alphabet[train_ans-1] == response){
+			$("#result_msg").text('맞았습니다.');
+		} else {
+			$("#result_msg").text('틀렸습니다.');
+		}
+    });
+    	
 </script>
 {% endblock %}
 {% block containor %}
 <div class="container">
+	<div class="row h3 text-center">
+	진단 평가 리스트 페이지
+	</div><br />
 	<div class="row">
 		<table class="table">
 			<thead>
 				<tr class="tr-header">
-					<th class="td-standard">성취기준ID</th>
+					<th class="td-standard">성취기준</th>
 					<th class="td-contents">내용</th>
-					<th class="td-itemnum">문제수</th>
-					<th class="td-result">진단</th>
-					<th class="td-solve">풀기</th>
+					<th class="td-itemnum">문항수</th>
+					<th class="td-result">결과</th>
+					<th class="td-solve">진단</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -253,14 +325,22 @@
 					<td class="td-itemnum">{{ exam.at.num_item}}</td>
 					<td class="td-result">
 						{% if exam.is_finished %}
-						{{ exam.level }}(<a href="/stdnt/report/{{exam.at.id}}">풀이보기</a>)
+						{{ exam.level }}
+						{% if not exam.is_fail %}
+						수준 도달 
+						{% endif %}
 						{% else %}
 						진단 안됨
 						{% endif %}
 					</td>
 					<td class="td-solve">
-						{% if not exam.is_finished %}
-						<a href="#" value="{{ exam.at.id }}" class="exam_m">풀기</a>
+						{% if exam.is_finished %}
+						<button class="btn btn-primary btn-xs ae-btn" value="{{ exam.exam_order }}">진단결과</button>
+						<button class="btn btn-primary btn-xs as-btn" value="{{ exam.exam_order }}">정답해설</button>
+						{% else %}
+						<button class="btn btn-primary btn-xs exam_m" value="{{ exam.at.id }}">시작하기</button>
+						<!--a href="/stdnt/report/{{exam.at.id}}">풀이보기</a-->
+						<!--a href="#" value="{{ exam.at.id }}" class="exam_m">풀기</a-->
 						{% endif %}
 					</td>
 				</tr>
@@ -268,21 +348,111 @@
 			</tbody>
 		</table>
 	</div>
-	<h3>성취기준별 학습 도움말</h3>
-	<ul class="list-group">
+	<div class="row" id="standard-help" hidden>
 		{% for exam in examlist%}
 		{% if exam.is_finished %}
-		<li class="list-group-item">
-			<b>{{ exam.standard }}({{ exam.context }})에서 '{{ exam.level }}' 수준입니다.</b> <br />
-			{{ exam.help_str }}
-		</li>
+		<table class="table table-bordered table-striped" id="exam-report-{{ exam.exam_order }}">
+			<thead>
+				<tr class="tr-header">
+					<th>성취기준</th>
+					<th>미달</th>
+					<th>하</th>
+					<th>중</th>
+					<th>상</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>
+						{{ exam.standard }}
+						({{ exam.context }})
+					</td>
+					<td>{% if exam.is_fail %}O{% endif %}</td>
+					<td>{% if exam.is_low %}O{% endif %}</td>
+					<td>{% if exam.is_middle %}O{% endif %}</td>
+					<td>{% if exam.is_high %}O{% endif %}</td>
+				</tr>
+				<tr>
+					<td colspan="5" class="text-left"><b>성취기준 학습 도움말</b></td>
+				</tr>
+				<tr>
+					<td colspan="5" class="text-left">
+						{{ exam.standard }}'({{ exam.context }})'에서 
+							{{ exam.level }}
+							{% if not exam.is_fail %}
+							수준
+							{% endif %}
+							입니다.<br />
+						<ul>
+							<li>
+								{{ exam.help_str }}
+							</li>
+						</ul>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 		{% endif %}
 		{% endfor %}
-	</ul>
-	<div id="chart_div" style="width: 100%; height: 120px;"> </div>
-	<div id="curve_chart" style="width: 100%; height: 500px"> </div>
-	※ 학교 평균과 전 회차의 데이터는 임의의 데이터입니다.
+	</div>		
+	<div class="row" id="solution-help" hidden>
+		<div id="table_ox">
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr id="ox-tr-num">
+					</tr>
+				</thead>
+				<tbody>
+					<tr id="ox-tr-ox">
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	
+		<div id="item-details">
+		</div>
+	</div>
 </div>
+
+<div class="modal fade" id="modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">연습하기</h4>
+      </div>
+      <div class="modal-body">
+        <div id="cop-question">
+		문항을 불러오는 중입니다
+		</div><br />
+		<!--div id="choice-area" class="text-center"-->
+		<div id="choice-area">
+			<div id="cop-choice" class="btn-group-vertical" data-toggle="buttons">
+				<label class='btn btn-default text-left'>
+					<input type='radio' name='options' autocomplete='off' value='A'/>① <span id="choice-1"> </span></label>
+				<label class='btn btn-default text-left'>
+					<input type='radio' name='options' autocomplete='off' value='B'/>② <span id="choice-2"> </span></label>
+				<label class='btn btn-default text-left'>
+					<input type='radio' name='options' autocomplete='off' value='C'/>③ <span id="choice-3"> </span></label>
+				<label class='btn btn-default text-left'>
+					<input type='radio' name='options' autocomplete='off' value='D'/>④ <span id="choice-4"> </span></label>
+				<label class='btn btn-default text-left'>
+					<input type='radio' name='options' autocomplete='off' value='E'/>⑤ <span id="choice-5"> </span></label>
+			</div>
+		</div>
+		
+		<!--div class="row text-right" id="cafa-logo">
+			powered by <a href="http://eMathTest.com/CAFA" target="_blank">CAFA</a>
+		</div-->
+		<span id="result_msg"> </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+      <div class="modal-footer">
+      	<button type="button" class="btn btn-primary" id="repeat_train">다시 풀기</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <div class="modal fade" id="go_exist_exam_modal">
   <div class="modal-dialog">

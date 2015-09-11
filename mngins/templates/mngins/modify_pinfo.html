@@ -1,11 +1,5 @@
 {% extends "mngins/container/base.html" %}
 {% block title %}관리기관 개인계정 정보수정{% endblock %}
-{% block nav_brand %}관리기관 개인계정 정보수정{% endblock %}
-{% block nav_list %}
-<li> <a href="/mngins" class="nav">홈으로</a></li>
-<li> <a>정보수정</a> </li>
-<li> <a href="/mngins/logout" class="nav">로그아웃</a> </li>
-{% endblock %}
 {% block style %}
 <style>
 input, select {
@@ -41,6 +35,9 @@ input, select {
 {% block containor %}
 {% csrf_token %}
 <div class="container">
+	<div class="row h3 text-center">
+	관리기관 개인계정 정보수정 페이지 
+	</div><br />
   <div class="row">
     <table align="center">
       <tr>
