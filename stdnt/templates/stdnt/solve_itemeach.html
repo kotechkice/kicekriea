@@ -1,9 +1,8 @@
 {% extends "stdnt/container/base.html" %}
 {% block title %}하나씩 풀기{% endblock %}
-{% block nav_brand %}{{ ua.at.name }}{% endblock %}
 {% block style %}
 <style>
-	.container {
+	#main_container {
 		max-width:400px;
 	}
 	#cop-choice{
@@ -240,7 +239,7 @@
 </script>
 {% endblock %}
 {% block containor %}
-<div class="container">
+<div class="container" id="main_container">
 	<div id="cop-count" class="text-right">1/?</div>
 	<div id="cop-question">
 		loading...
