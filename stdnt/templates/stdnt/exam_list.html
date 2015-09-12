@@ -16,7 +16,9 @@
 	width : 100%;
 	text-align:left;
   }
-  
+  legend {
+  	font-size:14px;
+  }
 </style>
 {% endblock %}
 {% block script %}
@@ -135,18 +137,22 @@
 					});
 				} else {
 					ua_id = msg['ua_id'];
-					$("#go_exist_exam_modal").modal('show');
+					//$("#go_exist_exam_modal").modal('show');
+					switch(solve_mode){
+					case 'm':
+						$(location).attr('href','/stdnt/solve_itemeach/'+ua_id);
+					}
 				}
 			}
 		});
 		return false;
 	});
-	$(document).on('click', '#go_exist_exam_modal .submit_btn', function(){
-		switch(solve_mode){
-		case 'm':
-			$(location).attr('href','/stdnt/solve_itemeach/'+ua_id);
-		}
-	});
+	//$(document).on('click', '#go_exist_exam_modal .submit_btn', function(){
+	//	switch(solve_mode){
+	//	case 'm':
+	//		$(location).attr('href','/stdnt/solve_itemeach/'+ua_id);
+	//	}
+	//});
 	//var item_details_html = '';
 	$(document).on('click', '.panel-heading', function(){
 		$(this).parent().find('.panel-body').toggle();
@@ -228,10 +234,17 @@
 			} else {
 				$('#ox-tr-ox').append('<td>X</td>');
 			}
-			MathJax.Hub.Typeset();
+			
 		}).done(function(){
+			if(index == 3){
+				MathJax.Hub.Typeset();
+			}
+			
 			if(index < length){
 				set_item_html_from_items(index+1, items);
+			} else {
+				$('.as-btn').removeAttr('disabled');
+				MathJax.Hub.Typeset();
 			}
 		});
 	}
@@ -258,8 +271,12 @@
 		
 	}
 	$(document).on('click', '.as-btn', function(){
+		//test_dat = this;
+		$('.as-btn').attr('disabled', true);
 		$("#standard-help").hide(); 
 		$("#solution-help").show();
+		//test_dat = $(this).parent().parent().find(".td-standard").text();
+		$("#standard-solution").html($(this).parent().parent().find(".td-standard").text().trim());
 		set_item_html_from_order($(this).attr('value'));
 	});
 	$(document).on('click', '.ae-btn', function(){
@@ -267,7 +284,7 @@
 		$("#standard-help table").hide();
 		$('#exam-report-'+$(this).attr('value')).show();
 		$("#standard-help").show();
-		console.log('hi');
+		//console.log('hi');
 	});	
 	$(document).on('click', '#repeat_train', function(){
 		$('#cop-question').text('문항을 불러오는 중입니다');
@@ -320,8 +337,8 @@
 			<tbody>
 				{% for exam in examlist%}
 				<tr>
-					<th class="td-standard">{{ exam.standard }}</th>
-					<th class="td-contents">{{ exam.context }}</th>
+					<td class="td-standard">{{ exam.standard }}</th>
+					<td class="td-contents">{{ exam.context }}</th>
 					<td class="td-itemnum">{{ exam.at.num_item}}</td>
 					<td class="td-result">
 						{% if exam.is_finished %}
@@ -337,6 +354,8 @@
 						{% if exam.is_finished %}
 						<button class="btn btn-primary btn-xs ae-btn" value="{{ exam.exam_order }}">진단결과</button>
 						<button class="btn btn-primary btn-xs as-btn" value="{{ exam.exam_order }}">정답해설</button>
+						{% elif exam.is_started %}
+						<button class="btn btn-primary btn-xs exam_m" value="{{ exam.at.id }}">이어하기</button>
 						{% else %}
 						<button class="btn btn-primary btn-xs exam_m" value="{{ exam.at.id }}">시작하기</button>
 						<!--a href="/stdnt/report/{{exam.at.id}}">풀이보기</a-->
@@ -396,6 +415,7 @@
 		{% endfor %}
 	</div>		
 	<div class="row" id="solution-help" hidden>
+		<h3>성취기준 <span id="standard-solution"> </span>의 정답 및 해설입니다.</h3>
 		<div id="table_ox">
 			<table class="table table-bordered table-striped">
 				<thead>
@@ -454,7 +474,7 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-<div class="modal fade" id="go_exist_exam_modal">
+<!--div class="modal fade" id="go_exist_exam_modal">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -469,6 +489,6 @@
         <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
       </div>
     </div><!-- /.modal-content -->
-  </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+  <!--/div><!-- /.modal-dialog -->
+<!--/div><!-- /.modal -->
 {% endblock %}

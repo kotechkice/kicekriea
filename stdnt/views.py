@@ -253,9 +253,11 @@ def exam_list(request):
     examlist = ExamList.objects.all()
     for i in range(len(examlist)):
         ua_list = UserAssessment.objects.filter(at=examlist[i].at, user = my_info)
+        examlist[i].is_started = False
         examlist[i].is_finished = False
         if len(ua_list) != 0:
             ua = ua_list[0]
+            examlist[i].is_started = True
             if ua.end_time != None:
                 examlist[i].is_finished = True
                 ae_list = AssessEaxm.objects.filter(ua=ua)

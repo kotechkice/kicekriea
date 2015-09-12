@@ -12,6 +12,12 @@
 		width : 100%;
 		text-align:left;
     }
+    legend {
+	  	font-size:14px;
+	}
+	#cop-count {
+		color:#B0B0B0;
+	}
 </style>
 {% endblock %}
 {% block script %}
@@ -69,9 +75,12 @@
 				if(reponses_str.indexOf('x') == -1){
 					finished_flag = true;
 					$("#submit_responses").removeAttr("disabled");
+					$("#submit_responses").show("disabled");
 				}
 				//init_grade_status = 'ready';
-				$("#cop-count").text(String(order)+'/'+String(num_of_item));
+				//$("#cop-count").text(String(order)+'/'+String(num_of_item));
+				//$("#cop-count").text('총 '+String(num_of_item)+ ' 문항 중 ' +String(order)+'번 문항');
+				$("#cop-count").text(String(order)+'번 문항(총 '+String(num_of_item)+ '문항)');
 			}
 		});
 	}
@@ -120,7 +129,9 @@
 					});
 				});
 				order = order_num;
-				$("#cop-count").text(String(order)+'/'+String(num_of_item));
+				//$("#cop-count").text(String(order)+'/'+String(num_of_item));
+				//$("#cop-count").text('총 '+String(num_of_item)+ ' 문항 중, ' +String(order)+'번 문항');
+				$("#cop-count").text(String(order)+'번 문항(총 '+String(num_of_item)+ '문항)');
 				switch(response){
 					case 'A':
 						$("#cop-choice label:eq(0)").addClass('active');
@@ -140,12 +151,15 @@
 				}
 				//console.log(response);
 				if(order >= num_of_item){
-					finished_flag = true;
-					$("#submit_responses").removeAttr("disabled");
+					//finished_flag = true;
+					$("#submit_responses").show();
 				} else if(response != 'x') $("#next_item").removeAttr("disabled");
-				if(finished_flag) $("#submit_responses").removeAttr("disabled");
-				if(order_num != 1) $("#pre_item").removeAttr("disabled");
 				
+				if(finished_flag) {
+					$("#submit_responses").removeAttr("disabled");
+					$("#submit_responses").show();
+				}
+				if(order_num != 1) $("#pre_item").removeAttr("disabled");
 				start_time = new Date().getTime();
 			}
 		});
@@ -159,6 +173,7 @@
 			//init_grade();
 		//}
 		//getNset_item(order);
+		$("#submit_responses").hide();
 	});
 	$(document).on('click','#pre_item',function(){
 		if(order <= 1){
@@ -203,6 +218,13 @@
 			if(msg['status'] == 'success'){
 				if(order < num_of_item) $("#next_item").removeAttr("disabled");				
 			}
+			if(order >= num_of_item){
+				finished_flag = true;
+			}
+			if(finished_flag) {
+				$("#submit_responses").removeAttr("disabled");
+				$("#submit_responses").show();
+			}
 		});
 		//console.log(this);
 	});
@@ -240,7 +262,7 @@
 {% endblock %}
 {% block containor %}
 <div class="container" id="main_container">
-	<div id="cop-count" class="text-right">1/?</div>
+	<div id="cop-count" class="text-center">1/?</div>
 	<div id="cop-question">
 		loading...
 	</div><br />
