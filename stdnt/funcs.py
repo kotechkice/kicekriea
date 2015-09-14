@@ -27,17 +27,17 @@ def assess_user_by_exam(ua):
         
     all_its = map(lambda x:x.it, ua.gradeduseritem_set.filter(response = F('correctanswer')))
     its = map(lambda x:x.it, StandardItem.objects.filter(at=ua.at, level='L'))
-    if len(set(all_its) & set(its)) < 3:
+    if len(set(all_its) & set(its))/float(len(set(its))) < 2/3.0:
         ae.level = 'F'
         ae.save()
         return True
     its = map(lambda x:x.it, StandardItem.objects.filter(at=ua.at, level='M'))
-    if len(set(all_its) & set(its)) < 3:
+    if len(set(all_its) & set(its))/float(len(set(its))) < 2/3.0:
         ae.level = 'L'
         ae.save()
         return True
     its = map(lambda x:x.it, StandardItem.objects.filter(at=ua.at, level='H'))
-    if len(set(all_its) & set(its)) < 3:
+    if len(set(all_its) & set(its))/float(len(set(its))) < 2/3.0:
         ae.level = 'M'
         ae.save()
         return True

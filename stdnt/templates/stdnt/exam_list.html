@@ -397,12 +397,15 @@
 				<tr>
 					<td colspan="5" class="text-left">
 						{{ exam.standard }}'({{ exam.context }})'에서 
-							{{ exam.level }}
-							{% if not exam.is_fail %}
-							수준
-							{% endif %}
-							입니다.<br />
+							{{ exam.level }}{% if not exam.is_fail %} 수준{% endif %}입니다.<br />
 						<ul>
+							<li>
+								{% if not exam.is_fail %}
+								해당 성취기준의 상‑중‑하 성취수준 중에서 ‘{{ exam.level }}’수준까지 도달하였습니다.<br />
+								{% else %}
+								해당 성취기준의 기초적인 성취수준에 도달하지 못하였습니다.<br />
+								{% endif %}
+							</li>
 							<li>
 								{{ exam.help_str }}
 							</li>
