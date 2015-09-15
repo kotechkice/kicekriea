@@ -213,7 +213,8 @@ def exam_result(request):
     from stdnt.models import *
     from stdnt import strings as stdnt_string
     
-    aes = AssessEaxm.objects.filter(user__in = students)
+    ats = map(lambda x:x.at, ExamList.objects.all())
+    aes = AssessEaxm.objects.filter(user__in = students, ua__at__in = ats)
     for index in range(len(aes)):
         aes[index].std_classname = aes[index].user.usergroupinfo_set.get(group__groupdetail__type="C").group.groupdetail.nickname
         aes[index].std_gradename = aes[index].user.usergroupinfo_set.get(group__groupdetail__type="C").group.groupdetail.upper_group.groupdetail
