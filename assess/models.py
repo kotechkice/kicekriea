@@ -47,7 +47,7 @@ class MappedItemAssessmentTemplate(models.Model):
 class UserAssessment(models.Model):
     at = models.ForeignKey(AssessmentTemplate)
     user = models.ForeignKey(User)
-    ci_id = models.CharField(max_length=50, null=True)
+    ci_id = models.CharField(max_length=80, null=True)
     start_time = models.DateTimeField(null=True)
     end_time = models.DateTimeField(null=True)
     solving_order_num = models.IntegerField(null=True)
