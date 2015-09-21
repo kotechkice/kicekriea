@@ -335,7 +335,7 @@ def solve_itemeach(request, ua_id):
             responses_str = ''.join(map(lambda x:x.response, ua.gradeduseritem_set.all()))
             data = json.dumps({'status':"success", 'responses':responses_str, 'ci_id':ua.ci_id})
         elif request.GET['method'] == 'input_correctanswers':
-            if 'correctanswers' in request.GET:
+            if 'correctanswers' in request.GET and ua.end_time == None:
                 correctanswer_str = request.GET['correctanswers']
                 ua.end_time = timezone.now()
                 ua.save()
