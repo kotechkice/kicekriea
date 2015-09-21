@@ -12,7 +12,10 @@ def createpassword_sendmail(email, password_size=4):
     if password_size <= 0:
         return False
     user = User.objects.get(email=email)
-    pw = code_str_generator(size=password_size)
+    
+    #pw = code_str_generator(size=password_size)
+    pw= '0000' #fix me, tentative settlement
+     
     user.set_password(pw)
     user.save()
     subj_msg = MAIL_MSG_SUBJECT_CREATE_PW
