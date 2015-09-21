@@ -5,6 +5,9 @@
 	  td, th {
 	  	text-align:center;
 	  }
+	  #std_nums {
+	  	max-width:600px;
+	  }
 </style>
 {% endblock %}
 {% block script %}
@@ -13,6 +16,24 @@
 <div class="container text-center">
 	<div class="row h3 text-center">
 	진단평가 수행결과 페이지
+	</div>
+	<div class="row">
+		<table class="table" id="std_nums" align="center">
+			<thead>
+				<tr class="tr-header">
+					<th>진단명</th>
+					<th>수행 인원</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for el in els %}
+				<tr>
+					<td>성취기준 - {{ el.standard }}</td>
+					<td>{{el.students_num}}/{{students_num}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
 	</div>
 	<div class="row">
 		<table class="table">

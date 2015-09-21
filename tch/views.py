@@ -213,7 +213,10 @@ def exam_result(request):
     from stdnt.models import *
     from stdnt import strings as stdnt_string
     
-    ats = map(lambda x:x.at, ExamList.objects.all())
+    els = ExamList.objects.all()
+    for index in range(len(els)):
+        els[index].students_num = len(AssessEaxm.objects.filter(user__in = students, ua__at = els[index].at))
+    ats = map(lambda x:x.at, els)
     aes = AssessEaxm.objects.filter(user__in = students, ua__at__in = ats)
     for index in range(len(aes)):
         aes[index].std_classname = aes[index].user.usergroupinfo_set.get(group__groupdetail__type="C").group.groupdetail.nickname
@@ -224,6 +227,8 @@ def exam_result(request):
     variables = RequestContext(request, {
         'tch_string' : tch_string,                                 
         'home_string' : home_string,
+        'els' : els,
         'aes' : aes,
+        'students_num' : len(students),
     })
     return render_to_response('tch/exam_result.html', variables)
