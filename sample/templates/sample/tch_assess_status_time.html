@@ -1,0 +1,91 @@
+{% extends "sample/tch/container/base.html" %}
+{% block title %}과제물 수행 상태 보기{% endblock %}
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<h3>형성평가 수행 상태 보기</h3>
+	<a>과제물 별</a> | <a>학생 별</a> | <b>시간 별</b>
+	
+	<div class="row">
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th class="td-time">수행시점</th>
+					<th class="td-stdname">학생명</th>
+					<th class="td-stdnum">학번</th>
+					<th class="td-class">학년반</th>
+					<th class="td-type">Type</th>
+					<th class="td-name">형성평가 이름</th>
+					<th class="td-assessid">형성평가 ID</th>
+					<th class="td-result">결과</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="td-time">6/22 22:00</td>
+					<td class="td-stdname">김하나</td>
+					<td class="td-stdnum">030223</td>
+					<td class="td-class">3학년가람반</td>
+					<td class="td-type">숙제</td>
+					<td class="td-name">정적분1</td>
+					<td class="td-assessid">2425</td>
+					<td class="td-result"><a>12/30</a></td>
+				</tr>
+				<tr>
+					<td class="td-time">6/13 22:00</td>
+					<td class="td-stdname">조두리</td>
+					<td class="td-stdnum">020223</td>
+					<td class="td-class">2학년너울반</td>
+					<td class="td-type">숙제</td>
+					<td class="td-name">정적분2</td>
+					<td class="td-assessid">5323</td>
+					<td class="td-result"><a>14/23</a></td>
+				</tr>
+				<tr>
+					<td class="td-time">6/05 22:00</td>
+					<td class="td-stdname">최사미</td>
+					<td class="td-stdnum">020224</td>
+					<td class="td-class">2학년너울반</td>
+					<td class="td-type">숙제</td>
+					<td class="td-name">부정적분1</td>
+					<td class="td-assessid">5323</td>
+					<td class="td-result"><a>20/20</a></td>
+				</tr>
+				<tr>
+					<td class="td-time">5/17 22:00</td>
+					<td class="td-stdname">정나정</td>
+					<td class="td-stdnum">010203</td>
+					<td class="td-class">1학년무궁반</td>
+					<td class="td-type">평가</td>
+					<td class="td-name">미분1</td>
+					<td class="td-assessid">4325</td>
+					<td class="td-result"><a>10/21</a></td>
+				</tr>
+				<tr>
+					<td class="td-time">5/15 22:00</td>
+					<td class="td-stdname">사오정</td>
+					<td class="td-stdnum">010204</td>
+					<td class="td-class">1학년무궁반</td>
+					<td class="td-type">평가</td>
+					<td class="td-name">미분2</td>
+					<td class="td-assessid">3422</td>
+					<td class="td-result"><a>24/32</a></td>
+				</tr>
+				
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+{% endblock %}

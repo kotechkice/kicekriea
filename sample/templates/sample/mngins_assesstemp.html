@@ -1,0 +1,206 @@
+{% extends "sample/mngins/container/base.html" %}
+{% block title %}과제물 템플릿 관리 페이지{% endblock %}
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+	
+	function setTable(){
+		switch(findBootstrapEnvironment()){
+			case 'xs':
+			//case 'sm':
+				$('.td-id').hide();
+				$('.td-itemnum').hide();
+				$('.status-detail').hide();
+				
+				break;
+			default:
+				$('.td-id').show();
+				$('.td-itemnum').show();
+				$('.status-detail').show();
+		}
+	}
+	$(document).ready(function(){
+		setTable();
+	});
+	$(document).on('click', 'tr', function(){
+		console.log('hello');
+	});
+	$(window).resize(function(){
+		//console.log('windows resized');
+		setTable();
+	});
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	
+	<h3>형성평가 템플릿 관리 페이지</h3><br />
+	
+	<h4>형성평가 카테고리 관리</h4>
+	
+	<table>
+		<tbody>
+			<tr>
+				<td>
+					<select size="5" style="width: 180px;"> 
+						<option>전체</option>
+						<option selected="selected">평가원 과제</option>
+						<option>카테고리 미지정</option>
+					</select>
+				</td>
+				<td>
+					<button class="btn btn-default btn-xs">
+						<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+					</button><br /> 
+					<button class="btn btn-default btn-xs">
+						<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+					</button>  
+				</td>
+				<td>
+					<select size="5" style="width: 180px;"> 
+						<option>전체</option>
+						<option selected="selected">고1</option>
+						<option>고2</option>
+						<option>고3</option>
+					</select>
+				</td>
+				<td>
+					<button class="btn btn-default btn-xs">
+						<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+					</button><br /> 
+					<button class="btn btn-default btn-xs">
+						<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+					</button>  
+				</td>
+				<td>
+					<select size="5" style="width: 180px;"> 
+						<option>전체</option>
+						<option selected="selected">확률과 통계</option>
+						<option>미적분1</option>
+						<option>미적분2</option>
+					</select>
+				</td>
+				<td>
+					<button class="btn btn-default btn-xs">
+						<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+					</button><br /> 
+					<button class="btn btn-default btn-xs">
+						<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+					</button> 
+				</td>
+				<td>
+					<select size="5" style="width: 180px;"> 
+						<option selected="selected">전체</option>
+					</select>
+				</td>
+				<td>
+					<button class="btn btn-default btn-xs">
+						<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+					</button><br /> 
+					<button class="btn btn-default btn-xs">
+						<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+					</button> 
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="text" style="width: 80px;"/>
+					<button class="btn btn-default btn-xs">추가</button>
+					<button class="btn btn-default btn-xs">수정</button>
+					<button class="btn btn-default btn-xs">삭제</button>
+				</td>
+				<td colspan="2">
+					<input type="text" style="width: 80px;"/>
+					<button class="btn btn-default btn-xs">추가</button>
+					<button class="btn btn-default btn-xs">수정</button>
+					<button class="btn btn-default btn-xs">삭제</button>
+				</td>
+				<td colspan="2">
+					<input type="text" style="width: 80px;"/>
+					<button class="btn btn-default btn-xs">추가</button>
+					<button class="btn btn-default btn-xs">수정</button>
+					<button class="btn btn-default btn-xs">삭제</button>
+				</td>
+				<td colspan="2">
+					<input type="text" style="width: 80px;"/>
+					<button class="btn btn-default btn-xs">추가</button>
+					<button class="btn btn-default btn-xs">수정</button>
+					<button class="btn btn-default btn-xs">삭제</button>
+				</td>
+			</tr>
+		</tbody>
+	</table><br />
+	 
+	<div class="row">
+	<h4>선택된 카테고리의 형성평가 템플릿</h4>
+	<button class="btn btn-default">
+		새 형성평가 템플릿
+	</button>
+	<button class="btn btn-default">
+		선택 삭제
+	</button>
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th><input type="checkbox" /></th>
+					<th class="td-name">이름</th>
+					<th class="td-id">CT_ID</th>
+					<th class="td-itemnum">문항 템플릿 수</th>
+					<th class="td-status">상태</th>
+					<th class="td-mng">관리</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td class="td-name">정적분1</td>
+					<td class="td-id">2425</td>
+					<td class="td-itemnum">15</td>
+					<td class="td-status">비활성</td>
+					<td class="td-mng"><a>설정수정</a> <a>상세보기</a> <a>삭제</a></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td class="td-name">정적분2</td>
+					<td class="td-id">3243</td>
+					<td class="td-itemnum">20</td>
+					<td class="td-status">비활성</td>
+					<td class="td-mng"><a>설정수정</a> <a>상세보기</a> <a>삭제</a></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td class="td-name">부정적분1</td>
+					<td class="td-id">5323</td>
+					<td class="td-itemnum">8</td>
+					<td class="td-status">활성</td>
+					<td class="td-mng"><a>설정수정</a> <a>상세보기</a> <a>삭제</a></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td class="td-name">미분1</td>
+					<td class="td-id">4325</td>
+					<td class="td-itemnum">17</td>
+					<td class="td-status">활성</td>
+					<td class="td-mng"><a>설정수정</a> <a>상세보기</a> <a>삭제</a></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td class="td-name">미분2</td>
+					<td class="td-id">3422</td>
+					<td class="td-itemnum">12</td>
+					<td class="td-status">활성</td>
+					<td class="td-mng"><a>설정수정</a> <a>상세보기</a> <a>삭제</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+{% endblock %}

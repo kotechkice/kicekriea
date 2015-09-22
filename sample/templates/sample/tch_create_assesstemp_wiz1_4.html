@@ -1,0 +1,80 @@
+{% extends "sample/tch/container/base.html" %}
+{% block title %}형성평가 템플릿 생성 마법사 4단계{% endblock %}
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+	
+	function setTable(){
+		switch(findBootstrapEnvironment()){
+			case 'xs':
+			//case 'sm':
+				$('.td-id').hide();
+				$('.td-itemnum').hide();
+				$('.status-detail').hide();
+				
+				break;
+			default:
+				$('.td-id').show();
+				$('.td-itemnum').show();
+				$('.status-detail').show();
+		}
+	}
+	$(document).ready(function(){
+		setTable();
+		$(".assesstype").hide();
+	});
+	$(document).on('click', 'tr', function(){
+		console.log('hello');
+	});
+	$(window).resize(function(){
+		//console.log('windows resized');
+		setTable();
+	});
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<h3>형성평가 템플릿 생성 마법사 3단계</h3><br />
+	<div class="row">
+		<h4>기타 옵션 지정</h4>
+	</div>
+	<div class="row">
+		과제물 순서번호 : 
+		<input type="text" value="4"/>
+	</div><br />
+	<div class="row">
+		자동문항 생성 옵션 : <br />
+		<label><input type="checkbox" checked="checked"/>다른 숫자/그림</label><br />
+		<label><input type="checkbox" />다른 문항 순서</label><br />
+		<label><input type="checkbox" checked="checked"/>다른 보기 순서</label>
+	</div><br />
+	<div class="row">
+		과제물 기간<br />
+		시작 <input type="checkbox" /> 
+		<input type="text" value="2015. 03. 01" /> 
+		<input type="text" value="06:00" /><br />
+		종료 <input type="checkbox" /> 
+		<input type="text" value="2015. 12. 31" /> 
+		<input type="text" value="22:00" />
+	</div><br />
+	
+	<div class="row">
+		과제물 중복 수행<br />
+		<label><input type="radio" name="type" checked="checked"/> 한번만 가능</label><br />
+		<label><input type="radio" name="type" /> 여러번 가능</label><br />
+		<label><input type="radio" name="type" /> 하루에 한번</label>
+	</div>
+	
+	<div class="row text-center">
+		<button class="btn btn-default">취소</button>
+		<button class="btn btn-default">이전</button>
+		<button class="btn btn-default">완료</button>
+	</div>
+</div>
+{% endblock %}

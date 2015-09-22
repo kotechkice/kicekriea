@@ -1,0 +1,79 @@
+{% extends "sample/mngins/container/base.html" %}
+{% block title %}형성평가 수행 상태 보기{% endblock %}
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<h3>형성평가 수행 상태 보기</h3><br />
+	
+	<b>형성평가 별</b> | <a>CT 별</a>
+	
+	<div class="row">
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th class="td-assessid">형성평가 ID</th>
+					<th class="td-mnginsname">생성기관</th>
+					<th class="td-assessname">형성평가 이름</th>
+					<th class="td-ctid">CT ID</th>
+					<th class="td-assesscreatetime">생성시간</th>
+					<th class="td-completenum">완료인원</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="td-assessid">2425</td>
+					<td class="td-mnginsname">서울고</td>
+					<td class="td-assessname">정적분1</td>
+					<td class="td-ctid">2938</td>
+					<td class="td-assesscreatetime">2015 6/22 22:00</td>
+					<td class="td-completenum">0/40</td>
+				</tr>
+				<tr>
+					<td class="td-assessid">3243</td>
+					<td class="td-mnginsname">서울고</td>
+					<td class="td-assessname">정적분2</td>
+					<td class="td-ctid">3847</td>
+					<td class="td-assesscreatetime">2015 2/13 21:00</td>
+					<td class="td-completenum">0/40</td>
+				</tr>
+				<tr>
+					<td class="td-assessid">5323</td>
+					<td class="td-mnginsname">서울고</td>
+					<td class="td-assessname">부정적분1</td>
+					<td class="td-ctid">1938</td>
+					<td class="td-assesscreatetime">2015 6/05 16:00</td>
+					<td class="td-completenum">0/40</td>
+				</tr>
+				<tr>
+					<td class="td-assessid">4325</td>
+					<td class="td-mnginsname">대구고</td>
+					<td class="td-assessname">미분1</td>
+					<td class="td-ctid">4827(2948)</td>
+					<td class="td-assesscreatetime">2015 5/17 17:30</td>
+					<td class="td-completenum">17/30</td>
+				</tr>
+				<tr>
+					<td class="td-assessid">3422</td>
+					<td class="td-mnginsname">대구고</td>
+					<td class="td-assessname">미분2</td>
+					<td class="td-ctid">4291(1238)</td>
+					<td class="td-assesscreatetime">2015 5/15 18:00</td>
+					<td class="td-completenum">20/30</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+{% endblock %}

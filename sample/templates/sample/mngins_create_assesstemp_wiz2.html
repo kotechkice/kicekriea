@@ -1,0 +1,184 @@
+{% extends "sample/mngins/container/base.html" %}
+{% block title %}형성평가 템플릿 생성 마법사 2단계{% endblock %}
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+	function setTable(){
+		switch(findBootstrapEnvironment()){
+			case 'xs':
+			//case 'sm':
+				$('.td-id').hide();
+				$('.td-itemnum').hide();
+				$('.status-detail').hide();
+				
+				break;
+			default:
+				$('.td-id').show();
+				$('.td-itemnum').show();
+				$('.status-detail').show();
+		}
+	}
+	$(document).ready(function(){
+		setTable();
+	});
+	$(document).on('click', 'tr', function(){
+		console.log('hello');
+	});
+	$(window).resize(function(){
+		//console.log('windows resized');
+		setTable();
+	});
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<h3>형성평가 템플릿 생성 마법사 2단계</h3><br />
+	<div class="row">
+		<h4>형성평가 문항템플릿 리스트 편집</h4>
+	</div><br />
+	<div class="row">
+		형성평가에 포함된 문항템플릿 리스트
+		<button class="btn btn-primary btn-xs">선택 삭제</button>
+		<button class="btn btn-primary btn-xs">전체 미리보기</button>
+	</div>
+	<div class="row">
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th class="td-input"><input type="checkbox" /> </th>
+					<th class="td-itemtempid">문항템플릿ID</th>
+					<th class="td-section">소속단원</th>
+					<th class="td-difficulty">난이도</th>
+					<th class="td-solutiontype">해답형태</th>
+					<th class="td-ability">인지수준</th>
+					<th class="td-mng">관리</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="td-input"><input type="checkbox" /> </td>
+					<td class="td-itemtempid">11020394</td>
+					<td class="td-section">부정적분의 이해</td>
+					<td class="td-difficulty">하</td>
+					<td class="td-solutiontype">분수</td>
+					<td class="td-ability">이해</td>
+					<td class="td-mng"><a>미리보기</a> <a>삭제</a></td>
+				</tr>
+				<tr>
+					<td class="td-input"><input type="checkbox" /> </td>
+					<td class="td-itemtempid">42420394</td>
+					<td class="td-section">부정적분의 이해</td>
+					<td class="td-difficulty">하</td>
+					<td class="td-solutiontype">정수</td>
+					<td class="td-ability">분석</td>
+					<td class="td-mng"><a>미리보기</a> <a>삭제</a></td>
+				</tr>
+				<tr>
+					<td class="td-input"><input type="checkbox" /> </td>
+					<td class="td-itemtempid">31125394</td>
+					<td class="td-section">부정적분의 기초</td>
+					<td class="td-difficulty">상</td>
+					<td class="td-solutiontype">자연수</td>
+					<td class="td-ability">분석</td>
+					<td class="td-mng"><a>미리보기</a> <a>삭제</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row">
+		<b>문항 카테고리를 통한 문항템플릿 선택</b>
+	</div>
+	<div class="row">
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						<select size="4" style="width: 180px;"> 
+							<option selected="selected">수I</option>
+							<option>수II</option>
+							<option>미적분</option>
+							<option>이산수학</option>
+						</select>
+					</td>
+					<td>
+						<select size="4" style="width: 180px;"> 
+							<option>전체</option>
+							<option>확률과 통계</option>
+							<option selected="selected">미적분1</option>
+							<option>미적분2</option>
+						</select>
+					</td>
+					<td>
+						<select size="4" style="width: 180px;"> 
+							<option>전체</option>
+							<option>수열의 극한</option>
+							<option>다항함수의 미분법</option>
+							<option selected="selected">다항함수의 적분법</option>
+						</select>
+					</td>
+					<td>
+						<select size="4" style="width: 180px;"> 
+							<option>전체</option>
+							<option selected="selected">부정적분의 기초</option>
+							<option>부정적분의 이해</option>
+							<option>부정적분의 활용</option>
+						</select>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div><br />
+	<div class="row">
+		선택된 카테고리의 문항템플릿 리스트
+		<button class="btn btn-primary btn-xs">선택 추가</button>
+	</div>
+	<div class="row">
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th class="td-input"><input type="checkbox" /> </th>
+					<th class="td-itemtempid">문항템플릿ID</th>
+					<th class="td-section">소속단원</th>
+					<th class="td-difficulty">난이도</th>
+					<th class="td-solutiontype">해답형태</th>
+					<th class="td-ability">인지수준</th>
+					<th class="td-mng">관리</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="td-input"><input type="checkbox" /> </td>
+					<td class="td-itemtempid">11020394</td>
+					<td class="td-section">부정적분의 이해</td>
+					<td class="td-difficulty">하</td>
+					<td class="td-solutiontype">분수</td>
+					<td class="td-ability">이해</td>
+					<td class="td-mng"><a>미리보기</a></td>
+				</tr>
+				<tr>
+					<td class="td-input"><input type="checkbox" /> </td>
+					<td class="td-itemtempid">42420394</td>
+					<td class="td-section">부정적분의 이해</td>
+					<td class="td-difficulty">하</td>
+					<td class="td-solutiontype">정수</td>
+					<td class="td-ability">분석</td>
+					<td class="td-mng"><a>미리보기</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row text-center">
+		<button class="btn btn-default">취소</button>
+		<button class="btn btn-default">이전</button>
+		<button class="btn btn-default">다음</button>
+	</div>
+</div>
+
+
+{% endblock %}

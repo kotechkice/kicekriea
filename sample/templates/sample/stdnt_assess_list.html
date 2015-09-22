@@ -1,0 +1,136 @@
+{% extends "sample/stdnt/container/base.html" %}
+{% block title %}형성평가 리스트 페이지{% endblock %}
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+	
+	function setTable(){
+		switch(findBootstrapEnvironment()){
+			case 'xs':
+			//case 'sm':
+				$('.td-ordernum').hide();
+				$('.td-id').hide();
+				$('.td-term').hide();
+				$('.td-itemnum').hide();
+				$('.status-detail').hide();
+				
+				break;
+			default:
+				$('.td-ordernum').show();
+				$('.td-id').show();
+				$('.td-term').show();
+				$('.td-itemnum').show();
+				$('.status-detail').show();
+		}
+	}
+	$(document).ready(function(){
+		setTable();
+	});
+	$(document).on('click', 'tr', function(){
+		console.log('hello');
+	});
+	$(window).resize(function(){
+		//console.log('windows resized');
+		setTable();
+	});
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<h3>형성평가 리스트 페이지</h3><br />
+	<div class="row">
+	<h4>미수행된 과제물 리스트</h4>
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th class="td-ordernum">순서번호</th>
+					<th class="td-id">형성평가 ID</th>
+					<th class="td-name">이름</th>
+					<th class="td-term">기간</th>
+					<th class="td-itemnum">문제수</th>
+					<th class="td-solve">풀기</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="td-ordernum">4</td>
+					<td class="td-id">2425</td>
+					<td class="td-name">정적분1</td>
+					<th class="td-term">6/12 07:00 ~ 6/22 22:00</th>
+					<td class="td-itemnum">14</td>
+					<td class="td-solve"><a>인쇄</a>/<a>답입력</a> <a>한번에</a> <a>하나씩</a> </td>
+				</tr>
+				<tr>
+					<td class="td-ordernum">5</td>
+					<td class="td-id">3243</td>
+					<td class="td-name">정적분2</td>
+					<th class="td-term">6/22 07:00 ~ 미지정</th>
+					<td class="td-itemnum">12</td>
+					<td class="td-solve"><a>인쇄</a>/<a>답입력</a> <a>한번에</a> <a>하나씩</a> </td>
+				</tr>
+				<tr>
+					<td class="td-ordernum">1</td>
+					<td class="td-id">2837</td>
+					<td class="td-name">함수뜻이해</td>
+					<th class="td-term">7/13 07:00 ~ 07/13 22:00</th>
+					<td class="td-itemnum">12</td>
+					<td class="td-solve"><a>인쇄</a>/<a>답입력</a> <a>한번에</a> <a>하나씩</a> </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row">
+	<h4>수행된 과제물 리스트</h4>
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th class="td-ordernum">순서번호</th>
+					<th class="td-id">형성평가 ID</th>
+					<th class="td-name">이름</th>
+					<th class="td-term">기간</th>
+					<th class="td-itemnum">문제수</th>
+					<th class="td-result">결과</th>
+					<th class="td-solve">다시풀기</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="td-ordernum">3</td>
+					<td class="td-id">5323</td>
+					<td class="td-name">부정적분1</td>
+					<th class="td-term">6/18 07:00 ~ 6/20 22:00</th>
+					<td class="td-itemnum">14</td>
+					<td class="td-result"><a>10/23</a></td>
+					<td class="td-solve"><a>인쇄</a>/<a>답입력</a> <a>한번에</a> <a>하나씩</a> </td>
+				</tr>
+				<tr>
+					<td class="td-ordernum">2</td>
+					<td class="td-id">4325</td>
+					<td class="td-name">미분2</td>
+					<th class="td-term">6/16 07:00 ~ 6/18 22:00</th>
+					<td class="td-itemnum">12</td>
+					<td class="td-result"><a>9/13</a></td>
+					<td class="td-solve"><a>인쇄</a>/<a>답입력</a> <a>한번에</a> <a>하나씩</a> </td>
+				</tr>
+				<tr>
+					<td class="td-ordernum">1</td>
+					<td class="td-id">3422</td>
+					<td class="td-name">미분1</td>
+					<th class="td-term">6/20 07:00 ~ 6/22 22:00</th>
+					<td class="td-itemnum">11</td>
+					<td class="td-result"><a>7/32</a></td>
+					<td class="td-solve"><a>인쇄</a>/<a>답입력</a> <a>한번에</a> <a>하나씩</a> </td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+{% endblock %}

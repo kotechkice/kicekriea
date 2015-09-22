@@ -1,0 +1,122 @@
+{% extends "sample/tch/container/base.html" %}
+{% block title %}형성평가 생성 마법사 1단계{% endblock %}
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+	function setTable(){
+		switch(findBootstrapEnvironment()){
+			case 'xs':
+			//case 'sm':
+				$('.td-id').hide();
+				$('.td-itemnum').hide();
+				$('.status-detail').hide();
+				
+				break;
+			default:
+				$('.td-id').show();
+				$('.td-itemnum').show();
+				$('.status-detail').show();
+		}
+	}
+	$(document).ready(function(){
+		setTable();
+	});
+	$(document).on('click', 'tr', function(){
+		console.log('hello');
+	});
+	$(window).resize(function(){
+		//console.log('windows resized');
+		setTable();
+	});
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<h3>형성평가 생성 마법사 1단계</h3><br />
+	<h4>대상 교실 선정</h4>
+	<table class="table">
+		<thead>
+			<tr>
+				<th><input type="checkbox" /></th>
+				<th>학년</th>
+				<th>반</th>
+				<th>학생수</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><input type="checkbox" /></td>
+				<td>고1</td>
+				<td>나비반</td>
+				<td>21</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" checked="checked"/></td>
+				<td>고1</td>
+				<td>꽃잎반</td>
+				<td>22</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" /></td>
+				<td>고1</td>
+				<td>제비반</td>
+				<td>23</td>
+			</tr>
+		</tbody>
+	</table>
+	<h4>특정 학생 추가</h4>
+	추가된 학생 : 김수한, 홍인영<br />
+	<select>
+		<option>고1</option>
+	</select>
+	<select>
+		<option>나비반</option>
+	</select>
+	<table class="table">
+		<thead>
+			<tr>
+				<th><input type="checkbox" /></th>
+				<th>학년</th>
+				<th>반</th>
+				<th>이름</th>
+				<th>학번</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><input type="checkbox" /></td>
+				<td>고1</td>
+				<td>나비반</td>
+				<td>전가람</td>
+				<td>10203</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" checked="checked"/></td>
+				<td>고1</td>
+				<td>나비반</td>
+				<td>김수한</td>
+				<td>10204</td>
+			</tr>
+			<tr>
+				<td><input type="checkbox" checked="checked"/></td>
+				<td>고1</td>
+				<td>나비반</td>
+				<td>홍인영</td>
+				<td>10205</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="row text-center">
+		<button class="btn btn-default">취소</button>
+		<button class="btn btn-default">다음</button>
+	</div>
+</div>
+
+
+{% endblock %}

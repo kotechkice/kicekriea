@@ -1,0 +1,74 @@
+{% extends "sample/tch/container/base.html" %}
+{% block title %}형성평가 수행 상태 보기{% endblock %}
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<h3>형성평가 수행 상태 보기</h3>
+	<a>과제물 별</a> | <b>학생 별</b> | <a>시간 별</a>
+	<button class="btn btn-default btn-xs">csv 파일 다운로드</button>
+	
+	<div class="row">
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th class="td-stdname">학생명</th>
+					<th class="td-stdnum">학번</th>
+					<th class="td-class">학년반</th>
+					<th class="td-status">수행상태</th>
+					<th class="td-check">성적확인</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="td-stdname">김하나</td>
+					<td class="td-stdnum">030223</td>
+					<td class="td-class">3학년가람반</td>
+					<td class="td-status">4/12</td>
+					<td class="td-check"><a>확인</a></td>
+				</tr>
+				<tr>
+					<td class="td-stdname">조두리</td>
+					<td class="td-stdnum">020223</td>
+					<td class="td-class">2학년너울반</td>
+					<td class="td-status">3/20</td>
+					<td class="td-check"><a>확인</a></td>
+				</tr>
+				<tr>
+					<td class="td-stdname">최사미</td>
+					<td class="td-stdnum">020224</td>
+					<td class="td-class">2학년너울반</td>
+					<td class="td-status">5/20</td>
+					<td class="td-check"><a>확인</a></td>
+				</tr>
+				<tr>
+					<td class="td-stdname">정나정</td>
+					<td class="td-stdnum">010203</td>
+					<td class="td-class">1학년무궁반</td>
+					<td class="td-status">2/10</td>
+					<td class="td-check"><a>확인</a></td>
+				</tr>
+				<tr>
+					<td class="td-stdname">사오정</td>
+					<td class="td-stdnum">010204</td>
+					<td class="td-class">1학년무궁반</td>
+					<td class="td-status">1/10</td>
+					<td class="td-check"><a>확인</a></td>
+				</tr>
+				
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+{% endblock %}

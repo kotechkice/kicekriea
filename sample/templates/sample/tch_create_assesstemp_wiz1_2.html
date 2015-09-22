@@ -1,0 +1,164 @@
+{% extends "sample/tch/container/base.html" %}
+{% block title %}형성평가 생성 마법사 2단계{% endblock %}
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+	
+	function setTable(){
+		switch(findBootstrapEnvironment()){
+			case 'xs':
+			//case 'sm':
+				$('.td-id').hide();
+				$('.td-itemnum').hide();
+				$('.status-detail').hide();
+				
+				break;
+			default:
+				$('.td-id').show();
+				$('.td-itemnum').show();
+				$('.status-detail').show();
+		}
+	}
+	$(document).ready(function(){
+		setTable();
+	});
+	$(document).on('click', 'tr', function(){
+		console.log('hello');
+	});
+	$(window).resize(function(){
+		//console.log('windows resized');
+		setTable();
+	});
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<h3>형성평가 생성 마법사 2단계</h3><br />
+	<div class="row">
+		형성평가 이름 : 
+		<input type="text" value="정적분1" />
+	</div><br />
+	<div class="row">
+		<label><input type="radio" name="createtype" value="new" />새로 만들기</label><br />
+		<label><input type="radio" name="createtype" value="temp" checked="true" />과제물 템플릿으로 만들기</label>
+	</div>
+	<div class="row">
+		카테고리 선택
+	</div><br />
+	<div class="row">
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						<select size="4" style="width: 180px;"> 
+							<option>전체</option>
+							<option selected="selected">수I</option>
+							<option>수II</option>
+							<option>미적분</option>
+						</select>
+					</td>
+					<td>
+						<select size="4" style="width: 180px;"> 
+							<option>전체</option>
+							<option>확률과 통계</option>
+							<option selected="selected">미적분1</option>
+							<option>미적분2</option>
+						</select>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div><br />
+	<div class="row">
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th class="td-input"> </th>
+					<th class="td-name">이름</th>
+					<th class="td-name_option">형성평가 이름 변경</th>
+					<th class="td-aig_option">자동문항 생성 옵션 변경</th>
+					<th class="td-period_option">기간 설정 변경</th>
+					<th class="td-dupli_option">중복수행 설정 변경</th>
+					<th class="td-itemtempnum">문항템플릿개수</th>
+					<th class="td-mng">관리</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="td-input"><input type="radio" checked /> </td>
+					<td class="td-name">정적분1</td>
+					<td class="td-name_option">가능</td>
+					<td class="td-aig_option">불가능</td>
+					<td class="td-period_option">가능</td>
+					<td class="td-dupli_option">가능</td>
+					<td class="td-itemtempnum">15</td>
+					<td class="td-mng">미리보기</td>
+				</tr>
+				<tr>
+					<td class="td-input"><input type="radio" /> </td>
+					<td class="td-name">정적분2</td>
+					<td class="td-name_option">가능</td>
+					<td class="td-aig_option">불가능</td>
+					<td class="td-period_option">불가능</td>
+					<td class="td-dupli_option">불가능</td>
+					<td class="td-itemtempnum">11</td>
+					<td class="td-mng">미리보기</td>
+				</tr>
+				<tr>
+					<td class="td-input"><input type="radio" /> </td>
+					<td class="td-name">부정적분1</td>
+					<td class="td-name_option">가능</td>
+					<td class="td-aig_option">불가능</td>
+					<td class="td-period_option">불가능</td>
+					<td class="td-dupli_option">불가능</td>
+					<td class="td-itemtempnum">12</td>
+					<td class="td-mng">미리보기</td>
+				</tr>
+				<tr>
+					<td class="td-input"><input type="radio" /> </td>
+					<td class="td-name">미분1</td>
+					<td class="td-name_option">불가능</td>
+					<td class="td-aig_option">불가능</td>
+					<td class="td-period_option">가능</td>
+					<td class="td-dupli_option">가능</td>
+					<td class="td-itemtempnum">14</td>
+					<td class="td-mng">미리보기</td>
+				</tr>
+				<tr>
+					<td class="td-input"><input type="radio" /> </td>
+					<td class="td-name">미분2</td>
+					<td class="td-name_option">불가능</td>
+					<td class="td-aig_option">불가능</td>
+					<td class="td-period_option">불가능</td>
+					<td class="td-dupli_option">불가능</td>
+					<td class="td-itemtempnum">6</td>
+					<td class="td-mng">미리보기</td>
+				</tr>
+				<tr>
+					<td class="td-input"><input type="radio" /> </td>
+					<td class="td-name">정적분1</td>
+					<td class="td-name_option">불가능</td>
+					<td class="td-aig_option">불가능</td>
+					<td class="td-period_option">가능</td>
+					<td class="td-dupli_option">가능</td>
+					<td class="td-itemtempnum">15</td>
+					<td class="td-mng">미리보기</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row text-center">
+		<button class="btn btn-default">취소</button>
+		<button class="btn btn-default">이전</button>
+		<button class="btn btn-default">다음</button>
+	</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "sample/mngins/container/base.html" %}
+{% block title %}형성평가 템플릿 생성 마법사 1단계{% endblock %}
+{% block style %}
+<style>
+</style>
+{% endblock %}
+{% block script %}
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<h3>형성평가 템플릿 생성 마법사 1단계</h3><br />
+	<div class="row">
+	기본 형성평가 이름 : <input type="text" value="정적분1"/>
+	</div><br />
+	<div class="row">
+		<b>옵션 설정 변경 가능 여부</b><br />
+		<table>
+			<tr>
+				<td>형성평가 이름 변경 : </td>
+				<td>
+					<label><input type="radio" name="name_option"/> 가능</label>
+					<label><input type="radio" name="name_option" checked="checked"/> 불가능</label><br />
+				</td>
+			</tr>
+			<tr>
+				<td>자동문항 생성 옵션 설정 변경 : </td>
+				<td>
+					<label><input type="radio" name="aig_option"/> 가능</label>
+					<label><input type="radio" name="aig_option" checked="checked"/> 불가능</label>
+				</td>
+			</tr>
+			<tr>
+				<td>기간 설정 변경 : </td>
+				<td>
+					<label><input type="radio" name="period_option"/> 가능</label>
+					<label><input type="radio" name="period_option" checked="checked"/> 불가능</label>
+				</td>
+			</tr>
+			<tr>
+				<td>중복수행 설정 변경 : </td>
+				<td>
+					<label><input type="radio" name="dupli_option"/> 가능</label>
+					<label><input type="radio" name="dupli_option" checked="checked"/> 불가능</label>
+				</td>
+			</tr>
+			
+		</table>
+		
+		
+		
+		<br />
+		
+		<br />
+		
+		<br />
+	</div>	
+	<div class="row text-center">
+		<button class="btn btn-default">취소</button>
+		<button class="btn btn-default">다음</button>
+	</div>
+</div>
+{% endblock %}

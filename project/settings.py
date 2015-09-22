@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'stdnt',
     'mngins',
     'tch',
+    'sample',
 )
 
 MIDDLEWARE_CLASSES = (

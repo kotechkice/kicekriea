@@ -1,0 +1,219 @@
+{% extends "sample/stdnt/container/base.html" %}
+{% block title %}한번에 풀기 페이지{% endblock %}
+{% block style %}
+<style>
+	
+</style>
+{% endblock %}
+{% block script %}
+<script type="text/x-mathjax-config">
+			MathJax.Hub.Config({
+			//	jax: ["input/TeX", "output/HTML-CSS"],
+			jax: ["input/TeX", "output/SVG"],
+			tex2jax: {
+			inlineMath: [['$','$']],
+			displayMath: [ ['$$','$$']],
+			processEscapes: true,
+			processEnvironments: true,
+			preview: "TeX"
+			},
+			"HTML-CSS": { availableFonts: ["STIX", "TeX"],
+			webFont: null },
+			"SVG": {
+			availableFonts: ["TeX"],
+			blacker: 0,
+			scale: 90
+			},
+			showMathMenu: false
+			});
+		</script>
+
+		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
+{% endblock %}
+{% block containor %}
+<div class="container text-center">
+	<div class="row">
+		<h2>정적분1</h2>
+	</div>
+	<div class="row">
+		<button class="btn btn-default">임시저장</button>
+		<button class="btn btn-primary">답안 제출</button>
+	</div><br />
+	
+	
+</div>
+<table class="workbook">
+			<tr>
+				<td valign="top" style="border-top:1px gray solid;border-right:1px gray solid;border-bottom:0px gray dashed;border-left:0px gray solid;">
+				<table class="column">
+					<tr>
+						<td valign="top" height="540" style="padding-top:5px">
+						<table width="477px" cellpadding="3px" valign="top">
+							<tr>
+
+								<td colspan="5"><!--img src="http://chart.apis.google.com/chart?chs=80x80&cht=qr&chld=|0&chl=www.cafalab.com%2Fasp%2FgetItemForSW.asp%3FItemID%3D19205501%26seed%3D659" alt="19205501" title="Scan for more information about the item 19205501" align="right" /--><!--img src="http://chart.apis.google.com/chart?chs=80x80&cht=qr&chld=|0&chl=www.cafalab.com%2Fasp%2FgetItemForSW.asp%3FItemID%3D19205501%26seed%3D659" /--> 1. 다항식 $\;({x}^{2}+{x}+{2})({x}^{2}+{x}-{10})\;$를 전개한 식이 $\;{a}{x}^{4}+{2}{x}^{3}+{b}{x}^{2}+{c}{x}-{20}\;$일 때, $\;{a}+{b}+{c}\;$의 값은? </td>
+							</tr>
+
+							<tr>
+								<tr style="">
+									<td width="20%" style="padding-top:2px;">
+										①
+										<input type="radio" name="question19205501" class="choice" value="question19205501a" style="display:none" >
+										${-14}$ </td>
+
+									<td width="20%" style="padding-top:2px;">
+										②
+										<input type="radio" name="question19205501" class="choice" value="question19205501b" style="display:none" >
+										${-12}$ </td>
+
+									<td width="20%" style="padding-top:2px;">
+										③
+										<input type="radio" name="question19205501" class="choice" value="question19205501c" style="display:none" >
+										${-13}$ </td>
+
+									<td width="20%" style="padding-top:2px;">
+										④
+										<input type="radio" name="question19205501" class="choice" value="question19205501d" style="display:none" >
+										${-11}$ </td>
+
+									<td width="20%" style="padding-top:2px;position:relative">
+										⑤
+										<input type="radio" name="question19205501" class="choice" value="question19205501e" style="display:none" />
+										${-17}$ <span style="position:absolute;left:3px;top:-3px;color:red">✔</span></td>
+								</tr>
+							</tr>
+
+						</table></td>
+					</tr>
+
+					<tr>
+						<td valign="top" height="540" style="padding-top:5px">
+						<table width="477px" cellpadding="3px" valign="top">
+							<tr>
+
+								<td colspan="2"><!--img src="http://chart.apis.google.com/chart?chs=80x80&cht=qr&chld=|0&chl=www.cafalab.com%2Fasp%2FgetItemForSW.asp%3FItemID%3D19207702%26seed%3D131" alt="19207702" title="Scan for more information about the item 19207702" align="right" /--><!--img src="http://chart.apis.google.com/chart?chs=80x80&cht=qr&chld=|0&chl=www.cafalab.com%2Fasp%2FgetItemForSW.asp%3FItemID%3D19207702%26seed%3D131" /--> 2. $\;{a}^{3}-{64}{b}^{3}\;$을 인수분해하면? </td>
+							</tr>
+
+							<tr>
+								<tr style="">
+									<td width="50%" style="padding-top:2px;">
+										①
+										<input type="radio" name="question19207702" class="choice" value="question19207702a" style="display:none" >
+										$({a}-{4}{b})({a}^{2}+{4}{a}{b}+{16}{b}^{2})$ </td>
+
+									<td width="50%" style="padding-top:2px;">
+										②
+										<input type="radio" name="question19207702" class="choice" value="question19207702b" style="display:none" >
+										$({a}-{4}{b})^{3}$ </td>
+								</tr>
+								<tr style="">
+									<td width="50%" style="padding-top:2px;">
+										③
+										<input type="radio" name="question19207702" class="choice" value="question19207702c" style="display:none" >
+										$({a}-{4}{b})({a}^{2}+{16}{b}^{2})$ </td>
+
+									<td width="50%" style="padding-top:2px;">④
+										
+										<input type="radio" name="question19207702" class="choice" value="question19207702d" style="display:none" >
+										$({a}+{4}{b})({a}^{2}-{4}{a}{b}-{16}{b}^{2})$ </td>
+								</tr>
+								<tr style="">
+									<td width="50%" style="padding-top:2px;">⑤
+										<input type="radio" name="question19207702" class="choice" value="question19207702e" style="display:none" >
+										$({a}+{4}{b})({a}^{2}+{4}{a}{b}-{16}{b}^{2})$ </td>
+									<td>&nbsp;</td>
+								</tr>
+							</tr>
+
+						</table></td>
+					</tr>
+				</table></td>
+
+				<td valign="top" height="540" style="padding-top:5px; border-top:1px gray solid;border-right:0px gray solid;border-bottom:0px gray dashed;border-left:1px gray solid;">
+				<table class="item">
+					<tr>
+						<td valign="top" height="540" style="padding-top:5px">
+						<table width="477px" cellpadding="3px" valign="top">
+							<tr>
+
+								<td colspan="2"><!--img src="http://chart.apis.google.com/chart?chs=80x80&cht=qr&chld=|0&chl=www.cafalab.com%2Fasp%2FgetItemForSW.asp%3FItemID%3D19207601%26seed%3D808" alt="19207601" title="Scan for more information about the item 19207601" align="right" /--><!--img src="http://chart.apis.google.com/chart?chs=80x80&cht=qr&chld=|0&chl=www.cafalab.com%2Fasp%2FgetItemForSW.asp%3FItemID%3D19207601%26seed%3D808" /--> 3. 다음 중 $\;{18}{x}^{2}{y}+{18}{x}{y}^{2}\;$의 인수인 것은? </td>
+							</tr>
+
+							<tr>
+								<tr style="">
+									<td width="50%" style="padding-top:2px;">
+										①
+										<input type="radio" name="question19207601" class="choice" value="question19207601a" style="display:none" >
+										${x}+{y}$ </td>
+
+									<td width="50%" style="padding-top:2px;">②
+										<input type="radio" name="question19207601" class="choice" value="question19207601b" style="display:none" >
+										${x}^{2}+{y}^{2}$ </td>
+								</tr>
+								<tr style="">
+									<td width="50%" style="padding-top:2px;">③
+										<input type="radio" name="question19207601" class="choice" value="question19207601c" style="display:none" >
+										${x}^{2}+{y}$ </td>
+
+									<td width="50%" style="padding-top:2px;">④
+										<input type="radio" name="question19207601" class="choice" value="question19207601d" style="display:none" >
+										${x}^{2}{y}$ </td>
+								</tr>
+								<tr style="">
+									<td width="50%" style="padding-top:2px;">⑤
+										<input type="radio" name="question19207601" class="choice" value="question19207601e" style="display:none" >
+										${x}{y}^{2}$ </td>
+									<td>&nbsp;</td>
+								</tr>
+							</tr>
+
+						</table></td>
+					</tr>
+
+					<tr>
+						<td valign="top" height="540" style="padding-top:5px">
+						<table width="477px" cellpadding="3px" valign="top">
+							<tr>
+
+								<td colspan="2"><!--img src="http://chart.apis.google.com/chart?chs=80x80&cht=qr&chld=|0&chl=www.cafalab.com%2Fasp%2FgetItemForSW.asp%3FItemID%3D19207601%26seed%3D684" alt="19207601" title="Scan for more information about the item 19207601" align="right" /--><!--img src="http://chart.apis.google.com/chart?chs=80x80&cht=qr&chld=|0&chl=www.cafalab.com%2Fasp%2FgetItemForSW.asp%3FItemID%3D19207601%26seed%3D684" /--> 4. 다음 중 $\;{9}{x}^{2}{y}+{9}{x}{y}^{2}\;$의 인수인 것은? </td>
+							</tr>
+
+							<tr>
+								<tr style="">
+									<td width="50%" style="padding-top:2px;">
+										①
+										<input type="radio" name="question19207601" class="choice" value="question19207601a" style="display:none" >
+										${x}{y}^{2}$ </td>
+
+									<td width="50%" style="padding-top:2px;">
+										②
+										<input type="radio" name="question19207601" class="choice" value="question19207601b" style="display:none" >
+										${x}^{2}+{y}^{2}$ </td>
+								</tr>
+								<tr style="">
+									<td width="50%" style="padding-top:2px;">
+										③
+										<input type="radio" name="question19207601" class="choice" value="question19207601c" style="display:none" >
+										${x}^{2}+{y}$ </td>
+
+									<td width="50%" style="padding-top:2px;">
+										④
+										<input type="radio" name="question19207601" class="choice" value="question19207601d" style="display:none" >
+										${x}+{y}$ </td>
+								</tr>
+								<tr style="">
+									<td width="50%" style="padding-top:2px;">
+										⑤
+										<input type="radio" name="question19207601" class="choice" value="question19207601e" style="display:none" >
+										${x}^{2}{y}$ </td>
+									<td>&nbsp;</td>
+								</tr>
+							</tr>
+
+						</table></td>
+					</tr>
+				</table></td>
+			</tr>
+		</table>
+
+{% endblock %}

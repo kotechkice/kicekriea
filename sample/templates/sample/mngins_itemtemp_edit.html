@@ -1,0 +1,179 @@
+{% extends "sample/mngins/container/base.html" %}
+{% block title %}문항 템플릿 카테고리 관리{% endblock %}
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+	
+	function setTable(){
+		switch(findBootstrapEnvironment()){
+			case 'xs':
+			//case 'sm':
+				$('.td-id').hide();
+				$('.td-itemnum').hide();
+				$('.status-detail').hide();
+				
+				break;
+			default:
+				$('.td-id').show();
+				$('.td-itemnum').show();
+				$('.status-detail').show();
+		}
+	}
+	$(document).ready(function(){
+		setTable();
+	});
+	$(document).on('click', 'tr', function(){
+		console.log('hello');
+	});
+	$(window).resize(function(){
+		//console.log('windows resized');
+		setTable();
+	});
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<table>
+		<tbody>
+			<tr>
+				<td>
+					학년
+				</td>
+				<td>
+					대단원
+				</td>
+				<td>
+					중단원
+				</td>
+				<td>
+					소단원
+				</td>
+				<td>
+					성취기준
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<select size="5" style="width: 180px;"> 
+						<option>고1</option>
+						<option selected="selected">고2</option>
+						<option>고3</option>
+					</select>
+				</td>
+				<td>
+					<select size="5" style="width: 180px;">
+						<option>확률과 통계</option>
+						<option selected="selected">미적분1</option>
+						<option>미적분2</option>
+					</select>
+				</td>
+				<td>
+					<select size="5" style="width: 180px;"> 
+						<option>수열의 극한</option>
+						<option>함수의 극한</option>
+						<option>다항함수의 미분법</option>
+						<option selected="selected">다항함수의 적분법</option>
+					</select>
+				</td>
+				<td>
+					<select size="5" style="width: 180px;"> 
+						<option>부정적분의 기초</option>
+						<option selected="selected">부정적분의 이해</option>
+						<option>부정적분의 활용</option>
+					</select>
+				</td>
+				<td>
+					<select size="5" style="width: 180px;"> 
+						<option>수학2212</option>
+						<option selected="selected">수학2213</option>
+						<option>수학2221</option>
+					</select>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<br />
+	<div class="row">
+		선택된 카테고리 : 고2>미적분1>다항함수의 적분법>부정적분의 이해
+	</div>
+	<div class="row">
+		카테고리 상세설명<br />
+		<textarea> </textarea>
+	</div>
+	<div class="row">
+		선택된 카테고리의 문항 템플릿 리스트
+		<button class="btn btn-primary btn-xs">선택 삭제</button>
+	</div>
+	<div class="row">
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th><input type="checkbox" /></th>
+					<th class="td-itemid">문항 ID</th>
+					<th class="td-cafacartegory">CAFA 카테고리</th>
+					<th class="td-mng">관리</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td class="td-itemid">11020394</td>
+					<td class="td-cafacartegory">5.1</td>
+					<td class="td-mng"><a>내용보기</a> <a>삭제</a></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td class="td-itemid">42420394</td>
+					<td class="td-cafacartegory">5.1</td>
+					<td class="td-mng"><a>내용보기</a> <a>삭제</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	
+	<div class="row">
+		사용가능한 문항 템플릿 리스트
+		<button class="btn btn-primary btn-xs">선택 추가</button>
+	</div>
+	<div class="row">
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th><input type="checkbox" /></th>
+					<th class="td-itemid">문항 ID</th>
+					<th class="td-cafacartegory">CAFA 카테고리</th>
+					<th class="td-mng">관리</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td class="td-itemid">11020394</td>
+					<td class="td-cafacartegory">5.1</td>
+					<td class="td-mng"><a>내용보기</a> <a>추가</a></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td class="td-itemid">42420394</td>
+					<td class="td-cafacartegory">5.1</td>
+					<td class="td-mng"><a>내용보기</a> <a>추가</a></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td class="td-itemid">31125394</td>
+					<td class="td-cafacartegory">5.2</td>
+					<td class="td-mng"><a>내용보기</a> <a>추가</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,72 @@
+{% extends "sample/tch/container/base.html" %}
+{% block title %}형성평가 수행 상태 보기{% endblock %}
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<h3>형성평가 수행 상태 보기</h3>
+	<b>형성평가 별</b> | <a>학생 별</a> | <a>시간 별</a>
+
+	<div class="row">
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th class="td-name">이름</th>
+					<th class="td-assessid">형성평가 ID</th>
+					<th class="td-starttime">시행시작</th>
+					<th class="td-endtime">시행종료</th>
+					<th class="td-completenum">완료인원</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="td-name">정적분1</td>
+					<td class="td-assessid">2425</td>
+					<td class="td-starttime">6/20 07:00</td>
+					<td class="td-endtime">6/22 22:00</td>
+					<td class="td-completenum">0/23</td>
+				</tr>
+				<tr>
+					<td class="td-name">정적분2</td>
+					<td class="td-assessid">3243</td>
+					<td class="td-starttime">6/07 07:00</td>
+					<td class="td-endtime">6/13 22:00</td>
+					<td class="td-completenum">0/23</td>
+				</tr>
+				<tr>
+					<td class="td-name">부정적분1</td>
+					<td class="td-assessid">5323</td>
+					<td class="td-starttime">5/20 07:00</td>
+					<td class="td-endtime">6/05 22:00</td>
+					<td class="td-completenum">17/23</td>
+				</tr>
+				<tr>
+					<td class="td-name">미분1</td>
+					<td class="td-assessid">4325</td>
+					<td class="td-starttime">5/12 07:00</td>
+					<td class="td-endtime">5/17 22:00</td>
+					<td class="td-completenum">12/23</td>
+				</tr>
+				<tr>
+					<td class="td-name">미분2</td>
+					<td class="td-assessid">3422</td>
+					<td class="td-starttime">5/10 07:00</td>
+					<td class="td-endtime">5/15 22:00</td>
+					<td class="td-completenum">20/23</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+{% endblock %}

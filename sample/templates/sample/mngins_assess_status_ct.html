@@ -1,0 +1,67 @@
+{% extends "sample/mngins/container/base.html" %}
+{% block title %}형성평가 수행 상태 보기{% endblock %}
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+<script>
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<h3>형성평가 수행 상태 보기</h3><br />
+	
+	<a>과제물 별</a> | <b>CT 별</b>
+
+	<div class="row">
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th class="td-ctid">CT_ID</th>
+					<th class="td-mnginsname">생성기관</th>
+					<th class="td-ctcreatetime">CT 생성시간</th>
+					<th class="td-completenum">완료인원</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="td-ctid">2938</td>
+					<td class="td-mnginsname">평가원</td>
+					<td class="td-ctcreatetime">2015 6/22 22:00</td>
+					<td class="td-completenum">3/50</td>
+				</tr>
+				<tr>
+					<td class="td-ctid">3847</td>
+					<td class="td-mnginsname">평가원</td>
+					<td class="td-ctcreatetime">2015 2/13 22:00</td>
+					<td class="td-completenum">19/60</td>
+				</tr>
+				<tr>
+					<td class="td-ctid">1938</td>
+					<td class="td-mnginsname">평가원</td>
+					<td class="td-ctcreatetime">2015 6/05 22:00</td>
+					<td class="td-completenum">0/40</td>
+				</tr>
+				<tr>
+					<td class="td-ctid">2948</td>
+					<td class="td-mnginsname">서울고</td>
+					<td class="td-ctcreatetime">2015 5/17 22:00</td>
+					<td class="td-completenum">17/60</td>
+				</tr>
+				<tr>
+					<td class="td-ctid">4291(1238)</td>
+					<td class="td-mnginsname">대구고</td>
+					<td class="td-ctcreatetime">2015 5/15 22:00</td>
+					<td class="td-completenum">20/30</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+{% endblock %}
