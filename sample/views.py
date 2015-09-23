@@ -17,6 +17,11 @@ def stdnt_solve_responseonly(request):
 def stdnt_solve_itemall(request):
     return render_to_response('sample/stdnt_solve_itemall.html')
 
+def stdnt_exam_list(request):
+    return render_to_response('sample/stdnt_exam_list.html')
+
+
+
 def tch_assess_mng(request):
     return render_to_response('sample/tch_assess_mng.html')
 
@@ -40,6 +45,11 @@ def tch_assess_status_stdnt(request):
 
 def tch_assess_status_time(request):
     return render_to_response('sample/tch_assess_status_time.html')
+
+def tch_exam_result(request):
+    return render_to_response('sample/tch_exam_result.html')
+
+
 
 def mngins_assesstemp(request):
     return render_to_response('sample/mngins_assesstemp.html')

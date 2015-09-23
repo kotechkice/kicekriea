@@ -1,0 +1,169 @@
+{% extends "sample/tch/container/base.html" %}
+{% block title %}진단평가 수행결과 페이지{% endblock %}
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+	  #std_nums {
+	  	max-width:600px;
+	  }
+	  h4 {
+	  	text-align:left;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+{% endblock %}
+{% block containor %}
+<div class="container text-center">
+	<div class="row h3 text-center">
+	진단평가 수행결과 페이지
+	</div>
+	<div class="row">
+		<table class="table" id="std_nums" align="center">
+			<thead>
+				<tr class="tr-header">
+					<th>진단명</th>
+					<th>수행 인원</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>성취기준 - 수학2212</td>
+					<td>5/20</td>
+				</tr>
+				<tr>
+					<td>성취기준 - 수학2213</td>
+					<td>3/20</td>
+				</tr>
+				<tr>
+					<td>단원평가 - 함수</td>
+					<td>2/20</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row">
+		<h4>성취기준 평가 수행 결과</h4>
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th class="td-stdname">이름</th>
+					<th class="td-grade">학년</th>
+					<th class="td-class">반</th>
+					<th class="td-stdnum">학번</th>
+					<th class="td-standard">성취기준</th>
+					<th class="td-status">진단결과</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="td-stdname">김세연</td>
+					<td class="td-grade">고1</td>
+					<td class="td-class">4반</td>
+					<td class="td-stdnum">10407</td>
+					<td class="td-standard">수학2212</td>
+					<td class="td-status">미달</td>
+				</tr>
+				<tr>
+					<td class="td-stdname">민지수</td>
+					<td class="td-grade">고1</td>
+					<td class="td-class">4반</td>
+					<td class="td-stdnum">10414</td>
+					<td class="td-standard">수학2212</td>
+					<td class="td-status">미달</td>
+				</tr>
+				<tr>
+					<td class="td-stdname">강세현</td>
+					<td class="td-grade">고1</td>
+					<td class="td-class">4반</td>
+					<td class="td-stdnum">10401</td>
+					<td class="td-standard">수학2212</td>
+					<td class="td-status">상</td>
+				</tr>
+				<tr>
+					<td class="td-stdname">김수미</td>
+					<td class="td-grade">고1</td>
+					<td class="td-class">4반</td>
+					<td class="td-stdnum">10408</td>
+					<td class="td-standard">수학2212</td>
+					<td class="td-status">미달</td>
+				</tr>
+				<tr>
+					<td class="td-stdname">박신영</td>
+					<td class="td-grade">고1</td>
+					<td class="td-class">4반</td>
+					<td class="td-stdnum">10416</td>
+					<td class="td-standard">수학2212</td>
+					<td class="td-status">상</td>
+				</tr>
+				
+				<tr>
+					<td class="td-stdname">김세연</td>
+					<td class="td-grade">고1</td>
+					<td class="td-class">4반</td>
+					<td class="td-stdnum">10407</td>
+					<td class="td-standard">수학2213</td>
+					<td class="td-status">하</td>
+				</tr>
+				<tr>
+					<td class="td-stdname">김수미</td>
+					<td class="td-grade">고1</td>
+					<td class="td-class">4반</td>
+					<td class="td-stdnum">10408</td>
+					<td class="td-standard">수학2213</td>
+					<td class="td-status">상</td>
+				</tr>
+				<tr>
+					<td class="td-stdname">박신영</td>
+					<td class="td-grade">고1</td>
+					<td class="td-class">4반</td>
+					<td class="td-stdnum">10416</td>
+					<td class="td-standard">수학2213</td>
+					<td class="td-status">중</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row">
+		<h4>단원 평가 수행 결과</h4>
+		<table class="table">
+			<thead>
+				<tr>
+					<th class="td-stdname">이름</th>
+					<th class="td-grade">학년</th>
+					<th class="td-class">반</th>
+					<th class="td-stdnum">학번</th>
+					<th>단원</th>
+					<th>진단결과</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="td-stdname">김수미</td>
+					<td class="td-grade">고1</td>
+					<td class="td-class">4반</td>
+					<td class="td-stdnum">10408</td>
+					<td class="td-standard">함수</td>
+					<td class="td-status">
+						수학2212 - 하<br />
+						수학2213 - 중
+					</td>
+				</tr>
+				<tr>
+					<td class="td-stdname">박신영</td>
+					<td class="td-grade">고1</td>
+					<td class="td-class">4반</td>
+					<td class="td-stdnum">10416</td>
+					<td class="td-standard">함수</td>
+					<td class="td-status">
+						수학2212 - 중<br />
+						수학2213 - 상
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>	
+</div>
+{% endblock %}

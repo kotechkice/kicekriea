@@ -5,175 +5,316 @@
 	  td, th {
 	  	text-align:center;
 	  }
+	  .test_prob{
+	  	width:400px;
+	  }
+	  .test_prob table{
+	  	width:100%;
+	  }
+	  .test_prob td {
+	  	width:33%;
+	  	text-align:left;
+	  }
+	  #basic_option_table td{
+	  	text-align:left;
+	  }
+	  .param_option_num{
+	  	width:40px;
+	  }
+	  .param_option_condition{
+	  	width:250px;
+	  }
+	  #points_input{
+	  	width:50px;
+	  }
+	  #description_input{
+	  	width:500px;
+	  }
+	  #question_input{
+	  	width:600px;
+	  	height:150px;
+	  }
+	  .choices_option{
+	  	width:300px;
+	  }
+	  .solution_step_input{
+	  	width:600px;
+	  	height:100px;
+	  }
 </style>
 {% endblock %}
 {% block script %}
+<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	//	jax: ["input/TeX", "output/HTML-CSS"],
+	jax: ["input/TeX", "output/SVG"],
+	tex2jax: {
+	inlineMath: [['$','$']],
+	displayMath: [ ['$$','$$']],
+	processEscapes: true,
+	processEnvironments: true,
+	preview: "TeX"
+	},
+	"HTML-CSS": { availableFonts: ["STIX", "TeX"],
+	webFont: null },
+	"SVG": {
+	availableFonts: ["TeX"],
+	blacker: 0,
+	scale: 90
+	},
+	showMathMenu: false
+	});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
+
 <script>
-	
-	function setTable(){
-		switch(findBootstrapEnvironment()){
-			case 'xs':
-			//case 'sm':
-				$('.td-id').hide();
-				$('.td-itemnum').hide();
-				$('.status-detail').hide();
-				
-				break;
-			default:
-				$('.td-id').show();
-				$('.td-itemnum').show();
-				$('.status-detail').show();
-		}
-	}
-	$(document).ready(function(){
-		setTable();
-	});
-	$(document).on('click', 'tr', function(){
-		console.log('hello');
-	});
-	$(window).resize(function(){
-		//console.log('windows resized');
-		setTable();
-	});
 </script>
 {% endblock %}
 {% block containor %}
 <div class="container">
-	<table>
-		<tbody>
+	<h3>문항 템플릿 내용 관리</h3><br />
+	<b>새 문항 템플릿 만들기</b> | <a>수정 중인 문항 템플릿</a> | <a>완료 문항 템플릿 관리</a><br /><br />
+	<div class="row">
+		<table id="basic_option_table">
 			<tr>
-				<td>
-					학년
-				</td>
-				<td>
-					대단원
-				</td>
-				<td>
-					중단원
-				</td>
-				<td>
-					소단원
-				</td>
-				<td>
-					성취기준
-				</td>
+				<td><b>Module ID</b></td>
+				<td><input type="number" value="900102" /></td>
 			</tr>
 			<tr>
-				<td>
-					<select size="5" style="width: 180px;"> 
-						<option>고1</option>
-						<option selected="selected">고2</option>
-						<option>고3</option>
-					</select>
-				</td>
-				<td>
-					<select size="5" style="width: 180px;">
-						<option>확률과 통계</option>
-						<option selected="selected">미적분1</option>
-						<option>미적분2</option>
-					</select>
-				</td>
-				<td>
-					<select size="5" style="width: 180px;"> 
-						<option>수열의 극한</option>
-						<option>함수의 극한</option>
-						<option>다항함수의 미분법</option>
-						<option selected="selected">다항함수의 적분법</option>
-					</select>
-				</td>
-				<td>
-					<select size="5" style="width: 180px;"> 
-						<option>부정적분의 기초</option>
-						<option selected="selected">부정적분의 이해</option>
-						<option>부정적분의 활용</option>
-					</select>
-				</td>
-				<td>
-					<select size="5" style="width: 180px;"> 
-						<option>수학2212</option>
-						<option selected="selected">수학2213</option>
-						<option>수학2221</option>
-					</select>
-				</td>
+				<td><b>해답의 종류(SPR)</b></td>
+				<td><select><option>Natural(자연수)</option></select></td>
 			</tr>
-		</tbody>
-	</table>
-	<br />
-	<div class="row">
-		선택된 카테고리 : 고2>미적분1>다항함수의 적분법>부정적분의 이해
-	</div>
-	<div class="row">
-		카테고리 상세설명<br />
-		<textarea> </textarea>
-	</div>
-	<div class="row">
-		선택된 카테고리의 문항 템플릿 리스트
-		<button class="btn btn-primary btn-xs">선택 삭제</button>
-	</div>
-	<div class="row">
-		<table class="table">
-			<thead>
-				<tr class="tr-header">
-					<th><input type="checkbox" /></th>
-					<th class="td-itemid">문항 ID</th>
-					<th class="td-cafacartegory">CAFA 카테고리</th>
-					<th class="td-mng">관리</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td><input type="checkbox" /></td>
-					<td class="td-itemid">11020394</td>
-					<td class="td-cafacartegory">5.1</td>
-					<td class="td-mng"><a>내용보기</a> <a>삭제</a></td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" /></td>
-					<td class="td-itemid">42420394</td>
-					<td class="td-cafacartegory">5.1</td>
-					<td class="td-mng"><a>내용보기</a> <a>삭제</a></td>
-				</tr>
-			</tbody>
+			<tr>
+				<td><b>choices in a row</b></td>
+				<td><select><option>3</option></select></td>
+			</tr>
+			<tr>
+				<td><b>난이도</b></td>
+				<td><select><option>하</option></select></td>
+			</tr>
+			<tr>
+				<td><b>인지수준</b></td>
+				<td><select><option>지식</option></select></td>
+			</tr>
+			<tr>
+				<td><b>기본점수</b></td>
+				<td><input type="number" value="2" id="points_input"/></td>
+			</tr>
+			<tr>
+				<td><b>Description</b></td>
+				<td><input type="text" id="description_input" value="This is a sample item." /></td>
+			</tr>
 		</table>
 	</div>
+	<div class="row">
+		<b>Question</b><br />
+		<textarea id="question_input">What is the value of $x+y$ when $x=@1@$, $y=@2@$?</textarea>
+	</div>
+	<div class="row">
+		<b>Parameters</b><br />
+		<table id="">
+			<tr>
+				<td>@1@</td>
+				<td><select><option>Number</option></select></td>
+				<td>
+					Min: <input type="number" value="5" class="param_option_num" />
+					Max: <input type="number" value="50" class="param_option_num" />
+					Precision: <input type="number" value="1" class="param_option_num" />
+				</td>
+				<td>
+					Condition: <input type="text" class="param_option_condition" />
+				</td>
+			</tr>
+			<tr>
+				<td>@2@</td>
+				<td><select><option>Number</option></select></td>
+				<td>
+					Min: <input type="number" value="5" class="param_option_num" />
+					Max: <input type="number" value="50" class="param_option_num" />
+					Precision: <input type="number" value="1" class="param_option_num" />
+				</td>
+				<td>
+					Condition: <input type="text" value="<>@1@" class="param_option_condition" />
+				</td>
+			</tr>
+			<tr>
+				<td>@3@</td>
+				<td><select><option>Number</option></select></td>
+				<td>
+					Min: <input type="number" value="10" class="param_option_num" />
+					Max: <input type="number" value="80" class="param_option_num" />
+					Precision: <input type="number" value="1" class="param_option_num" />
+				</td>
+				<td>
+					Condition: <input type="text" value="<>@1@+@2@,<>@1@,<>@2@,<>@1@*@2@" class="param_option_condition" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<button class="btn btn-primary btn-sm">
+						<span class="glyphicon glyphicon-plus-sign " aria-hidden="true"> </span>
+					</button>
+				</td>
+			</tr>
+		</table>
+	</div><br />
+	<div class="row">
+		<b>Choices</b><br />
+		<table>
+			<tr>
+				<td>A.&nbsp;</td>
+				<td><input type="text" value="$@1@+@2@$" class="choices_option" /></td>
+			</tr>
+			<tr>
+				<td>B.&nbsp;</td>
+				<td><input type="text" value="$@1@$" class="choices_option" /></td>
+			</tr>
+			<tr>
+				<td>C.&nbsp;</td>
+				<td><input type="text" value="$@2@$" class="choices_option" /></td>
+			</tr>
+			<tr>
+				<td>D.&nbsp;</td>
+				<td><input type="text" value="$@1@*@2@$" class="choices_option" /></td>
+			</tr>
+			<tr>
+				<td>E.&nbsp;</td>
+				<td><input type="text" value="$@3@$" class="choices_option" /></td>
+			</tr>
+		</table>
+	</div><br />
+	<div class="row">
+		<b>Answer : </b><select><option>A</option></select>
+	</div><br />
+	<div class="row">
+		<b>Solution steps</b><br />
+		<table>
+			<tr>
+				<td>1</td>
+				<td><textarea class="solution_step_input">Because $x=@1@$, $y=@2@$, we substitue $@1@$ for $x$ and $@2@$ for $y$. Then $x+y = {@1@} + {@2@} = @1@+@2@$</textarea></td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td><textarea class="solution_step_input"> </textarea></td>
+			</tr>
+			<tr>
+				<td>
+					<button class="btn btn-primary btn-sm">
+						<span class="glyphicon glyphicon-plus-sign " aria-hidden="true"> </span>
+					</button>
+				</td>
+			</tr>
+		</table>
+	</div><br />
 	
 	<div class="row">
-		사용가능한 문항 템플릿 리스트
-		<button class="btn btn-primary btn-xs">선택 추가</button>
-	</div>
-	<div class="row">
-		<table class="table">
-			<thead>
-				<tr class="tr-header">
-					<th><input type="checkbox" /></th>
-					<th class="td-itemid">문항 ID</th>
-					<th class="td-cafacartegory">CAFA 카테고리</th>
-					<th class="td-mng">관리</th>
-				</tr>
-			</thead>
+		<h4>카테고리 선택</h4>
+		
+		선택된 카테고리(대표 카테고리 선택)
+		<table>
+			<tr>
+				<td><input type="radio" name="typical_category" checked="checked"/> </td>
+				<td><b>고2>미적분1>다항함수의적분법>부정적분의 이해>수학2213</b> <button class="btn btn-default btn-xs">선택해제</button></td>
+			</tr>
+			<tr>
+				<td><input type="radio" name="typical_category" /> </td>
+				<td>고2>미적분1>다항함수의적분법>부정적분의 이해>수학2221 <button class="btn btn-default btn-xs">선택해제</button></td>
+			</tr>
+		</table><br />
+		
+		<button class="btn btn-primary btn-sm">카테고리 선택</button><br />
+		<table>
 			<tbody>
 				<tr>
-					<td><input type="checkbox" /></td>
-					<td class="td-itemid">11020394</td>
-					<td class="td-cafacartegory">5.1</td>
-					<td class="td-mng"><a>내용보기</a> <a>추가</a></td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" /></td>
-					<td class="td-itemid">42420394</td>
-					<td class="td-cafacartegory">5.1</td>
-					<td class="td-mng"><a>내용보기</a> <a>추가</a></td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" /></td>
-					<td class="td-itemid">31125394</td>
-					<td class="td-cafacartegory">5.2</td>
-					<td class="td-mng"><a>내용보기</a> <a>추가</a></td>
+					<td>
+						<select size="5" style="width: 180px;"> 
+							<option>고1</option>
+							<option selected="selected">고2</option>
+							<option>고3</option>
+						</select>
+					</td>
+					<td>
+						<select size="5" style="width: 180px;">
+							<option>확률과 통계</option>
+							<option selected="selected">미적분1</option>
+							<option>미적분2</option>
+						</select>
+					</td>
+					<td>
+						<select size="5" style="width: 180px;"> 
+							<option>수열의 극한</option>
+							<option>함수의 극한</option>
+							<option>다항함수의 미분법</option>
+							<option selected="selected">다항함수의 적분법</option>
+						</select>
+					</td>
+					<td>
+						<select size="5" style="width: 180px;"> 
+							<option>부정적분의 기초</option>
+							<option selected="selected">부정적분의 이해</option>
+							<option>부정적분의 활용</option>
+						</select>
+					</td>
+					<td>
+						<select size="5" style="width: 180px;"> 
+							<option>수학 2212</option>
+							<option selected="selected">수학 2213</option>
+							<option>수학 2221</option>
+						</select>
+					</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
+	<div class="row">
+		<h4>Test</h4>
+		Times : <input type="number" value="2" />
+		Seed : <input type="number" />
+		<button class="btn btn-primary">Test</button><br />
+		
+		<div class="test_prob panel panel-default">
+			<div class="panel-heading"><b>Seed : </b>272<br /></div>
+			<div class="panel-body">
+				<b>Question : </b>What is the value of $x+y$ when $x=15$, $y=20$?
+				<table>
+					<tr>
+						<td>A. $35$</td>
+						<td>B. $15$</td>
+						<td>C. $20$</td>
+					</tr>
+					<tr>
+						<td>D. $300$</td>
+						<td>E. $42$</td>
+					</tr>
+				</table>
+				<b>Answer : </b>A<br />
+				<b>Solution<br />1 :</b> Because $x=15$, $y=20$, we substitue $15$ for $x$ and $20$ for $y$. Then $x+y = 15 + 20 = 35$
+			</div>
+		</div>
+		<div class="test_prob panel panel-default">
+			<div class="panel-heading"><b>Seed : </b>385<br /></div>
+			<div class="panel-body">
+				<b>Question : </b>What is the value of $x+y$ when $x=27$, $y=10$?
+				<table>
+					<tr>
+						<td>A. $37$</td>
+						<td>B. $27$</td>
+						<td>C. $10$</td>
+					</tr>
+					<tr>
+						<td>D. $270$</td>
+						<td>E. $53$</td>
+					</tr>
+				</table>
+				<b>Answer : </b>A<br />
+				<b>Solution<br />1 :</b> Because $x=27$, $y=10$, we substitue $27$ for $x$ and $10$ for $y$. Then $x+y = 27 + 10 = 37$
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<button class="btn btn-default">완료</button>
+		<button class="btn btn-primary">임시저장</button>
+	</div><br /><br /><br /><br />
 </div>
-
-
 {% endblock %}
