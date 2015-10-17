@@ -22,6 +22,8 @@ SECRET_KEY = 'aj&yjl94f7w)_&7qgkkzk&24dftso&4o25jbw0@t9vtk^$z593'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+#DEFAULT_CHARSET = 'utf-8'
+
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = ['kice.kriea.co.kr']
@@ -75,11 +77,13 @@ DATABASES = {
         "PORT": "3306",
     }
 }
+#DATABASE_OPTIONS = {'charset': 'utf8'}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+#LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
 #TIME_ZONE = 'UTC'
 TIME_ZONE = 'Asia/Seoul'

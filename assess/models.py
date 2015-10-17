@@ -3,7 +3,18 @@ from django.utils import timezone
 from django.contrib.auth.models import User, Group
 
 # Create your models here.
+
+class AssessmentTemplateCategory(models.Model):
+    name = models.CharField(max_length=80, null=True)
+    level = models.IntegerField(null=True)
+    upper_atc = models.ForeignKey('self', null=True)
+    
+    def __unicode__(self):
+        return self.name
+    
 class AssessmentTemplate(models.Model):
+    atc = models.ForeignKey(AssessmentTemplateCategory, null=True)
+    
     ct_id = models.IntegerField(null=True)
     based_ct_id = models.IntegerField(null=True)
     
@@ -30,20 +41,72 @@ class AssessmentTemplate(models.Model):
     
     def __unicode__(self):
         return self.name
+
+class ItemTemplateCategoryLevelLabel(models.Model):
+    MarkTyeps = (
+        ('None', 'It has no type.'),
+        ('BRPO', 'Big Rome letters with a point'), # I., II., 'III.
+        ('SRPO', 'Small Rome letters with a point'),
+        
+        ('NMPO', 'Numbers with a point'),
+        ('NMAC', 'Numbers in a circle'),
+        ('NMAR', 'Numbers with a round bracket'),
+        ('NMRB', 'Numbers in round brackets'),
+        ('NMSB', 'Numbers in square brackets'),
+        ('NMBR', 'Numbers in braces'),
+    )
+    LevelTypes = (
+        ('N', 'None'),
+        ('R', 'Root'),
+        ('U', 'Unit'),
+        ('G', 'Grade'),
+        ('M', 'Middle Unit'),
+        ('D', 'Domain'),
+        ('C', 'Cluster'),
+        ('S', 'Standard'),
+        ('E', 'Etc'),
+    )
+    name = models.CharField(max_length=40, null=True)
+    mark = models.CharField(max_length=4, choices=MarkTyeps, null=True)
+    level = models.IntegerField(null=True)
+    type = models.CharField(max_length=1, choices=LevelTypes, null=True)
+    def __unicode__(self):
+        return self.name
+
+class ItemTemplateCategory(models.Model):
+    name = models.CharField(max_length=80, null=True)
+    level_label = models.ForeignKey(ItemTemplateCategoryLevelLabel, null=True)
+    upper_itc = models.ForeignKey('self', null=True)
     
+    def __unicode__(self):
+        return self.name
+  
 class ItemTemplate(models.Model):
     cafa_it_id = models.IntegerField()
     choices_in_a_row = models.IntegerField(null=True)
+    #itc = models.ForeignKey(ItemTemplateCategory, null=True)
     def __unicode__(self):
         return str(self.cafa_it_id)
 
+class MappedItemTemplateCategory(models.Model):
+    itc = models.ForeignKey(ItemTemplateCategory)
+    it = models.ForeignKey(ItemTemplate)
+    def __unicode__(self):
+        return str(self.it.cafa_it_id) + '-' + self.itc.name
+  
 class MappedItemAssessmentTemplate(models.Model):
     at = models.ForeignKey(AssessmentTemplate)
     it = models.ForeignKey(ItemTemplate)
     order = models.IntegerField(null=True)
     def __unicode__(self):
         return self.at.name + '-' + str(self.it.cafa_it_id)
-    
+
+class GroupAssessment(models.Model):
+    at = models.ForeignKey(AssessmentTemplate)
+    group = models.ForeignKey(Group)
+    #creator = models.ForeignKey(User)
+    #creation_time = models.DateTimeField(null=True)
+
 class UserAssessment(models.Model):
     at = models.ForeignKey(AssessmentTemplate)
     user = models.ForeignKey(User)

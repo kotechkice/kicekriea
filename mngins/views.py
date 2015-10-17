@@ -14,6 +14,9 @@ from home.funcs import code_str_generator
 from auth_ext.models import *
 from auth_ext.funcs import * 
 
+from assess.models import *
+from assess.models import *
+
 import json
 
 # Create your views here.
@@ -250,3 +253,96 @@ def modify_pinfo(request):
     })
     return render_to_response('mngins/modify_pinfo.html', variables) 
 
+def itemtemp(request):
+    if request.user.is_authenticated():
+        if len(UserGroupInfo.objects.filter(group__name='1', user=request.user)) == 0:
+            return redirect('/mngins/logout')
+    else:
+        return redirect('/mngins/login')
+    
+    variables = RequestContext(request, {
+        'mngins_string' : mngins_string,
+        'home_string' : home_string,
+        
+    })
+    return render_to_response('mngins/itemtemp.html', variables) 
+
+def itemtemp_category(request):
+    if request.user.is_authenticated():
+        if len(UserGroupInfo.objects.filter(group__name='1', user=request.user)) == 0:
+            return redirect('/mngins/logout')
+    else:
+        return redirect('/mngins/login')
+    
+    if request.is_ajax() :
+        #print request.GET
+        data = json.dumps({'status':"fail"})
+        if not 'method' in request.GET:
+            data = json.dumps({'status':"fail"})
+            return HttpResponse(data, 'application/json')
+
+        if request.GET['method'] == 'set_itemtemp':
+            if 'itemid_str' in request.GET:
+                #print request.GET['itemid_str'].split()
+                for itemid in request.GET['itemid_str'].split():
+                    #print itemid
+                    exist_list = ItemTemplate.objects.filter(cafa_it_id=itemid)
+                    if len(exist_list) == 0:
+                        it = ItemTemplate()
+                        it.cafa_it_id = itemid
+                        it.save()
+                no_category_itemids = map(lambda x:x.cafa_it_id, ItemTemplate.objects.filter(itc=None))
+                
+                data = json.dumps({'status':"success", 'no_category_itemids':no_category_itemids})
+            
+        return HttpResponse(data, 'application/json')
+    
+    
+    itcll0_s = ItemTemplateCategoryLevelLabel.objects.get(level=0)
+    itc0_s = ItemTemplateCategory.objects.filter(level_label = itcll0_s)
+    variables = RequestContext(request, {
+        'mngins_string' : mngins_string,
+        'home_string' : home_string,
+        'itcll0_s' : itcll0_s,
+        'itc0_s' : itc0_s,
+        
+    })
+    return render_to_response('mngins/itemtemp_category.html', variables) 
+
+def assesstemp(request):
+    if request.user.is_authenticated():
+        if len(UserGroupInfo.objects.filter(group__name='1', user=request.user)) == 0:
+            return redirect('/mngins/logout')
+    else:
+        return redirect('/mngins/login')
+    
+    if request.is_ajax() :
+        data = json.dumps({'status':"fail"})
+        if not 'method' in request.GET:
+            data = json.dumps({'status':"fail"})
+            return HttpResponse(data, 'application/json')
+
+        if request.GET['method'] == 'sel_atc':
+            if 'atc_id' in request.GET and 'level' in request.GET:
+                if request.GET['atc_id'] == 'all':
+                    pass
+                elif request.GET['atc_id'] == 'none':
+                    pass
+                else:
+                    atc_objs = AssessmentTemplateCategory.objects.filter(upper_atc__id=request.GET['atc_id'])
+                    atcs = []
+                    for atc_obj in atc_objs:
+                        atcs.append({'id':atc_obj.id, 'name':atc_obj.name})
+                    data = json.dumps({'status':"success", 'atcs':atcs})
+            
+        return HttpResponse(data, 'application/json')
+    
+    
+    atc0_s =  AssessmentTemplateCategory.objects.filter(level=0)
+    
+    variables = RequestContext(request, {
+        'mngins_string' : mngins_string,
+        'home_string' : home_string,
+        'atc0_s':atc0_s,
+    })
+    return render_to_response('mngins/assesstemp.html', variables) 

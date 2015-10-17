@@ -1,0 +1,161 @@
+{% extends "mngins/container/base.html" %}
+{% block title %}형성평가 템플릿 관리 페이지{% endblock %}
+{% block script %}
+<script>
+	var test_dat;
+	$(document).on('change', '.atc_category', function(){
+		//test_dat = this;
+		//console.log($(this).parent().attr('level'));
+		console.log($(this).find('option:selected').val());
+		//if($(this).find('option:selected').val() == 'all'){}
+		var level = Number($(this).parent().attr('level'));
+		$.ajax({
+			url : "/mngins/assesstemp",
+			dataType : "json",
+			data : {
+				'method':'sel_atc',
+				'level':level,
+				'atc_id':$(this).find('option:selected').val(),
+			}
+		}).done(function(msg) {
+			console.log(msg);
+			test_dat = msg;
+			if(msg['status'] == 'success'){
+				//$("td").filter(function(){return $(this).attr('level') == 0;})
+				$("td").filter(function(){return $(this).attr('level') > level;}).remove();
+				
+				var html = '';
+				html += '<td level="'+(level+1)+'" class="select_td">';
+				html += '	<select size="5" style="width: 180px;" class="atc_category">';
+				//html += '		<option value="all">전체</option>';
+				for(var i=0; i<msg['atcs'].length; i++){
+					html += '		<option value="'+msg['atcs'][i].id+'">'+msg['atcs'][i].name+'</option>';
+				}
+				html += '	</select>';
+				html += '</td>';
+				html += '<td level="'+(level+1)+'" class="arrow_td">';
+				html += '	<button class="btn btn-default btn-xs up_btn">';
+				html += '		<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>';
+				html += '	</button><br />';
+				html += '	<button class="btn btn-default btn-xs down_btn">';
+				html += '		<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>';
+				html += '	</button>';
+				html += '</td>';
+				$('#atc_select_tr').append(html);
+				
+				html = '';
+				html += '<td colspan="2" level="'+(level+1)+'">';
+				html += '	<input type="text" style="width: 80px;"/>';
+				html += '	<button class="btn btn-default btn-xs">추가</button>';
+				html += '	<button class="btn btn-default btn-xs">수정</button>';
+				html += '	<button class="btn btn-default btn-xs">삭제</button>';
+				html += '</td>';
+				$('#atc_edit_tr').append(html);
+			//	location.reload();
+			}
+		});
+	});
+</script>
+{% endblock %}
+
+{% block containor %}
+<div class="container">
+	<h3>형성평가 템플릿 관리 페이지</h3>
+	<h4>형성평가 카테고리 관리</h4>
+	<table>
+		<tbody>
+			<tr id="atc_select_tr">
+				<td level="0" class="select_td">
+					<select size="5" style="width: 180px;" class="atc_category"> 
+						<!--option value="all">전체</option-->
+						{% for atc0 in atc0_s %}
+							<option value="{{atc0.id}}">{{ atc0.name }}</option>
+						{% endfor %}
+						<option value="none">카테고리 미지정</option>
+					</select>
+				</td>
+				<td level="0" class="arrow_td">
+					<button class="btn btn-default btn-xs up_btn">
+						<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+					</button><br /> 
+					<button class="btn btn-default btn-xs down_btn">
+						<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+					</button>  
+				</td>
+			</tr>
+			<tr id="atc_edit_tr">
+				<td colspan="2" level="0">
+					<input type="text" style="width: 80px;"/>
+					<button class="btn btn-default btn-xs">추가</button>
+					<button class="btn btn-default btn-xs">수정</button>
+					<button class="btn btn-default btn-xs">삭제</button>
+				</td>
+			</tr>
+		</tbody>
+	</table><br />
+	 
+	<div class="row">
+	<h4>선택된 카테고리의 형성평가 템플릿</h4>
+	<button class="btn btn-default">
+		새 형성평가 템플릿
+	</button>
+	<button class="btn btn-default">
+		선택 삭제
+	</button>
+		<table class="table">
+			<thead>
+				<tr class="tr-header">
+					<th><input type="checkbox" /></th>
+					<th class="td-name">이름</th>
+					<th class="td-id">CT_ID</th>
+					<th class="td-itemnum">문항 템플릿 수</th>
+					<th class="td-status">상태</th>
+					<th class="td-mng">관리</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td class="td-name">정적분1</td>
+					<td class="td-id">2425</td>
+					<td class="td-itemnum">15</td>
+					<td class="td-status">비활성</td>
+					<td class="td-mng"><a>설정수정</a> <a>상세보기</a> <a>삭제</a></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td class="td-name">정적분2</td>
+					<td class="td-id">3243</td>
+					<td class="td-itemnum">20</td>
+					<td class="td-status">비활성</td>
+					<td class="td-mng"><a>설정수정</a> <a>상세보기</a> <a>삭제</a></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td class="td-name">부정적분1</td>
+					<td class="td-id">5323</td>
+					<td class="td-itemnum">8</td>
+					<td class="td-status">활성</td>
+					<td class="td-mng"><a>설정수정</a> <a>상세보기</a> <a>삭제</a></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td class="td-name">미분1</td>
+					<td class="td-id">4325</td>
+					<td class="td-itemnum">17</td>
+					<td class="td-status">활성</td>
+					<td class="td-mng"><a>설정수정</a> <a>상세보기</a> <a>삭제</a></td>
+				</tr>
+				<tr>
+					<td><input type="checkbox" /></td>
+					<td class="td-name">미분2</td>
+					<td class="td-id">3422</td>
+					<td class="td-itemnum">12</td>
+					<td class="td-status">활성</td>
+					<td class="td-mng"><a>설정수정</a> <a>상세보기</a> <a>삭제</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}

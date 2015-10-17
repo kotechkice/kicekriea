@@ -1,5 +1,5 @@
 {% extends "mngins/container/base.html" %}
-{% block title %}관리기관 메인 페이지{{% endblock %}
+{% block title %}문항 템플릿 관리 페이지{{% endblock %}
 {% block style %}
 <style>
 	.btn-primary {
@@ -17,20 +17,15 @@
 {% block containor %}
 <div class="container text-center">
 	<div class="row h3">
-	관리기관 메인 페이지 
+	문항 템플릿 관리 페이지 
 	</div><br />
 	<div class="row">
-		<a href="/mngins/"><button class="btn btn-primary">과제물 템플릿 관리</button></a>
+		<a href="/mngins/itemtemp_category"><button class="btn btn-primary">문항 템플릿 카테고리 관리</button></a>
 	</div>
 	<div class="row">
 		<!--button class="btn btn-primary">과제 상태 보기</button-->
 	</div>
 	<div class="row">
-		<a href="/mngins/modify_auths"><button class="btn btn-primary">매니저, 학교 계정 관리</button></a>
-	</div>
-	<div class="row">
-		<a href="/mngins/itemtemp"><button class="btn btn-primary">문항 템플릿 관리</button></a>
-	</div>
 	
 </div>
 {% endblock %}
