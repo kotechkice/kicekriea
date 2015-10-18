@@ -47,6 +47,7 @@
 			//console.log(data);
 			//test_dat = data;
 			choices_in_a_row = $(data).find('ChoicesPerLine').text();
+			
 			$.ajax({
 				url:'/mngins/itemtemp_update',
 				dataType:'json',
@@ -65,10 +66,32 @@
 					}
 				}
 			});
+		}).fail(function(msg) {
+			console.log('error');
+		    console.log(msg);
+		    $.ajax({
+				url:'/mngins/itemtemp_update',
+				dataType:'json',
+				data:{
+					'method':'set_one_item',
+					'itemID':itemID,
+					'choices_in_a_row':1,
+				}
+			}).done(function(msg){
+				//console.log(msg);
+				if(msg['status'] == 'success' && process_item_num < len_item){
+					process_item_num += 1;
+					$('#status').text(process_item_num + '/' + len_item);
+					if(process_item_num < len_item){
+						set_one_item();
+					}
+				}
+			});
 		});
 	}
 	$(document).on('click', '#start_btn', function(){
-		//$(this).hide();
+		$(this).hide();
+		$('#status').text(process_item_num + '/' + len_item);
 		var url = 'http://cafalab.com/asp/GetItemList.asp';
 		$.get(url, function (data) {
 			//console.log(data);
