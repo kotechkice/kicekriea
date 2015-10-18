@@ -9,6 +9,7 @@ urlpatterns = patterns('',
     url(r'^modify_auths', modify_auths, name='modify_auths'),
     url(r'^modify_pinfo', modify_pinfo, name='modify_pinfo'),
     url(r'^itemtemp$', itemtemp, name='itemtemp'),
+    url(r'^itemtemp_update$', itemtemp_update, name='itemtemp_update'),
     url(r'^itemtemp_category$', itemtemp_category, name='itemtemp_category'),
     url(r'^assesstemp$', assesstemp, name='assesstemp'),
     

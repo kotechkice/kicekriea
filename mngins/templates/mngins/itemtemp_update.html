@@ -1,0 +1,97 @@
+{% extends "mngins/container/base.html" %}
+{% block title %}문항 템플릿 업데이트{% endblock %}
+{% block style %}
+<style>
+	 
+</style>
+{% endblock %}
+{% block script %}
+<script>
+	var test_dat;
+	var process_item_num = 0;
+	var len_item = 0;
+	var xml_dat;
+	$(document).ready(function(){
+		/*var url = 'http://cafalab.com/asp/GetItemList.asp';
+		$.get(url, function (data) {
+			console.log(data);
+			
+			$.ajax({
+				url:'/mngins/itemtemp_category',
+				dataType:'json',
+				data:{
+					'method':'set_itemtemp',
+					'itemid_str' : $(data).find('Item').text()
+				}
+			}).done(function(msg){
+				if(msg['status'] == 'success'){
+					var html = '';
+					no_category_itemids = msg['no_category_itemids'];
+					for(var index in no_category_itemids){
+						//html = '';
+						html += '<tr itemid="'+no_category_itemids[index]+'">';
+						html += '	<td><input type="checkbox" /></td>';
+						html += '	<td class="td-itemid">'+no_category_itemids[index]+'<div class="item_detail" align="center" hidden>empty</div></td>';
+						html += '	<td class="td-mng"><a href="#" class="show_item_detail">내용<span class="show_txt">보기</span><span class="close_txt" hidden>닫기</span></a> <a>추가</a></td>';
+						html += '</tr>';
+					}
+					$("#it_no_category_section tbody").html(html);
+				}
+			});
+		});*/
+	});
+	function set_one_item(){
+		var itemID = $($(xml_dat).find('Item')[process_item_num]).find('ItemID').text();
+		var url = 'http://cafalab.com/asp/GetItemInfo.asp?Item=' + itemID;
+		$.get(url, function (data) {
+			//console.log(data);
+			//test_dat = data;
+			choices_in_a_row = $(data).find('ChoicesPerLine').text();
+			$.ajax({
+				url:'/mngins/itemtemp_update',
+				dataType:'json',
+				data:{
+					'method':'set_one_item',
+					'itemID':itemID,
+					'choices_in_a_row':choices_in_a_row,
+				}
+			}).done(function(msg){
+				//console.log(msg);
+				if(msg['status'] == 'success' && process_item_num < len_item){
+					process_item_num += 1;
+					$('#status').text(process_item_num + '/' + len_item);
+					if(process_item_num < len_item){
+						set_one_item();
+					}
+				}
+			});
+		});
+	}
+	$(document).on('click', '#start_btn', function(){
+		//$(this).hide();
+		var url = 'http://cafalab.com/asp/GetItemList.asp';
+		$.get(url, function (data) {
+			//console.log(data);
+			//test_dat = data;
+			xml_dat = data;
+			//test_dat = $(data).find('Item').text();
+			len_item = $(data).find('Item').length;
+			
+			$('#status').text(process_item_num + '/' + len_item);
+			set_one_item();
+		});
+		
+	});
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<h3>문항 템플릿 업데이트</h3><br />
+	<div class="row">
+		<button class="btn btn-primary" id="start_btn">시작</button>
+		<div id="status"> </div>
+	</div>
+</div>
+
+
+{% endblock %}

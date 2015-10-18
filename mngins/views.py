@@ -267,6 +267,36 @@ def itemtemp(request):
     })
     return render_to_response('mngins/itemtemp.html', variables) 
 
+def itemtemp_update(request):
+    if request.user.is_authenticated():
+        if len(UserGroupInfo.objects.filter(group__name='1', user=request.user)) == 0:
+            return redirect('/mngins/logout')
+    else:
+        return redirect('/mngins/login')
+    if request.is_ajax():
+        data = json.dumps({'status':"fail"})
+        if not 'method' in request.GET:
+            data = json.dumps({'status':"fail"})
+            return HttpResponse(data, 'application/json')
+        if request.GET['method'] == 'set_one_item':
+            if 'itemID' in request.GET and 'choices_in_a_row' in request.GET:
+                exist_list = ItemTemplate.objects.filter(cafa_it_id=request.GET['itemID'])
+                if len(exist_list) == 0:
+                    it = ItemTemplate()
+                    it.cafa_it_id = request.GET['itemID']
+                else:
+                    it = exist_list[0]
+                it.choices_in_a_row = request.GET['choices_in_a_row']
+                it.save()
+                data = json.dumps({'status':"success"})
+        return HttpResponse(data, 'application/json')
+    variables = RequestContext(request, {
+        'mngins_string' : mngins_string,
+        'home_string' : home_string,
+        
+    })
+    return render_to_response('mngins/itemtemp_update.html', variables) 
+
 def itemtemp_category(request):
     if request.user.is_authenticated():
         if len(UserGroupInfo.objects.filter(group__name='1', user=request.user)) == 0:
