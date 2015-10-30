@@ -22,10 +22,20 @@
 	  	font-size:15px;
 	  }
 	  #item_temp_category_table td{
-	  	border: 1px solid black;
+	  	/*border: 1px solid black;*/
 	  }
 	  .category_name {
 	  	max-width:100px;
+	  }
+	  #add_category_td button{
+	  	margin:10px;
+	  }
+	  .item_detail_tr div{
+	  	max-width:500px;
+	  	text-align:left;
+	  }
+	  .item_detail_tr div table td {
+	  	text-align:left;
 	  }
 </style>
 {% endblock %}
@@ -54,214 +64,8 @@ MathJax.Hub.Config({
 </script>
 
 <script>
-	var test_dat;
-	
-	var choices_num_line;
-	var alphabet = "ABCDEFGHIJK";
-	var circle_num = '①②③④⑤⑥';
-	var num_from_alpha = {'A':1, 'B':2, 'C':3, 'D':4, 'E':5};
-	
-	var category_types = {
-		'N':'없음',
-		'R': '루트',
-        'U': '단원',
-        'G': '학년',
-        'D': '대단원',
-        'M': '중단원',
-        'C': 'Cluster',
-        'S': 'Standard',
-        'E': '기타',
-	};
-	
-	var marks = {
-		'BRPO':['I.', 'II.', 'III.'], //Big Rome letters with a point
-		'SRPO':['i.', 'ii.', 'iii.'], //Small Rome letters with a point
-		
-		'NMPO':['1.', '2.', '3.'], //Numbers with a point
-		'NMAC':['①', '②', '③'], //Numbers in a circle
-		'NMAR':['1)', '2)', '3)'], //Numbers with a round bracket
-		'NMRB':['(1)', '(2)', '(3)' ], //Numbers in round brackets
-		'NMSB':['[1]', '[2]', '[3]' ], //Numbers in square brackets 
-		'NMBR':['<1>', '<2>', '<3>'], //Numbers in braces
-		
-		//'BEPO':['A.'], //Big English with a point
-		//'SEPO':['a.'], //Small English with a point//ⓐⓑⓒ
-		//'KCPO':['ㄱ.'], //Korean Consonants with a point
-		//'KWPO':['가.'], //Korean Words with a point
-	};
-	
-	function getitem_to_json(xml_data){
-	    xml_data = $(xml_data).find('Item')[0];
-	    var prob_dict = {};       
-	    var prob_tag = ["seed", "question", "choice", "permutation"];
-	    for(index in prob_tag){
-	        if(prob_tag[index] == "choice"){
-	            prob_dict['choice'] = [];
-	            for(var j=0; j<$(xml_data).find(">choice").length; j++){
-	                prob_dict['choice'].push($($(xml_data).find(">choice:eq("+j+")")[0]).text());
-	            }
-	        }  else if (prob_tag[index] == "seed") {
-	            seed = $($(xml_data).find(">seed")).text();
-	        }  else {
-	            prob_dict[prob_tag[index]] = $($(xml_data).find(">"+prob_tag[index])).text();
-	        }
-	    }
-	    return prob_dict;
-	}
-	function gradeitem_to_json(xml_data){
-	    xml_data = $(xml_data).find('Item')[0];
-	    var prob_dict = {};       
-	    var prob_tag = ["answer", "solution"];
-	    for(index in prob_tag){
-	        if (prob_tag[index] == "answer") {//A:1, B:2, C:3, D:4, E:5
-	            ans = $(xml_data).find(">answer").text();
-	            //prob_dict["answer"] = ans;
-	            prob_dict["answer"] = $(xml_data).find(">answer").text().charCodeAt(0) - 'A'.charCodeAt(0) + 1;
-	            prob_dict["answer_text"] = $($(xml_data).find(">choice:eq("+(prob_dict["answer"]-1)+")")[0]).text();
-	        } else if(prob_tag[index] == "solution"){
-	            prob_dict[prob_tag[index]] = $($(xml_data).find(">"+prob_tag[index])).text();
-	            prob_dict['solutions'] = [];
-	            for(var j=0; j<$(xml_data).find(">solution").length; j++ ){
-	                prob_dict['solutions'].push($($(xml_data).find(">solution:eq("+j+")")[0]).text());
-	            }
-	        }else {
-	            prob_dict[prob_tag[index]] = $($(xml_data).find(">"+prob_tag[index])).text();
-	        }
-	    }
-	    return prob_dict;
-	}
-	function getiteminfo_to_json(xml_data){
-	    xml_data = $(xml_data).find('Item')[0];
-	    var prob_dict = {};       
-	    var prob_tag = ["ItemID", "ModuleID", "Category1", "Difficulty", "Skill", "AnswerType", "Points", "Ability", "Description", "Exposure", "Correct", "Complexity", "Created", "Institute", "ChoicesPerLine", "Height"];
-	    for(index in prob_tag){
-	        prob_dict[prob_tag[index]] = $($(xml_data).find(">"+prob_tag[index])).text();
-	    }
-	    return prob_dict;
-	}
-	
-	$(document).ready(function(){
-		var option_html = "";
-		option_html += '<option value="None">없음</option>';
-		for(var key in marks){
-			//console.log(key);
-			//console.log(marks[key]);
-			var exam_string = marks[key].join('');
-			option_html += '<option value = "'+key+'">'+exam_string+'</option>';
-		}
-		//marks
-		$("#category_label_row>td:eq(0)>.mark_type>select").html(option_html);
-		$("#category_label_row>td:eq(0)>.mark_type>select").val("{{ itcll0_s.mark }}").attr("selected", "selected");
-		
-		option_html = "";
-		for(var key in category_types){
-			option_html += '<option value = "'+key+'">'+category_types[key]+'</option>';
-		}
-		
-		$("#category_label_row>td:eq(0)>.category_type_edit>select").html(option_html);
-		$("#category_label_row>td:eq(0)>.category_type_edit>select").val("{{ itcll0_s.type }}").attr("selected", "selected");
-		/*
-		var url = 'http://cafalab.com/asp/GetItemList.asp';
-		$.get(url, function (data) {
-			console.log(data);
-			
-			$.ajax({
-				url:'/mngins/itemtemp_category',
-				dataType:'json',
-				data:{
-					'method':'set_itemtemp',
-					'itemid_str' : $(data).find('Item').text()
-				}
-			}).done(function(msg){
-				if(msg['status'] == 'success'){
-					var html = '';
-					no_category_itemids = msg['no_category_itemids'];
-					for(var index in no_category_itemids){
-						//html = '';
-						html += '<tr itemid="'+no_category_itemids[index]+'">';
-						html += '	<td><input type="checkbox" /></td>';
-						html += '	<td class="td-itemid">'+no_category_itemids[index]+'<div class="item_detail" align="center" hidden>empty</div></td>';
-						html += '	<td class="td-mng"><a href="#" class="show_item_detail">내용<span class="show_txt">보기</span><span class="close_txt" hidden>닫기</span></a> <a>추가</a></td>';
-						html += '</tr>';
-					}
-					$("#it_no_category_section tbody").html(html);
-				}
-			});
-		});*/
-	});
-	$(document).on('click', '.show_item_detail', function(){
-		//test_dat  = this;
-		var this_sel = this; 
-		
-		$(this_sel).parent().parent().find('.item_detail').toggle();
-		$(this_sel).parent().parent().find('.show_txt').toggle();
-		$(this_sel).parent().parent().find('.close_txt').toggle();
-		
-		if($(this_sel).parent().parent().find('.item_detail').text() != 'empty'){
-			return false;
-		}
-		$(this_sel).parent().parent().find('.item_detail').text('loading');
-		
-		var itemID = $(this).parent().parent().attr("itemid");
-		var seed = 100;
-		var choices_num_line = 5;
-		//$(this).parent().parent().find('.td-itemid').append('hi')
-		var url = 'http://cafalab.com/asp/GetItemInfo.asp?clientID=XXXX&item='+itemID;
-		$.get(url, function (data) {
-			var json_one = getiteminfo_to_json(data);
-			if(isNaN(json_one['ChoicesPerLine'])){
-				choices_num_line = 3;
-			} else {
-				choices_num_line = Number(json_one['ChoicesPerLine']);
-				if(choices_num_line == 0) {
-					choices_num_line = 3;
-				}
-			}
-			var url_grade = 'http://cafalab.com/asp/GradeItem.asp?clientID=XXXX&item='+itemID+'&seed='+seed;
-			$.get(url_grade, function (data) {
-				//console.log(data);
-				var prob_q = getitem_to_json(data);
-				var prob_s = gradeitem_to_json(data);
-				
-				var html_dat = prob_q['question'];
-				var per_value = Math.floor(100/choices_num_line);
-				
-				var html_dat = prob_q['question'];
-				var per_value = Math.floor(100/choices_num_line);
-				
-				html_dat += '<br /><table width="100%"><tr>';
-				for(var i=0; i<5; i++){
-					html_dat += '<td class="choice width="'+per_value+'%" valign="top">'+circle_num[i] +' ' + prob_q['choice'][i]+'</td>';
-					if((i+1)%choices_num_line === 0){
-						html_dat += '</tr><tr>';
-					}
-				}
-				html_dat += '</tr></table>';
-				$(this_sel).parent().parent().find('.item_detail').html(html_dat);
-				MathJax.Hub.Typeset();
-			});
-		});
-		return false;
-	});
-	$(document).on('change', '#category_list_row select', function(){
-		//console.log('select');
-		test_dat = this;
-		console.log($(this).parent().attr('class'));
-		console.log($(this).find('option:selected').attr('itc_id'));
-		
-		$.ajax({
-			url:'/mngins/itemtemp_category',
-			dataType:'json',
-			data:{
-				'method':'set_itemtemp',
-				'itemid_str' : $(data).find('Item').text()
-			}
-		}).done(function(msg){
-			console.log(msg);
-			if(msg['status'] == 'success'){
-			}
-		});
-	});
+	{% include "mngins/container/manage_probs.js" %}
+	{% include "mngins/container/itemtemp_category.js" %}
 </script>
 {% endblock %}
 {% block containor %}
@@ -270,7 +74,7 @@ MathJax.Hub.Config({
 	<table id="item_temp_category_table">
 		<tbody>
 			<tr id="category_label_row">
-				<td colspan="2" class="level_0">
+				<td level="0" colspan="2">
 					<div class="category_type_edit">
 						분류 :
 						<select>
@@ -288,41 +92,41 @@ MathJax.Hub.Config({
 				</td>
 			</tr>
 			<tr id="category_list_row">
-				<td class="level_0">
+				<td level="0" class="select_td">
 					<select size="5" style="width: 180px;">
 						{% for itc0 in itc0_s %}
 						<option itc_id="{{itc0.id}}">{{ itc0.name }}</option>
 						{% endfor %}
 					</select>
 				</td>
-				<td class="level_0">
-					<button class="btn btn-default btn-xs">
+				<td level="0" class="arrow_td">
+					<button class="btn btn-default btn-xs arrow_btn arrow_up">
 						<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
 					</button><br /> 
-					<button class="btn btn-default btn-xs">
+					<button class="btn btn-default btn-xs arrow_btn arrow_down">
 						<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
 					</button>  
 				</td>
-				<td>
-					<button class="btn btn-primary btn-xs">+</button>
+				<td id="add_category_td">
+					<button class="btn btn-primary btn-sm">+</button>
 				</td>
 			</tr>
 			<tr id="category_edit_row">
-				<td colspan="2">
+				<td level="0" colspan="2">
 					<input type="text" style="width: 80px;"/>
-					<button class="btn btn-default btn-xs">추가</button>
-					<button class="btn btn-default btn-xs">수정</button>
-					<button class="btn btn-default btn-xs">삭제</button>
+					<button class="btn btn-default btn-xs edit_category_btn add_category">추가</button>
+					<button class="btn btn-default btn-xs edit_category_btn modify_category">수정</button>
+					<button class="btn btn-default btn-xs edit_category_btn del_category">삭제</button>
 				</td>
 			</tr>
 		</tbody>
 	</table>
 	<br />
 	<div class="row">
-		선택된 카테고리 : 고2>미적분1>다항함수의 적분법>부정적분의 이해>수학 2213
+		선택된 카테고리 : <span id="sel_category_exp"> </span>
 	</div>
 	<div class="row">
-		카테고리 상세설명<br />
+		카테고리 상세설명 <button class="btn btn-primary btn-xs">변경내용 저장</button> <br />
 		<textarea id="category_detail"> </textarea>
 	</div>
 	<div class="row">
@@ -330,7 +134,7 @@ MathJax.Hub.Config({
 		<button class="btn btn-primary btn-xs">선택 삭제</button>
 	</div>
 	<div class="row">
-		<table class="table">
+		<table class="table" id="selected_cate_item_list_table">
 			<thead>
 				<tr class="tr-header">
 					<th><input type="checkbox" /></th>
@@ -342,12 +146,12 @@ MathJax.Hub.Config({
 				<tr>
 					<td><input type="checkbox" /></td>
 					<td class="td-itemid">11020394</td>
-					<td class="td-mng"><a>내용보기</a> <a>삭제</a></td>
+					<td class="td-mng"><a>내용보기</a> <a>카테고리에서 삭제</a></td>
 				</tr>
 				<tr>
 					<td><input type="checkbox" /></td>
 					<td class="td-itemid">42420394</td>
-					<td class="td-mng"><a>내용보기</a> <a>삭제</a></td>
+					<td class="td-mng"><a>내용보기</a> <a>카테고리에서 삭제</a></td>
 				</tr>
 			</tbody>
 		</table>
@@ -359,12 +163,52 @@ MathJax.Hub.Config({
 		<table class="table">
 			<thead>
 				<tr class="tr-header">
-					<th><input type="checkbox" /></th>
+					<th class="td-checkbox"><input type="checkbox" /></th>
 					<th class="td-itemid">문항 ID</th>
+					<th class="td-diff">난이도</th>
+					<th class="td-ability">행동영역</th>
+					<th class="td-type">유형</th>
+					<th class="td-choices_in_a_row" hidden>행간 보기 문항 수</th>
 					<th class="td-mng">관리</th>
 				</tr>
 			</thead>
 			<tbody>
+				{% for no_cate_it in no_cate_its %}
+				<tr class="iteminfo_tr">
+					<td class="td-checkbox"><input type="checkbox" /></td>
+					<td class="td-itemid">{{ no_cate_it.cafa_it_id }}</td>
+					<td class="td-diff">
+						{% if no_cate_it.difficulty == 0 %}
+						쉬움
+						{% elif no_cate_it.difficulty == 1 %}
+						보통
+						{% elif no_cate_it.difficulty == 2 %}
+						어려움
+						{% else %}
+						결정안됨
+						{% endif %}
+					</td>
+					<td class="td-ability">
+						{% if no_cate_it.ability == 1 %}
+						지식
+						{% elif no_cate_it.ability == 2 %}
+						이해
+						{% elif no_cate_it.ability == 3 %}
+						적용
+						{% elif no_cate_it.ability == 4 %}
+						분석
+						{% else %}
+						결정안됨
+						{% endif %}
+					</td>
+					<td class="td-type">선다형</td>
+					<td class="td-choices_in_a_row" hidden>{{ no_cate_it.choices_in_a_row }}</td>
+					<td class="td-mng">
+						<a href="#" class="show_item_value">내용보기</a> 
+						<a>카테고리에 추가</a>
+					</td>
+				</tr>
+				{% endfor %}
 				<!--tr>
 					<td><input type="checkbox" /></td>
 					<td class="td-itemid">11020394</td>

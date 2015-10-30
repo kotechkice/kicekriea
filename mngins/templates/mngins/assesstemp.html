@@ -19,7 +19,7 @@
 			}
 		}).done(function(msg) {
 			console.log(msg);
-			test_dat = msg;
+			//test_dat = msg;
 			if(msg['status'] == 'success'){
 				//$("td").filter(function(){return $(this).attr('level') == 0;})
 				$("td").filter(function(){return $(this).attr('level') > level;}).remove();

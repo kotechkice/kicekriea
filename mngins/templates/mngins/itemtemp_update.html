@@ -9,52 +9,121 @@
 <script>
 	var test_dat;
 	var process_item_num = 0;
+	//process_item_num = 1082;
 	var len_item = 0;
 	var xml_dat;
 	$(document).ready(function(){
-		/*var url = 'http://cafalab.com/asp/GetItemList.asp';
-		$.get(url, function (data) {
-			console.log(data);
-			
-			$.ajax({
-				url:'/mngins/itemtemp_category',
-				dataType:'json',
-				data:{
-					'method':'set_itemtemp',
-					'itemid_str' : $(data).find('Item').text()
-				}
-			}).done(function(msg){
-				if(msg['status'] == 'success'){
-					var html = '';
-					no_category_itemids = msg['no_category_itemids'];
-					for(var index in no_category_itemids){
-						//html = '';
-						html += '<tr itemid="'+no_category_itemids[index]+'">';
-						html += '	<td><input type="checkbox" /></td>';
-						html += '	<td class="td-itemid">'+no_category_itemids[index]+'<div class="item_detail" align="center" hidden>empty</div></td>';
-						html += '	<td class="td-mng"><a href="#" class="show_item_detail">내용<span class="show_txt">보기</span><span class="close_txt" hidden>닫기</span></a> <a>추가</a></td>';
-						html += '</tr>';
-					}
-					$("#it_no_category_section tbody").html(html);
-				}
-			});
-		});*/
+		
 	});
-	function set_one_item(){
-		var itemID = $($(xml_dat).find('Item')[process_item_num]).find('ItemID').text();
+	//set_from_itemID(19259201)
+	//itemIDs = [19259201, 19259301, 19259401, 19229001, 19259001, 19229201, 19259101, 19258701, 19258801, 19258901,19259501, 19229301, 19229401, 19229501, 19259801, 19229402, 19259601, 19259701, 19260001, 19259901]
+	//for(var i in itemIDs) { set_from_itemID(itemIDs[i]);  while(wait_flag);}
+	var wait_flag = false;
+	function set_from_itemID(itemID){
+		wait_flag = false;
 		var url = 'http://cafalab.com/asp/GetItemInfo.asp?Item=' + itemID;
 		$.get(url, function (data) {
 			//console.log(data);
 			//test_dat = data;
-			choices_in_a_row = $(data).find('ChoicesPerLine').text();
-			
+			var iteminfo_dat = {
+				'itemID':itemID,
+				'choices_in_a_row' : $(data).find('ChoicesPerLine').text(),
+				'difficulty' : $(data).find('Difficulty').text(),
+				'answer_type' : $(data).find('AnswerType').text(),
+				'points' : $(data).find('Points').text(),
+				'year' : $(data).find('Year').text(),
+				'description' : $(data).find('Description').text(),
+				'ability' : $(data).find('Ability').text(),
+				'exposure' : $(data).find('Exposure').text(),
+				'correct' : $(data).find('Correct').text(),
+				'complexity' : $(data).find('Complexity').text(),
+				'institue' : $(data).find('Institute').text(),
+				'height' : $(data).find('Height').text(),
+			};
 			$.ajax({
 				url:'/mngins/itemtemp_update',
 				dataType:'json',
 				data:{
 					'method':'set_one_item',
-					'itemID':itemID,
-					'choices_in_a_row':choices_in_a_row,
+					'iteminfo':JSON.stringify(iteminfo_dat)
+					//'choices_in_a_row':choices_in_a_row,
+				}
+			}).done(function(msg){
+				//console.log(msg);
+				if(msg['status'] == 'success'){
+					console.log('success');
+					wait_flag = true;
+				} else {
+					console.log(msg);
+					wait_flag = true;
+				}
+			});
+		}).fail(function(msg) {
+			console.log('error');
+		    console.log(msg);
+		    var iteminfo_dat = {
+		    	'itemID':itemID,
+				'choices_in_a_row' : '1',
+				'difficulty' : '0',
+				'answer_type' : "Can't be SPR",
+				'points' : '1',
+				'year' : '2015',
+				'description' : '',
+				'ability' : '0',
+				'exposure' : '0',
+				'correct' : '0',
+				'complexity' : '0',
+				'institue' : '0',
+				'height' : '100',
+			};
+		    $.ajax({
+				url:'/mngins/itemtemp_update',
+				dataType:'json',
+				data:{
+					'method':'set_one_item',
+					'iteminfo':JSON.stringify(iteminfo_dat)
+				}
+			}).done(function(msg){
+				//console.log(msg);
+				if(msg['status'] == 'success'){
+					console.log('success');
+					wait_flag = true;
+				} else {
+					console.log(msg);
+					wait_flag = true;
+				}
+			});
+		});
+	}
+	function set_one_item(){
+		var itemID = $($(xml_dat).find('Item')[process_item_num]).find('ItemID').text();
+		var url = 'http://cafalab.com/asp/GetItemInfo.asp?Item=' + itemID;
+		
+		$.get(url, function (data) {
+			//console.log(data);
+			//test_dat = data;
+			var iteminfo_dat = {
+				'itemID':itemID,
+				'choices_in_a_row' : $(data).find('ChoicesPerLine').text(),
+				'difficulty' : $(data).find('Difficulty').text(),
+				'answer_type' : $(data).find('AnswerType').text(),
+				'points' : $(data).find('Points').text(),
+				'year' : $(data).find('Year').text(),
+				'description' : $(data).find('Description').text(),
+				'ability' : $(data).find('Ability').text(),
+				'exposure' : $(data).find('Exposure').text(),
+				'correct' : $(data).find('Correct').text(),
+				'complexity' : $(data).find('Complexity').text(),
+				'institue' : $(data).find('Institute').text(),
+				'height' : $(data).find('Height').text(),
+			};
+			$.ajax({
+				url:'/mngins/itemtemp_update',
+				dataType:'json',
+				data:{
+					'method':'set_one_item',
+					'iteminfo':JSON.stringify(iteminfo_dat)
+					//'choices_in_a_row':choices_in_a_row,
 				}
 			}).done(function(msg){
 				//console.log(msg);
@@ -69,13 +138,27 @@
 		}).fail(function(msg) {
 			console.log('error');
 		    console.log(msg);
+		    var iteminfo_dat = {
+		    	'itemID':itemID,
+				'choices_in_a_row' : '1',
+				'difficulty' : '0',
+				'answer_type' : "Can't be SPR",
+				'points' : '1',
+				'year' : '2015',
+				'description' : '',
+				'ability' : '0',
+				'exposure' : '0',
+				'correct' : '0',
+				'complexity' : '0',
+				'institue' : '0',
+				'height' : '100',
+			};
 		    $.ajax({
 				url:'/mngins/itemtemp_update',
 				dataType:'json',
 				data:{
 					'method':'set_one_item',
-					'itemID':itemID,
-					'choices_in_a_row':1,
+					'iteminfo':JSON.stringify(iteminfo_dat)
 				}
 			}).done(function(msg){
 				//console.log(msg);

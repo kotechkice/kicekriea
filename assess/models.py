@@ -58,7 +58,9 @@ class ItemTemplateCategoryLevelLabel(models.Model):
     LevelTypes = (
         ('N', 'None'),
         ('R', 'Root'),
+        ('O', 'Course'),
         ('U', 'Unit'),
+        ('A', 'Academy'),
         ('G', 'Grade'),
         ('M', 'Middle Unit'),
         ('D', 'Domain'),
@@ -71,19 +73,40 @@ class ItemTemplateCategoryLevelLabel(models.Model):
     level = models.IntegerField(null=True)
     type = models.CharField(max_length=1, choices=LevelTypes, null=True)
     def __unicode__(self):
-        return self.name
+        return unicode(self.name) or u''
 
 class ItemTemplateCategory(models.Model):
     name = models.CharField(max_length=80, null=True)
     level_label = models.ForeignKey(ItemTemplateCategoryLevelLabel, null=True)
     upper_itc = models.ForeignKey('self', null=True)
+    order = models.IntegerField(null=True)
     
     def __unicode__(self):
-        return self.name
+        return unicode(self.name) or u''
   
 class ItemTemplate(models.Model):
+    AnswerTypes = (
+        ('N', 'Natural'),
+        ('I', 'Integer'),
+        ('D', 'Decimal'),
+        ('F', 'Fraction'),
+        ('E', 'Expression'),
+        ('W', 'Word'),
+        ('C', "Can't be SPR"),
+    )
     cafa_it_id = models.IntegerField()
+    difficulty = models.IntegerField(null=True)
+    answer_type = models.CharField(max_length=1, choices=AnswerTypes, null=True)
+    points = models.IntegerField(null=True)
+    year = models.IntegerField(null=True)
+    ability = models.IntegerField(null=True)
+    description = models.TextField(null=True)
+    exposure = models.IntegerField(null=True)
+    correct = models.IntegerField(null=True)
+    complexity = models.IntegerField(null=True)
+    institue = models.IntegerField(null=True)
     choices_in_a_row = models.IntegerField(null=True)
+    height = models.IntegerField(null=True)
     #itc = models.ForeignKey(ItemTemplateCategory, null=True)
     def __unicode__(self):
         return str(self.cafa_it_id)
