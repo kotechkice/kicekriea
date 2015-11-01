@@ -5,63 +5,90 @@
 {% endblock %}
 {% block style %}
 <style>
-	
+	.panel-primary {
+		border-color: #4682b4;
+	}
+	.panel-heading{
+		text-align:left;
+	}
+	.panel-body{
+		text-align:center;
+	}
+	#login-input{
+		
+	}
+	#submit_td{
+		width:60px;
+	}
+	#submit{
+		height:100%;
+	}
+	#submit>div{
+		background-color:#4682b4;
+		border: 2px solid #e6e6fa;
+		text-align:center;
+		color:white;
+		/*margin:2px;
+		padding:0px;
+		line-height: 100%;*/
+		display: inline-table;
+		/*height:100%;*/	
+		width: 100%;
+		line-height: 40px;
+	}
+	#submit>div>p{
+		vertical-align:middle;
+		margin:0px;
+	}
+	.footer {
+	    /*position: absolute;*/
+	    /*bottom: 0;*/
+	    width: 100%;
+	    height: 60px;
+	    /*background-color: #f5f5f5;*/
+	}
 </style>
 {% endblock %}
 {% block script %}
 <script>
-	var test_dat = '';
-	function do_login(){
-		if($("#email").val() =='' || $("#pw").val() == ''){
-			return false;
-		}
-		$.post("/tch/login/", {
-				csrfmiddlewaretoken:$.cookie('csrftoken'), 
-				email:$("#email").val(), 
-				pw : $("#pw").val() 
-		}).done(function(data){
-			console.log(data);
-			//test_dat = data;
-			if(data['status'] === "success"){
-				$(location).attr('href',data['msg']);
-			} else {
-				$("#modal .modal-body").html(data['msg']);
-				$("#modal").modal('show');
-			}
-		});
-	}
-	$(document).on("click", '#submit', function(){
-		do_login();
-	});
-	$(document).on('keypress', '#pw', function(e){
-		//console.log(e);
-		if(e.keyCode==13){
-			do_login();
-		}
-	});
+	{% include "tch/script/login.js" %}
 </script>
 {% endblock %}
 {% block containor %}
 <div class="container text-center">
-	<div class="row h3">
-	선생님 로그인 
-	</div><br />
-	<div class="row">
-		<form>
-		{% csrf_token %}
-		<table align="center">
-			<tr>
-				<td>Email : &nbsp; &nbsp; &nbsp; &nbsp;</td>
-				<td><input type="text" name="email" id="email"></td>
-			</tr>
-			<tr>
-				<td>Password : </td>
-				<td><input type="password" name="pw" id="pw"></td>
-			</tr>
-		</table>
-		</form><br />
+	<div class="panel panel-primary">
+		<div class="panel-heading">선생님으로 입장하기</div>
+		<div class="panel-body">
+			<div id="login-input">
+				<!--form-->
+					{% csrf_token %}
+					<table align="center">
+						<tr>
+							<td>이메일주소(e-mail) </td>
+							<td><input type="text" name="email" id="email" tabindex=1></td>
+							<td rowspan="2" id="submit_td">
+								<a href="#" id="submit" tabindex=3>
+									<div><p>로그인</p></div>			
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<td>비밀번호(password) </td>
+							<td><input type="password" name="pw" id="pw" tabindex=2></td>
+						</tr>
+					</table>
+				<!--/form-->
+			</div><br />
+			<div class="row">
+				<button class="btn btn-default btn-xs col-md-2 col-md-offset-4 col-sm-2 col-sm-offset-5 col-xs-4 col-xs-offset-1">
+					이메일주소 찾기
+				</button>
+				<button class="btn btn-default btn-xs col-md-2 col-sm-2 col-sm-offset-0 col-xs-4 col-xs-offset-1">
+					비밀번호 찾기
+				</button>
+			</div>
+		</div>
 	</div>
-	<button class="btn btn-primary" id="submit">로그인</button>
 </div>
 
 <div class="modal fade" id="modal">
