@@ -1,9 +1,13 @@
+{% include "mngins/container/manage_probs.js" %}
+
 var test_dat;
 
 var choices_num_line;
 var alphabet = "ABCDEFGHIJK";
 var circle_num = '①②③④⑤⑥';
 var num_from_alpha = {'A':1, 'B':2, 'C':3, 'D':4, 'E':5};
+
+var selected_category_id = -1;
 
 var category_types = {
     'N': '없음',
@@ -161,9 +165,10 @@ $(document).on('click', '.show_item_detail', function(){
     });
     return false;
 });
-$(document).on('change', '#category_list_row select', function(){
+function change_category_list_row_select () {
     var itc_id = $(this).find('option:selected').attr('itc_id');
     var level = Number($(this).parent().attr('level'));
+    selected_category_id = itc_id;
     
     var sel_category_exp_val = '';
     for(var i=0; i<=level; i++){
@@ -183,11 +188,27 @@ $(document).on('change', '#category_list_row select', function(){
             //'itemid_str' : $(data).find('Item').text()
         }
     }).done(function(msg){
-        //console.log(msg);
+        console.log(msg);
         //test_dat = msg;
         if(msg['status'] == 'success'){
             $("td").filter(function(){return $(this).attr('level') > level;}).remove();
             //console.log(msg['itcs'].length);
+            $('#category_detail textarea').val(msg['description']);
+            
+            //set selected_cate_item_list_table
+            $("#selected_cate_item_list_table>tbody").html("");
+            for(var i=0; i<msg['itids_in_itc'].length; i++){
+                html = '';
+                html += '<tr><td><input type="checkbox" /></td>';
+                html += '<td class="td-itemid">'+ msg['itids_in_itc'][i] +'</td>';
+                html += '<td class="td-mng">';
+                html += '<a href="#" class="show_item_value">내용보기</a> ';
+                html += '<a href="#" class="del_category_one">카테고리에서 삭제</a>';
+                html += '</td></tr>';
+                //console.log(html);
+                $("#selected_cate_item_list_table>tbody").append(html);
+            }
+            
             if(msg['itcs'].length > 0){
                 //set category_label_row
                 var html= '<td level="'+(level+1)+'" colspan="2">' + $('#category_label_row>td:eq(0)').html() + '</td>';
@@ -215,14 +236,11 @@ $(document).on('change', '#category_list_row select', function(){
                 
                 //set category_edit_row
                 $('#category_edit_row').append('<td level="'+ (level+1) +'" colspan="2">'+$('#category_edit_row>td:eq(0)').html()+'</td>');
-                
-                //set selected_cate_item_list_table
-                $("#selected_cate_item_list_table>tbody").html("");
-                
             }
         }
     });
-});
+}
+$(document).on('change', '#category_list_row select', change_category_list_row_select);
 
 $(document).on('change', '.category_type_edit select', function(){
     //console.log('change');
@@ -234,6 +252,7 @@ $(document).on('change', '.category_type_edit select', function(){
         $(this).val('R');
         return false;
     }
+    name = category_types[type];
     $.ajax({
         url:'/mngins/itemtemp_category',
         dataType:'json',
@@ -412,7 +431,8 @@ $(document).on('click','#add_category_td>button', function(){
         }
     });
 });
-$(document).on('click','.arrow_btn', function(){
+
+function click_arrow_btn(){
     //test_dat = this;
     //var this_val = this;
     //console.log('click arrow');
@@ -457,9 +477,11 @@ $(document).on('click','.arrow_btn', function(){
             console.log(msg);
         }
     });
-});
-$(document).on('click','.show_item_value', function(){
-    test_dat = this;
+}
+$(document).on('click','.arrow_btn', click_arrow_btn);
+
+function click_show_item_value_link(){
+    //test_dat = this;
     var this_var = this;
     var parent_tr = $(this).parent().parent();
     var td_length = parent_tr.find('td').length;
@@ -506,4 +528,107 @@ $(document).on('click','.show_item_value', function(){
         MathJax.Hub.Typeset();
     });
     return false;
-});
+}
+$(document).on('click','.show_item_value', click_show_item_value_link);
+
+function click_category_detail_btn(){
+    //test_dat = this;
+    //console.log(this);
+    var description = $('#category_detail>textarea').val();
+    console.log(description);
+    if(selected_category_id == -1){
+        return false;
+    }
+    $.ajax({
+        url:'/mngins/itemtemp_category',
+        dataType:'json',
+        data:{
+            'method':'change_category_description',
+            'id':selected_category_id,
+            'description':description,
+        }
+    }).done(function(msg){
+        //test_dat = msg;
+        //console.log(msg);
+        if(msg['status'] == 'success'){
+        } else {
+            //console.log(msg);
+            $('#category_detail textarea').val('error');
+        }
+    });
+}
+$(document).on('click', '#category_detail>button', click_category_detail_btn);
+
+function click_add_category_one_link(){
+    //test_dat = this;
+    //console.log(this);
+    if(selected_category_id == -1){
+        return false;
+    }
+    var parent_tr = $(this).parent().parent();
+    var itemID = parent_tr.find('.td-itemid').text();
+    $.ajax({
+        url:'/mngins/itemtemp_category',
+        dataType:'json',
+        data:{
+            'method':'add_items_to_category',
+            'category_id':selected_category_id,
+            'item_ids':JSON.stringify([itemID]),
+        }
+    }).done(function(msg){
+        //test_dat = msg;
+        //console.log(msg);
+        if(msg['status'] == 'success'){
+            parent_tr.hide();
+            if(parent_tr.next().hasClass('item_detail_tr')){
+                parent_tr.next().hide();
+            }
+            var html = '';
+            html += '<tr><td><input type="checkbox" /></td>';
+            html += '<td class="td-itemid">'+ itemID +'</td>';
+            html += '<td class="td-mng">';
+            html += '<a href="#" class="show_item_value">내용보기</a> ';
+            html += '<a href="#" class="del_category_one">카테고리에서 삭제</a>';
+            html += '</td></tr>';
+            //console.log(html);
+            $("#selected_cate_item_list_table>tbody").append(html);
+        } else {
+            console.log(msg);
+        }
+    });
+    return false;
+}
+$(document).on('click','.add_category_one', click_add_category_one_link);
+
+function click_del_category_one_link(){
+    //test_dat = this;
+    //console.log(this);
+    if(selected_category_id == -1){
+        return false;
+    }
+    var parent_tr = $(this).parent().parent();
+    var itemID = parent_tr.find('.td-itemid').text();
+    $.ajax({
+        url:'/mngins/itemtemp_category',
+        dataType:'json',
+        data:{
+            'method':'del_items_to_category',
+            'category_id':selected_category_id,
+            'item_ids':JSON.stringify([itemID]),
+        }
+    }).done(function(msg){
+        //test_dat = msg;
+        //console.log(msg);
+        if(msg['status'] == 'success'){
+            parent_tr.hide();
+            if(parent_tr.next().hasClass('item_detail_tr')){
+                parent_tr.next().hide();
+            }
+        } else {
+            console.log(msg);
+        }
+    });
+    
+    return false;
+}
+$(document).on('click','.del_category_one', click_del_category_one_link);

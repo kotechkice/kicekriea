@@ -1,0 +1,37 @@
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+	  #category_detail{
+	  	min-width:300px;
+	  }
+	  .item_detail{
+	  	max-width:400px;
+	  	text-align:left;
+	  	border-style: solid;
+	  	padding:10px;
+	  	margin:0 auto;
+	  }
+	  .item_detail td {
+	  	text-align:left;
+	  }
+	  .item_detail legend {
+	  	font-size:15px;
+	  }
+	  #item_temp_category_table td{
+	  	/*border: 1px solid black;*/
+	  }
+	  .category_name {
+	  	max-width:100px;
+	  }
+	  #add_category_td button{
+	  	margin:10px;
+	  }
+	  .item_detail_tr div{
+	  	max-width:500px;
+	  	text-align:left;
+	  }
+	  .item_detail_tr div table td {
+	  	text-align:left;
+	  }
+</style>

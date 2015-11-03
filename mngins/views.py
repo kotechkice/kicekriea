@@ -338,13 +338,19 @@ def itemtemp_category(request):
                 
                 data = json.dumps({'status':"success", 'no_category_itemids':no_category_itemids})
         if request.GET['method'] == 'sel_itc':
-            if 'itc_id' in request.GET and 'level' in request.GET:
+            if ('itc_id' and 'level') in request.GET:
                 if request.GET['itc_id'] == 'all':
                     pass
                 elif request.GET['itc_id'] == 'none':
                     pass
                 else:
                     label_level = request.GET['level']
+                    
+                    myitc = ItemTemplateCategory.objects.get(id=request.GET['itc_id'])
+                    description = ""
+                    if myitc.description:
+                        description = myitc.description
+                    
                     next_levels = ItemTemplateCategoryLevelLabel.objects.filter(level = int(label_level)+1)
                     next_level_label = {'name':'', 'type':'N', 'mark':'None'}
                     if len(next_levels) != 0:
@@ -365,6 +371,7 @@ def itemtemp_category(request):
                         'next_level_label':next_level_label, 
                         'itcs':itcs,
                         'itids_in_itc':itids_in_itc,
+                        'description':description,
                     })
                     #data = json.dumps({'status':"success"})
         if request.GET['method'] == 'change_category_type':
@@ -528,6 +535,30 @@ def itemtemp_category(request):
                     'itc_lists':itc_lists,
                     'changed_order':changed_order
                 })
+        if request.GET['method'] == 'change_category_description':
+            if ('id' and 'description') in request.GET:
+                itc = ItemTemplateCategory.objects.get(id=request.GET['id'])
+                itc.description = request.GET['description']
+                #itc.save()
+                data = json.dumps({'status':"success"})
+            #data = json.dumps({'status':"success"})
+        if request.GET['method'] == 'add_items_to_category':
+            #print request.GET
+            if ('category_id' and 'item_ids') in request.GET:
+                itc = ItemTemplateCategory.objects.get(id=request.GET['category_id'])
+                for item_id in json.loads(request.GET['item_ids']):
+                    it = ItemTemplate.objects.get(cafa_it_id = item_id)
+                    mitc = MappedItemTemplateCategory()
+                    mitc.itc = itc
+                    mitc.it = it
+                    mitc.save()
+                data = json.dumps({'status':"success"})
+        if request.GET['method'] == 'del_items_to_category':
+            if ('category_id' and 'item_ids') in request.GET:
+                #itc = ItemTemplateCategory.objects.get(id=request.GET['category_id'])
+                for item_id in json.loads(request.GET['item_ids']):
+                    MappedItemTemplateCategory.objects.filter(itc_id=request.GET['category_id'], it__cafa_it_id=item_id).delete()
+                data = json.dumps({'status':"success"})
         return HttpResponse(data, 'application/json')
     
     mitcs = MappedItemTemplateCategory.objects.all()

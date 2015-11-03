@@ -1,43 +1,7 @@
 {% extends "mngins/container/base.html" %}
 {% block title %}문항 템플릿 카테고리 관리{% endblock %}
 {% block style %}
-<style>
-	  td, th {
-	  	text-align:center;
-	  }
-	  #category_detail{
-	  	min-width:300px;
-	  }
-	  .item_detail{
-	  	max-width:400px;
-	  	text-align:left;
-	  	border-style: solid;
-	  	padding:10px;
-	  	margin:0 auto;
-	  }
-	  .item_detail td {
-	  	text-align:left;
-	  }
-	  .item_detail legend {
-	  	font-size:15px;
-	  }
-	  #item_temp_category_table td{
-	  	/*border: 1px solid black;*/
-	  }
-	  .category_name {
-	  	max-width:100px;
-	  }
-	  #add_category_td button{
-	  	margin:10px;
-	  }
-	  .item_detail_tr div{
-	  	max-width:500px;
-	  	text-align:left;
-	  }
-	  .item_detail_tr div table td {
-	  	text-align:left;
-	  }
-</style>
+	{% include "mngins/css/itemtemp_category.css" %}
 {% endblock %}
 {% block script %}
 <script type="text/javascript" src="https://s3-ap-northeast-1.amazonaws.com/mippum-statics/mathjax/2.4/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
@@ -64,8 +28,7 @@ MathJax.Hub.Config({
 </script>
 
 <script>
-	{% include "mngins/container/manage_probs.js" %}
-	{% include "mngins/container/itemtemp_category.js" %}
+	{% include "mngins/script/itemtemp_category.js" %}
 </script>
 {% endblock %}
 {% block containor %}
@@ -125,10 +88,11 @@ MathJax.Hub.Config({
 	<div class="row">
 		선택된 카테고리 : <span id="sel_category_exp"> </span>
 	</div>
-	<div class="row">
-		카테고리 상세설명 <button class="btn btn-primary btn-xs">변경내용 저장</button> <br />
-		<textarea id="category_detail"> </textarea>
-	</div>
+	<div class="row" id="category_detail">
+		카테고리 상세설명 <button class="btn btn-primary btn-xs">변경내용 저장</button> <br /><br />
+		<textarea> </textarea>
+	</div><br /><br />
+	
 	<div class="row">
 		선택된 카테고리의 문항 템플릿 리스트
 		<button class="btn btn-primary btn-xs">선택 삭제</button>
@@ -143,23 +107,21 @@ MathJax.Hub.Config({
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
+				<!--tr>
 					<td><input type="checkbox" /></td>
-					<td class="td-itemid">11020394</td>
-					<td class="td-mng"><a>내용보기</a> <a>카테고리에서 삭제</a></td>
-				</tr>
-				<tr>
-					<td><input type="checkbox" /></td>
-					<td class="td-itemid">42420394</td>
-					<td class="td-mng"><a>내용보기</a> <a>카테고리에서 삭제</a></td>
-				</tr>
+					<td class="td-itemid">1900</td>
+					<td class="td-mng">
+						<a href="#" class="show_item_value">내용보기</a> 
+						<a href="#" class="del_category_one">카테고리에서 삭제</a>
+					</td>
+				</tr-->
 			</tbody>
 		</table>
 	</div>
 	
 	<div class="row" id="it_no_category_section">
 		카테고리 미지정된 문항 템플릿 리스트
-		<button class="btn btn-primary btn-xs">선택 추가</button><br />
+		<button class="btn btn-primary btn-xs">선택된 문항을 해당 카테고리에 추가</button><br />
 		<table class="table">
 			<thead>
 				<tr class="tr-header">
@@ -205,7 +167,7 @@ MathJax.Hub.Config({
 					<td class="td-choices_in_a_row" hidden>{{ no_cate_it.choices_in_a_row }}</td>
 					<td class="td-mng">
 						<a href="#" class="show_item_value">내용보기</a> 
-						<a>카테고리에 추가</a>
+						<a href="#" class="add_category_one">카테고리에 추가</a>
 					</td>
 				</tr>
 				{% endfor %}

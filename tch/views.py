@@ -64,10 +64,27 @@ def main(request):
     my_usergroupinfo = my_info.usergroupinfo_set.get(group__groupdetail__type='S')
     my_info.is_groupsuperuser = my_usergroupinfo.is_groupsuperuser
     
+    super_tch = UserGroupInfo.objects.get(group = my_usergroupinfo.group, is_groupsuperuser=True).user
+    
+    tg = request.user.usergroupinfo_set.get(group__groupdetail__type='T').group
+    tch_len = len(UserGroupInfo.objects.filter(group = tg))
+    
+    classes = Group.objects.filter(groupdetail__upper_group__groupdetail__upper_group=my_usergroupinfo.group, groupdetail__type="C")
+    class_len = len(classes)
+    std_len = 0
+    for index in range(class_len):
+        std_len += len(classes[index].usergroupinfo_set.all())
+        
     variables = RequestContext(request, {
         'tch_string' : tch_string,                                 
         'home_string' : home_string,
         'my_info' : my_info,
+        'my_usergroupinfo' : my_usergroupinfo,
+        'super_tch':super_tch,
+        'tch_len':tch_len,
+        'class_len':class_len,
+        'std_len':std_len,
+        
     })
     return render_to_response('tch/main.html', variables)
 
@@ -232,3 +249,17 @@ def exam_result(request):
         'students_num' : len(students),
     })
     return render_to_response('tch/exam_result.html', variables)
+
+def assess_mng(request):
+    variables = RequestContext(request, {
+        'tch_string' : tch_string,                                 
+        'home_string' : home_string,
+    })
+    return render_to_response('tch/assess_mng.html', variables)
+
+def create_assesstemp_wiz1(request):
+    variables = RequestContext(request, {
+        'tch_string' : tch_string,                                 
+        'home_string' : home_string,
+    })
+    return render_to_response('tch/create_assesstemp_wiz1.html', variables)

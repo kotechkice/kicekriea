@@ -9,4 +9,7 @@ urlpatterns = patterns('',
     url(r'^modify_auth/$', modify_auth, name='modify_auth'),
     url(r'^modify_pinfo$', modify_pinfo, name='modify_pinfo'),
     url(r'^exam_result/', exam_result, name='exam_result'),
+    url(r'^assess_mng/$', assess_mng, name='assess_mng'),
+    url(r'^create_assesstemp_wiz1/$', create_assesstemp_wiz1, name='create_assesstemp_wiz1'),
+    
 )

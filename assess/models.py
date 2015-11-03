@@ -80,9 +80,11 @@ class ItemTemplateCategory(models.Model):
     level_label = models.ForeignKey(ItemTemplateCategoryLevelLabel, null=True)
     upper_itc = models.ForeignKey('self', null=True)
     order = models.IntegerField(null=True)
+    description = models.TextField(null=True)
     
     def __unicode__(self):
         return unicode(self.name) or u''
+  
   
 class ItemTemplate(models.Model):
     AnswerTypes = (

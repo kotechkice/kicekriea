@@ -33,12 +33,34 @@
 			.navbar-brand {
 				margin-top:-10px;
 			}
-			
+			#wrap{
+				min-height:100%;
+			}
+			body>#wrap>.container{
+				padding-bottom:3em;
+			}
+			html, body {
+				height:100%;
+			}
+			footer {
+			    /*position: absolute;*/
+			    /*bottom: 0;*/
+			    width: 100%;
+			    height: 3em;
+			    margin-top:-3em;
+			    /*background-color: #f5f5f5;*/
+			}
+			hr {
+				margin-top:5px;
+				margin-bottom:5px;
+				border-top: 1px solid black;
+			}
 		</style>
 		{% block style %}{% endblock %}
 		{% block script %}{% endblock %}
 	</head>
 	<body>
+		<div id="wrap">
 		{% block navbar %}
 		<nav class="navbar navbar-default" role="navigation">
 			<div class="container">
@@ -64,6 +86,15 @@
 		</nav>
 		{% endblock %}
 		{% block contents %}{% endblock %}
+		</div>
+		{% block footer %}
+		<footer class="footer">
+		  <div class="container">
+		  	서울특별시 중구 정동길 21-15 정동빌딩 | TEL : 02-3704-3704 | FAX : 02-3704-3636<br /> 
+		  	Copyright © 2015 KICE. All Rights Reserved.
+		  </div>
+		</footer>
+		{% endblock %}
 	</body>
 </html>
 

@@ -3,9 +3,40 @@
 {% block style %}
 <style>
 	.btn-primary {
-		width : 30%;
+		/*width : 30%;
 		height : 40px;
-		margin : 10px;
+		margin : 10px;*/
+	}
+	.navbar {
+		margin-bottom:0px;
+	}
+	#account_info{
+		text-align:right;
+		font-size:0.8em;
+	}
+	#line-one{
+		margin: 0px;
+		margin-bottom: 30px;
+	    width: 100%;
+	    height: 5px;
+	    border: 0;
+	    background: #aaaaaa;
+	    
+	    background-image: -webkit-gradient(linear, 0 0, 100% 0, from(#8888ff), to(#ffffff),color-stop(50%, #ddddff));
+	    background-image: -webkit-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	    background-image: -moz-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	    background-image: -ms-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	    background-image: -o-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	}
+	#menu-label{
+		text-align:left;
+		margin-left:0px;
+	}
+	.row{
+		margin-left:0px;
+	}
+	.panel{
+		text-align:left;
 	}
 </style>
 {% endblock %}
@@ -13,25 +44,55 @@
 {% endblock %}
 {% block containor %}
 <div class="container text-center">
-	<div class="row h3">
-	선생님 메인 페이지 
+	<div id="account_info">
+		<b>{{ my_usergroupinfo.group.groupdetail.nickname }} {{ my_info.userdetail.full_name }} 선생님</b> 환영합니다.
+	</div>
+	<div class="row" id="menu-label">
+		<b>교사용 메뉴</b>
+	</div>
+	<hr id="line-one"> </hr>
+	<div class="row" >
+		<div class="panel panel-default" align="center">
+		  <div class="panel-heading">
+		  	<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
+		  	학교 계정 관리 
+		  	{% if my_info.is_groupsuperuser %}
+		  	<a href="/tch/modify_auth"><button class="btn btn-primary btn-xs">들어가기</button></a>
+		  	{% endif %}
+		  </div>
+		  <div class="panel-body">
+		  	<div class="col-md-12 col-sm-12">
+		  		학교명 : {{ my_usergroupinfo.group.groupdetail.nickname }} (관리자 : <b>{{ super_tch.userdetail.full_name }}</b> 선생님)
+		  	</div>
+		  	<div class="col-md-4 col-sm-4">
+		    	등록된 선생님 계정 : {{ tch_len }} 명
+		    </div>
+		    <div class="col-md-4 col-sm-4">
+		    	등록된 학급 : {{class_len}} 개
+		    </div>
+		    <div class="col-md-4 col-sm-4">
+		    	등록된 학생 : {{std_len}} 명
+		    </div>
+		  </div>
+		</div>
 	</div>
 	<div class="row">
-		<!--button class="btn btn-primary">과제물 템플릿 관리</button-->
-	</div>
-	<div class="row">
-		<!--button class="btn btn-primary">과제 상태 보기</button-->
-	</div>
-	<div class="row">
-		<!--button class="btn btn-primary">문항 템플릿 관리</button-->
+			<div class="panel panel-default">
+			  <div class="panel-heading">
+			  	학교 계정 관리 
+			  	{% if my_info.is_groupsuperuser %}
+			  	<a href="/tch/modify_auth"><button class="btn btn-primary btn-xs">들어가기</button></a>
+			  	{% endif %}
+			  </div>
+			  <div class="panel-body">
+			    학교명 : {{ my_usergroupinfo.group.groupdetail.nickname }}
+			    (관리자 : <b> </b> 선생님)
+			      
+			  </div>
+			</div>
 	</div>
 	<div class="row">
 		<a href="/tch/exam_result"><button class="btn btn-primary">진단평가 수행상태 보기</button></a>
 	</div>
-	{% if my_info.is_groupsuperuser %}
-	<div class="row">
-		<a href="/tch/modify_auth"><button class="btn btn-primary">학교 계정 관리</button></a>
-	</div>
-	{% endif %}
 </div>
 {% endblock %}
