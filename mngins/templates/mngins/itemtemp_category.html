@@ -93,16 +93,21 @@ MathJax.Hub.Config({
 		<textarea> </textarea>
 	</div><br /><br />
 	
-	<div class="row">
+	<!--div class="row">
 		선택된 카테고리의 문항 템플릿 리스트
-		<button class="btn btn-primary btn-xs">선택 삭제</button>
-	</div>
-	<div class="row">
+		<button class="btn btn-primary btn-xs">선택된 문항을 카테고리에서 삭제</button>
+	</div-->
+	<div class="row" id="selected_category_section">
+		선택된 카테고리의 문항 템플릿 리스트
+		<button class="btn btn-primary btn-xs">선택된 문항을 카테고리에서 삭제</button>
 		<table class="table" id="selected_cate_item_list_table">
 			<thead>
 				<tr class="tr-header">
 					<th><input type="checkbox" /></th>
 					<th class="td-itemid">문항 ID</th>
+					<th class="td-diff">난이도</th>
+					<th class="td-ability">행동영역</th>
+					<th class="td-type">유형</th>
 					<th class="td-mng">관리</th>
 				</tr>
 			</thead>
@@ -110,6 +115,9 @@ MathJax.Hub.Config({
 				<!--tr>
 					<td><input type="checkbox" /></td>
 					<td class="td-itemid">1900</td>
+					<td class="td-diff">쉬움</td>
+					<td class="td-ability">지식</td>
+					<td class="td-type">선다형</td>
 					<td class="td-mng">
 						<a href="#" class="show_item_value">내용보기</a> 
 						<a href="#" class="del_category_one">카테고리에서 삭제</a>

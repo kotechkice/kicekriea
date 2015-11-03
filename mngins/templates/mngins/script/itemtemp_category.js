@@ -188,7 +188,7 @@ function change_category_list_row_select () {
             //'itemid_str' : $(data).find('Item').text()
         }
     }).done(function(msg){
-        console.log(msg);
+        //console.log(msg);
         //test_dat = msg;
         if(msg['status'] == 'success'){
             $("td").filter(function(){return $(this).attr('level') > level;}).remove();
@@ -200,7 +200,24 @@ function change_category_list_row_select () {
             for(var i=0; i<msg['itids_in_itc'].length; i++){
                 html = '';
                 html += '<tr><td><input type="checkbox" /></td>';
-                html += '<td class="td-itemid">'+ msg['itids_in_itc'][i] +'</td>';
+                html += '<td class="td-itemid">'+ msg['itids_in_itc'][i]['itemid'] +'</td>';
+                
+                html += '<td class="td-diff">';
+                switch(msg['itids_in_itc'][i]['difficulty']){
+                    case 0: html += '쉬움'; break;
+                    case 1: html += '보통'; break;
+                    case 2: html += '어려움'; break;
+                    default: html += '결정안됨';
+                }
+                html += '</td><td class="td-ability">';
+                switch(msg['itids_in_itc'][i]['ability']){
+                    case 1: html += '지식'; break;
+                    case 2: html += '이해'; break;
+                    case 3: html += '적용'; break;
+                    case 4: html += '분석'; break;
+                    default: html += '결정안됨';
+                }
+                html += '</td><td class="td-type">선다형</td>';
                 html += '<td class="td-mng">';
                 html += '<a href="#" class="show_item_value">내용보기</a> ';
                 html += '<a href="#" class="del_category_one">카테고리에서 삭제</a>';
@@ -586,6 +603,9 @@ function click_add_category_one_link(){
             var html = '';
             html += '<tr><td><input type="checkbox" /></td>';
             html += '<td class="td-itemid">'+ itemID +'</td>';
+            html += '<td class="td-diff">'+parent_tr.find('.td-diff').text();+'</td>';
+            html += '<td class="td-ability">'+parent_tr.find('.td-ability').text();+'</td>';
+            html += '<td class="td-type">'+parent_tr.find('.td-type').text();+'</td>';
             html += '<td class="td-mng">';
             html += '<a href="#" class="show_item_value">내용보기</a> ';
             html += '<a href="#" class="del_category_one">카테고리에서 삭제</a>';
@@ -632,3 +652,109 @@ function click_del_category_one_link(){
     return false;
 }
 $(document).on('click','.del_category_one', click_del_category_one_link);
+
+$(document).on('click', '#it_no_category_section thead input', function(){
+    //test_dat = this;
+    //console.log('click');
+    $('#it_no_category_section tbody input').prop('checked', $(this).is(':checked'));
+});
+function click_add_category_multi(){
+    //test_dat = this;
+    
+    if(selected_category_id == -1){
+        return false;
+    }
+    var item_ids = []; 
+    var ckeched_inputs = $('#it_no_category_section input:checked');
+    for(var i=0; i<ckeched_inputs.length;i++){
+        item_ids.push($(ckeched_inputs[i]).parent().parent().find('.td-itemid').text());
+    }
+    //console.log(item_ids);
+    
+    $.ajax({
+        url:'/mngins/itemtemp_category',
+        dataType:'json',
+        data:{
+            'method':'add_items_to_category',
+            'category_id':selected_category_id,
+            'item_ids':JSON.stringify(item_ids),
+        }
+    }).done(function(msg){
+        //test_dat = msg;
+        //console.log(msg);
+        if(msg['status'] == 'success'){
+            for(var i=0; i<ckeched_inputs.length;i++){
+                //item_ids.push($(ckeched_inputs[i]).parent().parent().find('.td-itemid').text());
+                parent_tr = $(ckeched_inputs[i]).parent().parent();
+                parent_tr.hide();
+                if(parent_tr.next().hasClass('item_detail_tr')){
+                    parent_tr.next().hide();
+                }
+                var html = '';
+                html += '<tr><td><input type="checkbox" /></td>';
+                html += '<td class="td-itemid">'+ item_ids[i] +'</td>';
+                
+                html += '<td class="td-diff">'+parent_tr.find('.td-diff').text();+'</td>';
+                html += '<td class="td-ability">'+parent_tr.find('.td-ability').text();+'</td>';
+                html += '<td class="td-type">'+parent_tr.find('.td-type').text();+'</td>';
+                
+                html += '<td class="td-mng">';
+                html += '<a href="#" class="show_item_value">내용보기</a> ';
+                html += '<a href="#" class="del_category_one">카테고리에서 삭제</a>';
+                html += '</td></tr>';
+                //console.log(html);
+                $("#selected_cate_item_list_table>tbody").append(html);
+            }
+        } else {
+            console.log(msg);
+        }
+    });
+    return false;
+}
+$(document).on('click', '#it_no_category_section>button', click_add_category_multi);
+
+$(document).on('click', '#selected_cate_item_list_table thead input', function(){
+    //test_dat = this;
+    //console.log('click');
+    $('#selected_cate_item_list_table tbody input').prop('checked', $(this).is(':checked'));
+});
+
+function click_del_category_multi(){
+    //test_dat = this;
+    if(selected_category_id == -1){
+        return false;
+    }
+    var item_ids = []; 
+    var ckeched_inputs = $('#selected_category_section input:checked');
+    for(var i=0; i<ckeched_inputs.length;i++){
+        item_ids.push($(ckeched_inputs[i]).parent().parent().find('.td-itemid').text());
+    }
+    //console.log(item_ids);
+    
+    $.ajax({
+        url:'/mngins/itemtemp_category',
+        dataType:'json',
+        data:{
+            'method':'del_items_to_category',
+            'category_id':selected_category_id,
+            'item_ids':JSON.stringify(item_ids),
+        }
+    }).done(function(msg){
+        //test_dat = msg;
+        console.log(msg);
+        if(msg['status'] == 'success'){
+            for(var i=0; i<ckeched_inputs.length;i++){
+                //item_ids.push($(ckeched_inputs[i]).parent().parent().find('.td-itemid').text());
+                parent_tr = $(ckeched_inputs[i]).parent().parent();
+                parent_tr.hide();
+                if(parent_tr.next().hasClass('item_detail_tr')){
+                    parent_tr.next().hide();
+                }
+            }
+        } else {
+            console.log(msg);
+        }
+    });
+    return false;
+}
+$(document).on('click', '#selected_category_section>button', click_del_category_multi);

@@ -358,12 +358,20 @@ def itemtemp_category(request):
                         next_level_label['type'] = next_levels[0].type
                         next_level_label['mark'] = next_levels[0].mark
                     
-                    itc_objs = ItemTemplateCategory.objects.filter(upper_itc__id=request.GET['itc_id']).order_by('order')
-                    itcs = []
+                    
                     
                     mitcs = MappedItemTemplateCategory.objects.filter(itc__id = request.GET['itc_id'])
-                    itids_in_itc = map(lambda x:x.it.cafa_it_id, mitcs)
-                    
+                    #itids_in_itc = map(lambda x:x.it.cafa_it_id, mitcs)
+                    itids_in_itc = []
+                    for mitc in mitcs:
+                        itids_in_itc.append({
+                            'itemid':mitc.it.cafa_it_id, 
+                            'difficulty':mitc.it.difficulty, 
+                            'ability':mitc.it.ability
+                        })
+                        
+                    itc_objs = ItemTemplateCategory.objects.filter(upper_itc__id=request.GET['itc_id']).order_by('order')
+                    itcs = []
                     for itc_obj in itc_objs:
                         itcs.append({'id':itc_obj.id, 'name':itc_obj.name})
                     data = json.dumps({
