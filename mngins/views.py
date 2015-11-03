@@ -492,6 +492,7 @@ def itemtemp_category(request):
                     itcll = ItemTemplateCategoryLevelLabel()
                     itcll.type = 'N'
                     itcll.mark = 'None'
+                    itcll.level = request.GET['level']
                     itcll.save()
                 data = json.dumps({
                     'status':"success", 
