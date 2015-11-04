@@ -7,7 +7,6 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as login_origin
 from django.contrib.auth import logout as logout_origin
 
-
 from home import strings as home_string
 from tch import strings as tch_string
 from home.funcs import code_str_generator
@@ -15,6 +14,10 @@ from home.funcs import code_str_generator
 from auth_ext.models import *
 from auth_ext.funcs import * 
 
+from assess.models import *
+from assess.funcs import *
+
+from datetime import date
 import json
 
 # Create your views here.
@@ -74,7 +77,10 @@ def main(request):
     std_len = 0
     for index in range(class_len):
         std_len += len(classes[index].usergroupinfo_set.all())
-        
+    
+    len_P = len(AssessmentTemplate.objects.filter(owner_group = my_usergroupinfo.group, type='P'))
+    len_D = len(AssessmentTemplate.objects.filter(owner_group = my_usergroupinfo.group, type='D'))
+    
     variables = RequestContext(request, {
         'tch_string' : tch_string,                                 
         'home_string' : home_string,
@@ -84,7 +90,8 @@ def main(request):
         'tch_len':tch_len,
         'class_len':class_len,
         'std_len':std_len,
-        
+        'len_P':len_P,
+        'len_D':len_D,
     })
     return render_to_response('tch/main.html', variables)
 
@@ -251,15 +258,95 @@ def exam_result(request):
     return render_to_response('tch/exam_result.html', variables)
 
 def assess_mng(request):
+    if request.user.is_authenticated():
+        if len(request.user.usergroupinfo_set.filter(group__groupdetail__type='T')) == 0:
+            return redirect('/tch/logout')
+    else:
+        return redirect('/tch/login')
+    
+    my_info = request.user
+    my_usergroupinfo = my_info.usergroupinfo_set.get(group__groupdetail__type='S')
+    
     variables = RequestContext(request, {
         'tch_string' : tch_string,                                 
         'home_string' : home_string,
+        'my_info' : my_info,
+        'my_usergroupinfo' : my_usergroupinfo,
     })
     return render_to_response('tch/assess_mng.html', variables)
 
 def create_assesstemp_wiz1(request):
+    if request.user.is_authenticated():
+        if len(request.user.usergroupinfo_set.filter(group__groupdetail__type='T')) == 0:
+            return redirect('/tch/logout')
+    else:
+        return redirect('/tch/login')
+    
+    my_info = request.user
+    my_usergroupinfo = my_info.usergroupinfo_set.get(group__groupdetail__type='S')
+    
+    if request.is_ajax():
+        data = json.dumps({'status':"fail"})
+        if not 'method' in request.GET:
+            data = json.dumps({'status':"fail"})
+            return HttpResponse(data, 'application/json')
+        
+        if request.GET['method'] == 'get_items':
+            if 'selected_id' in request.GET:
+                def get_its_from_itc(itc_id):
+                    mitcs = MappedItemTemplateCategory.objects.filter(itc__id = itc_id)
+                    its = map(lambda x:x.it, mitcs)
+                    itcs = ItemTemplateCategory.objects.filter(upper_itc__id=itc_id)
+                    ret_val = its
+                    for itc in itcs:
+                        ret_val += get_its_from_itc(itc.id)
+                    return ret_val
+                its = get_its_from_itc(request.GET['selected_id'])
+                it_infos = []
+                for it in its:
+                    it_infos.append({
+                        'itemid':it.cafa_it_id, 
+                        'difficulty':it.difficulty, 
+                        'ability':it.ability
+                    })
+                data = json.dumps({'status':'success', 'it_infos':it_infos})
+        if request.GET['method'] == 'save_assess':
+            if ('assess_name' and 'item_ids' and 'type') in request.GET:
+                item_ids = json.loads(request.GET['item_ids'])
+                
+                at = AssessmentTemplate()
+                at.name = request.GET['assess_name']
+                at.creator = my_info
+                at.owner_group = my_usergroupinfo.group
+                at.num_item = len(item_ids)
+                at.num_item_template = len(item_ids)
+                at.type = request.GET['type']
+                
+                at.save()
+                
+                create_its_from_itnum_list_N_at(at, item_ids)
+                data = json.dumps({'status':'success'})
+        return HttpResponse(data, 'application/json')
+    
+    itcll0_s = ItemTemplateCategoryLevelLabel.objects.get(level=0)
+    itc0_open = ItemTemplateCategory.objects.filter(level_label = itcll0_s, order=1)
+    itc1_s = ItemTemplateCategory.objects.filter(upper_itc=itc0_open).order_by('order')
+    itc2_s = ItemTemplateCategory.objects.filter(upper_itc = itc1_s[0]).order_by('order')
+    
+    variables = RequestContext(request, {
+        'tch_string' : tch_string,                                 
+        'home_string' : home_string,
+        'my_info' : my_info,
+        'my_usergroupinfo' : my_usergroupinfo,
+        #'itc0_s':itc0_s,
+        'itc1_s':itc1_s,
+        'itc2_s':itc2_s,
+    })
+    return render_to_response('tch/create_assesstemp_wiz1.html', variables)
+
+def assess_preview(request):
     variables = RequestContext(request, {
         'tch_string' : tch_string,                                 
         'home_string' : home_string,
     })
-    return render_to_response('tch/create_assesstemp_wiz1.html', variables)
+    return render_to_response('tch/assess_preview.html', variables)

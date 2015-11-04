@@ -1,0 +1,89 @@
+<style>
+	.navbar {
+		margin-bottom:0px;
+	}
+	#account_info{
+		text-align:right;
+		font-size:0.8em;
+	}
+	#line-one{
+		margin: 0px;
+		margin-bottom: 30px;
+	    width: 100%;
+	    height: 5px;
+	    border: 0;
+	    background: #aaaaaa;
+	    
+	    background-image: -webkit-gradient(linear, 0 0, 100% 0, from(#8888ff), to(#ffffff),color-stop(50%, #ddddff));
+	    background-image: -webkit-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	    background-image: -moz-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	    background-image: -ms-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	    background-image: -o-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	}
+	#menu-label{
+		text-align:left;
+		margin-left:0px;
+	}
+	#wrap_inputs{
+		border: 1px solid #CCCCCC;
+		padding:10px;
+	}
+	td, th {
+	  	/*text-align:center;*/
+	  	/*border: 1px solid #CCCCCC;*/
+	}
+	.td-label{
+		padding-right:10px;
+	}
+	select {
+		width:100px;
+		margin-right:50px;
+	}
+	#select_category_table button{
+		margin-left:10px;
+		margin-right:10px;
+	}
+	#searched_item_list_table>thead>tr>th{
+		border: 2px solid #ddd;
+	  	background-color:#EEEEEE;
+	  	text-align:center;
+	} 
+	#searched_item_list_table>tbody>tr>td{
+		text-align:center;
+	  	border:1px solid #ddd;
+	}
+	#search_result_div{
+		border: 1px solid #CCCCCC;
+		padding:10px;
+		margin:10px;
+	}
+	#search_additional_condition td{
+		padding-right:10px;
+	}
+	
+	#selected_item_list_table>thead>tr>th{
+		border: 2px solid #ddd;
+	  	background-color:#EEEEEE;
+	  	text-align:center;
+	}
+	#selected_item_list_table>tbody>tr>td{
+		text-align:center;
+	  	border:1px solid #ddd;
+	}
+	
+	#save_btn{
+		float:right;
+	}
+	
+	.item_detail_tr div{
+	  	max-width:500px;
+	  	text-align:left;
+	  }
+	  .item_detail_tr div table td {
+	  	text-align:left;
+	  	border:0px;
+	  }
+	#search_additional_condition input[type=checkbox]{
+		margin-right:5px;
+	}
+</style>

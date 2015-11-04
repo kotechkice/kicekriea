@@ -2,9 +2,41 @@
 {% block title %}형성평가 리스트 관리 페이지{% endblock %}
 {% block style %}
 <style>
-	  td, th {
+	#assess-status-table td {
 	  	text-align:center;
-	  }
+	  	border:1px solid #ddd;
+	}
+	#assess-status-table th {
+	  	border: 2px solid #ddd;
+	  	background-color:#EEEEEE;
+	  	text-align:center;
+	}
+	#account_info{
+		text-align:right;
+		font-size:0.8em;
+	}
+	.navbar {
+		margin-bottom:0px;
+	}
+	#line-one{
+		margin: 0px;
+		margin-bottom: 30px;
+	    width: 100%;
+	    height: 5px;
+	    border: 0;
+	    background: #aaaaaa;
+	    
+	    background-image: -webkit-gradient(linear, 0 0, 100% 0, from(#8888ff), to(#ffffff),color-stop(50%, #ddddff));
+	    background-image: -webkit-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	    background-image: -moz-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	    background-image: -ms-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	    background-image: -o-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	}
+	#menu-label{
+		text-align:left;
+		margin-left:0px;
+		font-size:1.5em;
+	}
 </style>
 {% endblock %}
 {% block script %}
@@ -13,11 +45,19 @@
 {% endblock %}
 {% block containor %}
 <div class="container">
-	<h3>형성평가 리스트 관리 페이지</h3>
-	<button class="btn btn-default">새 형성평가 생성</button>
+	<div id="account_info">
+		<b>{{ my_usergroupinfo.group.groupdetail.nickname }} {{ my_info.userdetail.full_name }} 선생님</b> 환영합니다.
+	</div>
+	<div class="row" id="menu-label">
+		<b>형성평가 리스트 관리 페이지</b>
+		<a href="/tch/create_assesstemp_wiz1"><button class="btn btn-default btn-xs">새 형성평가 생성</button></a>
+	</div>
+	<hr id="line-one"> </hr>
+	
+	
 	<!--button class="btn btn-default">선택 삭제</button-->
 	<div class="row">
-		<table class="table">
+		<table class="table" id="assess-status-table">
 			<thead>
 				<tr class="tr-header">
 					<th class="td-ordernum">순서번호</th>

@@ -1,121 +1,223 @@
 {% extends "tch/container/base.html" %}
 {% block title %}형성평가 생성 마법사 1단계{% endblock %}
 {% block style %}
-<style>
-	  td, th {
-	  	text-align:center;
-	  }
-</style>
+	{% include "tch/css/create_assesstemp_wiz1.css" %}
 {% endblock %}
 {% block script %}
+<script type="text/javascript" src="https://s3-ap-northeast-1.amazonaws.com/mippum-statics/mathjax/2.4/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+//	jax: ["input/TeX", "output/HTML-CSS"],
+	jax: ["input/TeX", "output/SVG"],
+	tex2jax: {
+		inlineMath: [['$','$']],
+		displayMath: [ ['$$','$$']],
+		processEscapes: true,
+		processEnvironments: true,
+		preview: "TeX"
+	},
+    "HTML-CSS": { availableFonts: ["STIX", "TeX"],
+		webFont: null },
+    "SVG": { 
+		availableFonts: ["TeX"],
+		blacker: 0,
+		scale: 90
+	},
+	showMathMenu: false
+});
+</script>
 <script>
-	function setTable(){
-		switch(findBootstrapEnvironment()){
-			case 'xs':
-			//case 'sm':
-				$('.td-id').hide();
-				$('.td-itemnum').hide();
-				$('.status-detail').hide();
-				
-				break;
-			default:
-				$('.td-id').show();
-				$('.td-itemnum').show();
-				$('.status-detail').show();
-		}
-	}
-	$(document).ready(function(){
-		setTable();
-	});
-	$(document).on('click', 'tr', function(){
-		console.log('hello');
-	});
-	$(window).resize(function(){
-		//console.log('windows resized');
-		setTable();
-	});
+	{% include "tch/script/create_assesstemp_wiz1.js" %}
 </script>
 {% endblock %}
 {% block containor %}
 <div class="container">
-	<h3>형성평가 생성 마법사 1단계</h3><br />
-	<h4>대상 교실 선정</h4>
-	<table class="table">
-		<thead>
-			<tr>
-				<th><input type="checkbox" /></th>
-				<th>학년</th>
-				<th>반</th>
-				<th>학생수</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><input type="checkbox" /></td>
-				<td>고1</td>
-				<td>나비반</td>
-				<td>21</td>
-			</tr>
-			<tr>
-				<td><input type="checkbox" checked="checked"/></td>
-				<td>고1</td>
-				<td>꽃잎반</td>
-				<td>22</td>
-			</tr>
-			<tr>
-				<td><input type="checkbox" /></td>
-				<td>고1</td>
-				<td>제비반</td>
-				<td>23</td>
-			</tr>
-		</tbody>
-	</table>
-	<h4>특정 학생 추가</h4>
-	추가된 학생 : 김수한, 홍인영<br />
-	<select>
-		<option>고1</option>
-	</select>
-	<select>
-		<option>나비반</option>
-	</select>
-	<table class="table">
-		<thead>
-			<tr>
-				<th><input type="checkbox" /></th>
-				<th>학년</th>
-				<th>반</th>
-				<th>이름</th>
-				<th>학번</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td><input type="checkbox" /></td>
-				<td>고1</td>
-				<td>나비반</td>
-				<td>전가람</td>
-				<td>10203</td>
-			</tr>
-			<tr>
-				<td><input type="checkbox" checked="checked"/></td>
-				<td>고1</td>
-				<td>나비반</td>
-				<td>김수한</td>
-				<td>10204</td>
-			</tr>
-			<tr>
-				<td><input type="checkbox" checked="checked"/></td>
-				<td>고1</td>
-				<td>나비반</td>
-				<td>홍인영</td>
-				<td>10205</td>
-			</tr>
-		</tbody>
-	</table>
-	<div class="row text-center">
-		<button class="btn btn-default">취소</button>
-		<button class="btn btn-default">다음</button>
+	<div id="account_info">
+		<b>{{ my_usergroupinfo.group.groupdetail.nickname }} {{ my_info.userdetail.full_name }} 선생님</b> 환영합니다.
 	</div>
+	<div class="row" id="menu-label">
+		<b>평가제작</b>
+	</div>
+	<hr id="line-one"> </hr>
+	
+	<div id="wrap_inputs">
+		<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
+		평가구분 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		
+		<input type="radio" name="assess_type" value="P" checked /> 학습용 형성평가
+		&nbsp;&nbsp;&nbsp;
+		<input type="radio" name="assess_type" value="D" /> 진단용 형성평가
+		
+		<hr style="height: 2px; border: 0; background: #CCCCCC; width:100%;" />
+		
+		<table id="select_category_table">
+			<tr>
+				<td class="td-label">
+					<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
+					학교급
+				</td>
+				<td>
+					<select>
+						{% for itc1 in itc1_s %}
+						<option itc_id="{{itc1.id}}">{{ itc1.name }}</option>
+						{% endfor %}
+					</select>
+				</td>
+				<td class="td-label">
+					<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
+					과목명
+				</td>
+				<td>
+					<select>
+						<option itc_id="-1">모두</option>
+						{% for itc2 in itc2_s %}
+						<option itc_id="{{itc2.id}}">{{ itc2.name }}</option>
+						{% endfor %}
+					</select>
+				</td>
+				<td style="border-right:1px black solid">
+					
+				</td>
+				<td>
+					
+				</td>
+			</tr>
+			<tr>
+				<td class="td-label">
+					<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
+					단 원
+				</td>
+				<td>
+					<select>
+						<option itc_id="-1">모두</option>
+					</select>
+				</td>
+				<td class="td-label">
+					<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
+					성취기준
+				</td>
+				<td>
+					<select>
+						<option itc_id="-1">모두</option>
+					</select>
+				</td>
+				<td style="border-right:1px black solid">
+					<button class="btn btn-default btn-xs" id="search_btn">
+						문항검색
+					</button>
+				</td>
+				<td>
+					<button class="btn btn-default btn-xs">
+						내문항 보기
+					</button>
+				</td>
+			</tr>
+		</table>
+		
+		<hr />
+		
+		<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
+		문항 검색 결과
+		<div id="search_result_div">
+			<table id="search_additional_condition">
+				<tr>
+					<td>추가 검색 조건</td>
+					<td><b>난이도</b></td>
+					<td class="checked_diff"><input type="checkbox" />어려움</td>
+					<td class="checked_diff"><input type="checkbox" />보통</td>
+					<td class="checked_diff"><input type="checkbox" />쉬움</td>
+					<td class="checked_diff"><input type="checkbox" />결정안됨</td>
+					<td>
+						
+					</td>
+				</tr>
+				<tr>
+					<td> </td>
+					<td><b>유형</b></td>
+					<td class="checked_type"><input type="checkbox" />선다형</td>
+					<td class="checked_type"><input type="checkbox" />서술형</td>
+					<td> </td>
+					<td> </td>
+					<td>
+						<button class="btn btn-default btn-xs" id="research_btn">
+							재검색
+						</button>
+					</td>
+				</tr>
+			</table>
+			
+			<hr style="height: 1px; border: 0; background: #CCCCCC; width:100%;" />
+			<br />
+			
+			<table class="table" id="searched_item_list_table">
+				<thead>
+					<tr class="tr-header">
+						<th><input type="checkbox" /></th>
+						<th class="td-itemid">문항 ID</th>
+						<th class="td-diff">난이도</th>
+						<th class="td-ability">행동영역</th>
+						<th class="td-type">유형</th>
+						<th class="td-mng">문항미리보기</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!--tr>
+						<td><input type="checkbox" /></td>
+						<td class="td-itemid">1900</td>
+						<td class="td-diff">쉬움</td>
+						<td class="td-ability">지식</td>
+						<td class="td-type">선다형</td>
+						<td class="td-mng">
+							<button class="btn btn-primary btn-xs show_item_value">미리보기</button>
+						</td>
+					</tr-->
+				</tbody>
+			</table>
+			<div align="right">
+				<button class="btn btn-default btn-sm" id="select_searched_items_btn">
+					선택된 문항 담기
+				</button>
+			</div>
+		</div>
+		<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
+		담긴 문항
+		<table class="table" id="selected_item_list_table">
+			<thead>
+				<tr class="tr-header">
+					<th class="td-itemid">문항 ID</th>
+					<th class="td-diff">난이도</th>
+					<th class="td-ability">행동영역</th>
+					<th class="td-type">유형</th>
+					<th class="td-mng">문항미리보기</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!--tr>
+					<td class="td-itemid">1900</td>
+					<td class="td-diff">쉬움</td>
+					<td class="td-ability">지식</td>
+					<td class="td-type">선다형</td>
+					<td class="td-mng">
+						<button class="btn btn-primary btn-xs show_item_value">미리보기</button>
+						<button class="btn btn-primary btn-xs del_selected_item">삭제</button>
+					</td>
+				</tr-->
+			</tbody>
+		</table>
+		<div align="right">
+			<a href="http://www.naver.com/" target="_blank">
+				<button class="btn btn-default btn-sm">
+					검사지 미리보기
+				</button>
+			</a>
+		</div>
+	</div><br />
+	<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
+	평가명&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="text" id="assess_name" /><br />
+	<button class="btn btn-primary btn-sm" id="save_btn">
+		완료
+	</button>
 </div>
 
 

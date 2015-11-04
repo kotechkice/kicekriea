@@ -79,20 +79,31 @@
 	<div class="row">
 			<div class="panel panel-default">
 			  <div class="panel-heading">
-			  	학교 계정 관리 
-			  	{% if my_info.is_groupsuperuser %}
-			  	<a href="/tch/modify_auth"><button class="btn btn-primary btn-xs">들어가기</button></a>
-			  	{% endif %}
+			  	<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
+			  	형성평가제작 
+			  	<!--a href="/tch/assess_mng"-->
+			  	<a href="/tch/create_assesstemp_wiz1">
+			  		<button class="btn btn-primary btn-xs">들어가기</button>
+			  	</a>
 			  </div>
 			  <div class="panel-body">
-			    학교명 : {{ my_usergroupinfo.group.groupdetail.nickname }}
-			    (관리자 : <b> </b> 선생님)
-			      
+			  	<div class="col-md-6 col-sm-6">
+			  		<b>진단용 형성평가</b><br />
+			  		제작완료 : {{ len_D }}
+			  	</div>
+			  	<div class="col-md-6 col-sm-6">
+			  		<b>학습용 형성평가</b><br />
+			  		제작완료 : {{ len_P }}
+			  	</div>
 			  </div>
 			</div>
 	</div>
 	<div class="row">
-		<a href="/tch/exam_result"><button class="btn btn-primary">진단평가 수행상태 보기</button></a>
+		<a href="/tch/exam_result">
+		<!--a href="/tch/create_assesstemp_wiz1"-->
+			
+			<!--button class="btn btn-primary">진단평가 수행상태 보기</button-->
+		</a>
 	</div>
 </div>
 {% endblock %}

@@ -13,6 +13,12 @@ class AssessmentTemplateCategory(models.Model):
         return self.name
     
 class AssessmentTemplate(models.Model):
+    Types = (
+        ('D', 'Diagnosis'),
+        ('P', 'Practice'),
+    )
+    type = models.CharField(max_length=1, choices=Types, null=True)
+    
     atc = models.ForeignKey(AssessmentTemplateCategory, null=True)
     
     ct_id = models.IntegerField(null=True)
