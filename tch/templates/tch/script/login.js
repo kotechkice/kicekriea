@@ -28,3 +28,6 @@ $(document).on('keypress', '#pw', function(e){
         do_login();
     }
 });
+$(document).on('click', '#find_email_pw_btn', function(){
+    $('#email_pw_check_modal').modal('show');
+});

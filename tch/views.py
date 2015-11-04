@@ -133,12 +133,6 @@ def modify_auth(request):
                     new_tch_group_info.user = User.objects.get(email=email)
                     new_tch_group_info.group = request.user.usergroupinfo_set.get(group__groupdetail__type='T').group
                     new_tch_group_info.save()
-                    #new_tch = User.objects.get(email=email)
-                    
-                    #tg = Group()
-                    #tg.name = email + 't'
-                    #tg.save()
-                    
                     data = json.dumps({'status':"success"})
                 else:
                     data = json.dumps({'status':"fail"})
@@ -148,8 +142,26 @@ def modify_auth(request):
             if 'grade' in request.GET and 'class' in request.GET:
                 create_class_in_school(my_usergroupinfo.group, request.GET['grade'], request.GET['class'])
                 data = json.dumps({'status':"success"})
-        else:
-            data = json.dumps({'status':"fail"})
+        elif request.GET['method'] == 'change_class_info':
+            if ('class_id' and 'grade' and 'class') in request.GET:
+                clas = Group.objects.get(id=request.GET['class_id'])
+                change_class_in_school(clas, my_usergroupinfo.group, request.GET['grade'], request.GET['class'])
+                data = json.dumps({'status':"success"})
+        elif request.GET['method'] == 'del_class':
+            if 'class_id' in request.GET:
+                clas = Group.objects.get(id=request.GET['class_id'])
+                clas.delete()
+                data = json.dumps({'status':"success"})
+        elif request.GET['method'] == 'send_newpw':
+            if 'email' in request.GET:
+                email = request.GET['email']
+                if createpassword_sendmail(email):
+                    data = json.dumps({'status':"success"})
+        elif request.GET['method'] == 'del_auth':
+            if 'email' in request.GET:
+                u = User.objects.get(email=request.GET['email'])
+                UserGroupInfo.objects.filter(user=u).delete()
+                data = json.dumps({'status':"success"})
         return HttpResponse(data, 'application/json')
     
     tg = request.user.usergroupinfo_set.get(group__groupdetail__type='T').group
@@ -175,11 +187,16 @@ def modify_auth(request):
     
     variables = RequestContext(request, {
         'tchs' : tchs,
+        'tch_len': len(tchs),
         'classes' : classes,
+        'class_len' : len(classes),
         'students' : students,
+        'std_len' : len(students),
         'input_code' : input_code,
         'tch_string' : tch_string,                                 
         'home_string' : home_string,
+        'my_usergroupinfo':my_usergroupinfo,
+        'my_info':my_info,
     })
     return render_to_response('tch/modify_auth.html', variables)
 

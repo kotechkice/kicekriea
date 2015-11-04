@@ -1,0 +1,50 @@
+<style>
+	.navbar {
+		margin-bottom:0px;
+	}
+	#account_info{
+		text-align:right;
+		font-size:0.8em;
+	}
+	#line-one{
+		margin: 0px;
+		margin-bottom: 30px;
+	    width: 100%;
+	    height: 5px;
+	    border: 0;
+	    background: #aaaaaa;
+	    
+	    background-image: -webkit-gradient(linear, 0 0, 100% 0, from(#8888ff), to(#ffffff),color-stop(50%, #ddddff));
+	    background-image: -webkit-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	    background-image: -moz-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	    background-image: -ms-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	    background-image: -o-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+	}
+	#menu-label{
+		text-align:left;
+		margin-left:0px;
+	}
+	.div_wrap{
+		border: 1px solid #CCCCCC;
+		padding:10px;
+		margin-left:0px;
+	}
+	.panel{
+		text-align:left;
+	}
+	#tch_info_table>thead>tr>th,
+	#class_info_table>thead>tr>th,
+	#std_info_table>thead>tr>th {
+		border: 2px solid #ddd;
+	  	background-color:#EEEEEE;
+	  	text-align:center;
+	} 
+	.table>tbody>tr>td{
+		text-align:center;
+	  	border:1px solid #ddd;
+	}
+	table * {
+		text-align:center;
+	}
+
+</style>

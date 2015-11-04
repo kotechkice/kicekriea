@@ -107,5 +107,28 @@ def create_class_in_school(school_group, grade_name, class_name):
         
     return True
 
+def change_class_in_school(clas, school_group, grade_name, class_name):
+    gd_list = GroupDetail.objects.filter(upper_group=school_group, type='G', nickname=grade_name)
+    if len(gd_list) == 0:
+        g = Group()
+        g.name = grade_name
+        g.save()
+        g.groupdetail = GroupDetail()
+        g.groupdetail.group = g
+        g.groupdetail.type = 'G'
+        g.groupdetail.nickname = grade_name
+        g.groupdetail.upper_group = school_group
+        g.groupdetail.save()
+        g.name = str(g.id)
+        g.save()
+        grade_group = g
+    else:
+        grade_group = gd_list[0].group
+    clas.groupdetail.nickname = class_name
+    clas.groupdetail.upper_group = grade_group
+    clas.groupdetail.save()
+    clas.save()
+    return True
+
 
 
