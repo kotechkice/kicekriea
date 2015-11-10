@@ -362,8 +362,70 @@ def create_assesstemp_wiz1(request):
     return render_to_response('tch/create_assesstemp_wiz1.html', variables)
 
 def assess_preview(request):
+    if request.user.is_authenticated():
+        if len(request.user.usergroupinfo_set.filter(group__groupdetail__type='T')) == 0:
+            return redirect('/tch/logout')
+    else:
+        return redirect('/tch/login')
+    
+    my_info = request.user
+    my_usergroupinfo = my_info.usergroupinfo_set.get(group__groupdetail__type='S')
+    
+    if request.is_ajax():
+        data = json.dumps({'status':"fail"})
+        if not 'method' in request.GET:
+            data = json.dumps({'status':"fail"})
+            return HttpResponse(data, 'application/json')
+        
+        if request.GET['method'] == 'get_item_info':
+            if 'itemid' in request.GET:
+                it = ItemTemplate.objects.get(cafa_it_id = request.GET['itemid'])
+                data = json.dumps({'status':'success', 'choices_in_a_row':it.choices_in_a_row})
+        return HttpResponse(data, 'application/json')
+    
     variables = RequestContext(request, {
         'tch_string' : tch_string,                                 
         'home_string' : home_string,
     })
     return render_to_response('tch/assess_preview.html', variables)
+
+
+
+def create_assesstemp_wiz2(request):
+    if request.user.is_authenticated():
+        if len(request.user.usergroupinfo_set.filter(group__groupdetail__type='T')) == 0:
+            return redirect('/tch/logout')
+    else:
+        return redirect('/tch/login')
+    
+    my_info = request.user
+    my_usergroupinfo = my_info.usergroupinfo_set.get(group__groupdetail__type='S')
+    
+    if request.is_ajax():
+        data = json.dumps({'status':"fail"})
+        if not 'method' in request.GET:
+            data = json.dumps({'status':"fail"})
+            return HttpResponse(data, 'application/json')
+        
+        if request.GET['method'] == 'get_item_info':
+            if 'itemid' in request.GET:
+                it = ItemTemplate.objects.get(cafa_it_id = request.GET['itemid'])
+                data = json.dumps({'status':'success', 'choices_in_a_row':it.choices_in_a_row})
+        return HttpResponse(data, 'application/json')
+    
+    ats = AssessmentTemplate.objects.filter(owner_group=my_usergroupinfo.group)
+    
+    classes = Group.objects.filter(groupdetail__upper_group__groupdetail__upper_group=my_usergroupinfo.group, groupdetail__type="C")
+    for index in range(len(classes)):
+        classes[index].members_length = len(classes[index].usergroupinfo_set.all())
+     
+    variables = RequestContext(request, {
+        'tch_string' : tch_string,                                 
+        'home_string' : home_string,
+        'my_info':my_info,
+        'my_usergroupinfo':my_usergroupinfo,
+        'ats':ats,
+        'classes':classes,
+    })
+    return render_to_response('tch/create_assesstemp_wiz2.html', variables)
+

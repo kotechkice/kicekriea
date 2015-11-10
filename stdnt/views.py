@@ -64,9 +64,69 @@ def main(request):
     if not request.user.is_authenticated():
         return redirect('/stdnt/login')
     
+    my_info = request.user
+    my_usergroupinfo_schools = my_info.usergroupinfo_set.filter(group__groupdetail__type='S')
+    if len(my_usergroupinfo_schools) > 0:
+        my_usergroupinfo_school = my_usergroupinfo_schools[0]
+    else:
+        my_usergroupinfo_school = None
+    
+    my_usergroupinfo_classes = my_info.usergroupinfo_set.filter(group__groupdetail__type='C')
+    if len(my_usergroupinfo_classes) > 0:
+        my_usergroupinfo_class = my_usergroupinfo_classes[0]
+    else:
+        my_usergroupinfo_class = None
+    examlist = []
+    
+    for ga in GroupAssessment.objects.filter(group = my_usergroupinfo_class.group):
+        examlist.append(ga.at)
+        ua_list = UserAssessment.objects.filter(at=ga.at, user = my_info)
+        examlist[-1].is_started = False
+        examlist[-1].is_finished = False
+        if len(ua_list) != 0:
+            ua = ua_list[0]
+            examlist[-1].is_started = True
+            if ua.end_time != None:
+                examlist[-1].is_finished = True
+    '''
+    examlist = ExamList.objects.all()
+    for i in range(len(examlist)):
+        ua_list = UserAssessment.objects.filter(at=examlist[i].at, user = my_info)
+        examlist[i].is_started = False
+        examlist[i].is_finished = False
+        if len(ua_list) != 0:
+            ua = ua_list[0]
+            examlist[i].is_started = True
+            if ua.end_time != None:
+                examlist[i].is_finished = True
+                ae_list = AssessEaxm.objects.filter(ua=ua)
+                if len(ae_list) != 0:
+                    ae = ae_list[0]
+                    examlist[i].is_high = False
+                    examlist[i].is_middle = False
+                    examlist[i].is_low = False
+                    examlist[i].is_fail = False
+                    if ae.level == 'H':
+                        examlist[i].help_str = examlist[i].help_h
+                        examlist[i].is_high = True
+                    elif ae.level == 'M':
+                        examlist[i].help_str = examlist[i].help_m
+                        examlist[i].is_middle = True
+                    elif ae.level == 'L':
+                        examlist[i].help_str = examlist[i].help_l
+                        examlist[i].is_low = True
+                    elif ae.level == 'F':
+                        examlist[i].help_str = examlist[i].help_f
+                        examlist[i].is_fail = True
+                    examlist[i].level = stdnt_string.LEVEL[ae.level]
+    '''
+    
     variables = RequestContext(request, {
         'home_string' : home_string,
         'stdnt_string':stdnt_string,
+        'my_info':my_info,
+        'my_usergroupinfo_school':my_usergroupinfo_school,
+        'examlist':examlist,
     })
     return render_to_response('stdnt/main.html', variables)
 

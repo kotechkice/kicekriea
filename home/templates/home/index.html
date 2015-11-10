@@ -1,78 +1,84 @@
 {% extends "container/base.html" %}
 {% block title %}온라인 문항관리 시스템{% endblock %}
+
+{% block navbar %}
+{% endblock %}
+
 {% block style %}
 	{% include "home/css/index.css" %}
 {% endblock %}
 {% block script %}
 {% endblock %}
 {% block contents %}
-<div class="container text-center" id="main-container">
-	<div class="col-md-6 col-sm-6">
-		<div class="row">
-			<a href="/tch/login">
-				<div id="linkdiv_tch" class="col-md-5 col-sm-5 col-xs-5" >
-					<br />
-					&nbsp;&nbsp;선생님으로<br />
-					<u>&nbsp;&nbsp;입장하기&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
-					<br /><br /><br />
-				</div>
-			</a>
-			<a href="/stdnt/login">
-				<div id="linkdiv_std" class="col-md-5 col-sm-5 col-xs-5" >
-					<br />
-					&nbsp;&nbsp;학생으로<br />
-					<u>&nbsp;&nbsp;입장하기&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>
-					<br /><br /><br />
-				</div>
-			</a>
-		</div>
+
+<div class="kice_head">
+	<img id="kice_head_arrow" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_arrow.jpg" />
+	<div id="kice_head_name_ko">온라인 문항관리 시스템</div>
+	<div id="kice_head_name_en">
+		<span class="kice_head_name_en_orange">O</span>nline 
+		<span class="kice_head_name_en_orange">I</span>tem
+		<span class="kice_head_name_en_orange">M</span>anagement
+		<span class="kice_head_name_en_orange">S</span>ystem
+	</div>
+	<hr id="kice_head_line1" />
+	<hr id="kice_head_line2" />
+</div>
+	
+	
+<a href="/tch/login">
+	<div id="linkdiv_tch">
 		<br />
-		<div class="row col-md-11 col-sm-11" id="notice">
-			<br />
-			<b>공지사항</b><br /><br /><br />
-			<div style="float:left;">▷ 시스템 점검 안내</div>
-			<div style="float:right;">2015-09-23</div><br /><br />
-			<div style="float:left;">▷ 시스템 점검 안내</div>
-			<div style="float:right;">2015-09-23</div><br /><br />
-			<div style="float:left;">▷ 시스템 점검 안내</div>
-			<div style="float:right;">2015-09-23</div><br /><br />
-		</div>
+		선생님으로<br />
+		입장하기
+		<hr />
 	</div>
-	<div class="col-md-6 col-sm-6">
-		<div class="row text-center">
-			<img width="125px" height="97px" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/system_intro.jpg" />
-		</div>
-		<div class="row">
-			<div id="manuel-downlaod-text">
-				<span id="double-chevron-right">&raquo;</span>사용자 매뉴얼 다운로드
-			</div>
-		</div>
-		<div class="row">
-			<!--a href="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/%E1%84%86%E1%85%A6%E1%84%82%E1%85%B2%E1%84%8B%E1%85%A5%E1%86%AF%E1%84%8B%E1%85%A8%E1%84%8C%E1%85%A6.pdf"-->
-			<a>
-				<div id="manual_tch" class="col-md-3 col-sm-3 col-xs-3" >
-					<b><br />
-					교사용<br />
-					메뉴얼<br />
-					<br /></b>
-				</div>
-			</a>
-			<!--a href="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/%E1%84%86%E1%85%A6%E1%84%82%E1%85%B2%E1%84%8B%E1%85%A5%E1%86%AF%E1%84%8B%E1%85%A8%E1%84%8C%E1%85%A6.pdf"-->
-			<a>
-				<div id="manual_std" class="col-md-3 col-sm-3 col-xs-5 col-sm-offset-2 col-xs-3" >
-					<b><br />
-					학생용<br />
-					메뉴얼<br />
-					<br /></b>
-				</div>
-			</a>
-		</div>
+</a>
+
+<a href="/stdnt/login">
+	<div id="linkdiv_std" class="col-md-5 col-sm-5 col-xs-5" >
+		<br />
+		학생으로<br />
+		입장하기
+		<hr />
 	</div>
-	<!--div class="row">
-		<a href="/mngins/login"><button class="btn btn-primary btn-lg">관리기관 페이지</button></a>
-	</div-->
+</a>
+
+<div id="notice">
+	<br />
+	<b>공지사항</b><br /><br /><br />
+	<div style="float:left;">▷ 시스템 점검 안내</div>
+	<div style="float:right;">2015-09-23</div><br /><br />
+	<div style="float:left;">▷ 시스템 점검 안내</div>
+	<div style="float:right;">2015-09-23</div><br /><br />
+	<div style="float:left;">▷ 시스템 점검 안내</div>
+	<div style="float:right;">2015-09-23</div><br /><br />
 </div>
 
+
+<img id="kice_system_arrow" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_arrow_system_intro.jpg" />
+
+<div class="row">
+	<div id="manuel-downlaod-text">
+		<span id="double-chevron-right">&raquo;</span><b>사용자 매뉴얼 다운로드</b>
+	</div>
+</div>
+
+<a>
+	<div id="manual_tch">
+		<br />
+		교사용<br />
+		메뉴얼<br />
+		<br />
+	</div>
+</a>
+<a>
+	<div id="manual_std">
+		<br />
+		학생용<br />
+		메뉴얼<br />
+		<br />
+	</div>
+</a>
 {% endblock %}
 
 {% block footer %}

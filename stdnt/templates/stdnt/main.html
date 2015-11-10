@@ -1,27 +1,118 @@
 {% extends "stdnt/container/base.html" %}
-{% block title %}학생 메인 페이지{% endblock %}
+{% block title %}온라인 문항관리 시스템{% endblock %}
+{% block navbar %}
+{% endblock %}
 {% block style %}
-<style>
-
-	.btn-primary{
-		width : 30%;
-		height : 40px;
-		margin : 10px;
-	}
-</style>
+	{% include "stdnt/css/main.css" %}
 {% endblock %}
 {% block script %}
+	{% include "stdnt/script/main.js" %}
 {% endblock %}
 {% block containor %}
-<div class="container text-center">
+
+<div class="kice_head">
+	<img id="kice_head_arrow" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_arrow.jpg" />
+	<div id="kice_head_name_ko">온라인 문항관리 시스템</div>
+	<div id="kice_head_name_en">
+		<span class="kice_head_name_en_orange">O</span>nline 
+		<span class="kice_head_name_en_orange">I</span>tem
+		<span class="kice_head_name_en_orange">M</span>anagement
+		<span class="kice_head_name_en_orange">S</span>ystem
+	</div>
+	<div id="login_info">
+		<b>{{ my_usergroupinfo_school.group.groupdetail.nickname }} {{ my_info.userdetail.full_name }} 학생</b> 
+		환영합니다. (로그인중)
+	</div>
+	<hr id="kice_head_line1" />
+	<hr id="kice_head_line2" />
+</div>
+
+<div class="kice_head2">
+	<div id="kice_head2_name_ko">학생용 메뉴</div>
+	<hr id="kice_head2_line1" />
+	<hr id="kice_head2_line2" />
+</div>
+
+<div id="my_assess_list_name">
+	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+	나의 평가 목록
+</div>
+
+<div id="wrap_lists">
+	<div id="jindan_assess_name">
+		진단용 형성평가
+	</div>
+	<div id="jindan_assess_status">
+		■ 완료한 평가 수 : 1개 &nbsp;&nbsp;&nbsp;&nbsp;
+		□ 아직 완료하지 못한 평가 수 : 1개
+	</div>
+	
+	<div id="unit_assess_table_name">
+		<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+		단원별 평가 목록
+	</div>
+	<table id="unit_assess_table" >
+		<thead>
+			<tr>
+				<th class="td-contents">단원</th>
+				<th class="td-itemnum">문항수</th>
+				<th class="td-exe">시행</th>
+				<th class="td-result">결과</th>
+				<th class="td-solve">진단</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for exam in examlist %}
+			<tr at_id="{{ exam.id }}">
+				<td class="td-contents">{{ exam.name }}</td>
+				<td class="td-itemnum">{{ exam.num_item }}</td>
+				<td class="td-exe">
+					{% if not is_started %}
+					<button class="exam_m">
+						온라인
+					</button><br />
+					<button>
+						오프라인
+					</button>
+					{% elif is_finished %}
+					<button>
+						시행완료
+					</button>
+					{% else %}
+					<button>
+						이어하기
+					</button>
+					{% endif %}
+				</td>
+				<td class="td-result">
+					{% if is_finished %}
+						상
+					{% else %}
+						진단안됨
+					{% endif %}
+				</td>
+				<td class="td-solve">
+					<button>
+						진단결과
+					</button>
+					<button>
+						정답해설
+					</button>
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+</div>
+<!--div class="container text-center">
 	<div class="row h3 text-center">
 	학생 메인 페이지
 	</div>
 	<div class="row">
-		<!--button class="btn btn-primary">형성 평가</button-->
+		<button class="btn btn-primary">형성 평가</button>
 	</div>
 	<div class="row">
 		<a href="/stdnt/exam_list"><button class="btn btn-primary btn-lg">진단 평가</button></a>
 	</div>
-</div>
+</div-->
 {% endblock %}

@@ -12,5 +12,6 @@ urlpatterns = patterns('',
     url(r'^assess_mng/$', assess_mng, name='assess_mng'),
     url(r'^create_assesstemp_wiz1/$', create_assesstemp_wiz1, name='create_assesstemp_wiz1'),
     url(r'^assess_preview/$', assess_preview, name='assess_preview'),
+    url(r'^create_assesstemp_wiz2/$', create_assesstemp_wiz2, name='create_assesstemp_wiz2'),
     
 )

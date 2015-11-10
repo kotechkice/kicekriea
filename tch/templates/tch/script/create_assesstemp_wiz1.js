@@ -184,7 +184,7 @@ $(document).on('click', '.del_selected_item',function(){
 });
 
 function click_save_btn(){
-    var assess_name = $('#assess_name').val()
+    var assess_name = $('#assess_name').val();
     if(assess_name == ''){
         return false;
     }

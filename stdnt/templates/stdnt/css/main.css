@@ -1,0 +1,198 @@
+<style>
+	body{
+		font-family:'Malgun Gothic', 'Guilm', 'Arial';
+	}
+	
+	#kice_head_arrow{
+		position: absolute;
+		left:250px;
+		top:42px;
+		height:48px;
+		width:60px;
+	}
+	.kice_head_name_en_orange{
+		color:orange;
+	}
+	
+	#kice_head_name_ko{
+		position: absolute;
+		left:317px;
+		top:37px;
+		width:300px;
+		
+		font-size:30.3px;
+		line-height:36px;
+	}
+	
+	#kice_head_name_en{
+		position: absolute;
+		left:317px;
+		top:70px;
+		width:300px;
+		
+		font-size:17.7px;
+		line-height:21px;
+	}
+	#login_info{
+		position: absolute;
+		left:729px;
+		top:70px;
+		width:300px;
+		
+		font-size:12.6px;
+		line-height:15px;
+	}
+	#kice_head_line1{
+		position: absolute;
+		left:252px;
+		top:96px;
+		width:346px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(169, 209, 142);
+	}
+	#kice_head_line2{
+		position: absolute;
+		left:596px;
+		top:96px;
+		width:440px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(244, 177, 131);
+	}
+	
+	#kice_head2_name_ko{
+		position: absolute;
+		left:254px;
+		top:125px;
+		width:300px;
+		
+		font-size:17.7px;
+		line-height:21px;
+	}
+	#kice_head2_line1{
+		position: absolute;
+		left:252px;
+		top:147px;
+		width:157px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(31, 78, 121);
+	}
+	#kice_head2_line2{
+		position: absolute;
+		left:396px;
+		top:147px;
+		width:640px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(222, 235, 247);
+	}
+	.kice_sign1{
+		width:10px;
+		height:10px;
+	}
+	
+	#my_assess_list_name{
+		position: absolute;
+		left:249px;
+		top:175px;
+		height:25px;
+		width:318px;
+			
+		font-size:17.7px;
+		line-height:21px;
+		
+		padding:2px;
+		
+		background:rgb(242, 242, 242);
+		border:1px solid rgb(120,120,120);
+	}
+	
+	#wrap_lists{
+		position: absolute;
+		left:249px;
+		top:210px;
+		height:621px;
+		width:767px;
+			
+		border:1px solid rgb(166,166,166);
+	}
+	
+	#jindan_assess_name{
+		/*position: absolute;
+		left:0px;
+		top:17px;*/
+		margin-top:17px;
+		height:26px;
+		width:153px;
+			
+		padding:1px;
+		padding-left:30px;
+		
+		font-size:17.7px;
+		line-height:21px;
+		
+		color:white;
+		background:black;
+		border:1px solid black;
+	}
+	#jindan_assess_status{
+		position: absolute;
+		left:170px;
+		top:20px;
+		height:26px;
+		
+			
+		padding:1px;
+		padding-left:30px;
+		
+		font-size:17.7px;
+		line-height:21px;
+	}
+	#unit_assess_table_name{
+		margin-top:20px;
+		margin-left:10px;
+	}
+	
+	#unit_assess_table{
+		margin-left:10px;
+		margin-right:10px;
+	}
+	#unit_assess_table th{
+		text-align:center;
+		font-size:14.3px;
+		line-height:17px;
+		background:rgb(242,242,242);
+		border-top:1px solid black;
+		border-right:2px solid rgb(200,200,200);
+		border-bottom:2px solid rgb(200,200,200);
+	}
+	#unit_assess_table td{
+		text-align:center;
+		font-size:12.6px;
+		line-height:15px;
+		border-right:2px solid rgb(200,200,200);
+		border-bottom:2px solid rgb(200,200,200);
+	}
+	#unit_assess_table .td-contents{
+		width:300px;
+	}
+	#unit_assess_table .td-itemnum{
+		width:50px;
+	}
+	#unit_assess_table .td-exe{
+		width:70px;
+	}
+	#unit_assess_table .td-result{
+		width:50px;
+	}
+	#unit_assess_table .td-solve{
+		width:200px;
+		border-right:0px;
+	}
+</style>

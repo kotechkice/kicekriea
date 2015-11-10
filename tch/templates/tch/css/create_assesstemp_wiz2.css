@@ -1,0 +1,262 @@
+<style>
+	body{
+		font-family:'Malgun Gothic', 'Guilm', 'Arial';
+	}
+	
+	#kice_head_arrow{
+		position: absolute;
+		left:250px;
+		top:84px;
+		height:48px;
+		width:60px;
+	}
+	.kice_head_name_en_orange{
+		color:orange;
+	}
+	
+	#kice_head_name_ko{
+		position: absolute;
+		left:317px;
+		top:79px;
+		width:300px;
+		
+		font-size:30.3px;
+		line-height:36px;
+	}
+	
+	#kice_head_name_en{
+		position: absolute;
+		left:317px;
+		top:112px;
+		width:300px;
+		
+		font-size:17.7px;
+		line-height:21px;
+	}
+	#login_info{
+		position: absolute;
+		left:729px;
+		top:110px;
+		width:300px;
+		
+		font-size:12.6px;
+		line-height:15px;
+	}
+	#kice_head_line1{
+		position: absolute;
+		left:252px;
+		top:138px;
+		width:346px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(169, 209, 142);
+	}
+	#kice_head_line2{
+		position: absolute;
+		left:596px;
+		top:138px;
+		width:440px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(244, 177, 131);
+	}
+	
+	#kice_head2_name_ko{
+		position: absolute;
+		left:254px;
+		top:167px;
+		width:300px;
+		
+		font-size:17.7px;
+		line-height:21px;
+	}
+	#kice_head2_line1{
+		position: absolute;
+		left:252px;
+		top:189px;
+		width:157px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(31, 78, 121);
+	}
+	#kice_head2_line2{
+		position: absolute;
+		left:396px;
+		top:189px;
+		width:640px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(222, 235, 247);
+	}
+	
+	#wrap_inputs{
+		position: absolute;
+		left:249px;
+		top:219px;
+		height:508px;
+		width:783px;
+		
+		border:1px solid rgb(166,166,166);
+	}
+	.kice_sign1{
+		width:10px;
+		height:10px;
+	}
+	html, body {
+		height:100%;
+	}
+	footer {
+	    /*position: absolute;*/
+	    /*bottom: 0;*/
+	    position: absolute;
+	 	top:869px;
+	    width: 100%;
+	    height: 6em;
+	    margin-top:-6em;
+	 }
+	footer>.container{
+	 	position: absolute;
+	 	left:249px;
+	 	width:785px;
+	 	padding:0px;
+	 }
+	 
+	 #assess_type_name{
+	 	position: absolute;
+	 	left:10px;
+	 	top:15px;
+	 	width:104px;
+	 	
+	 	font-size:14.3px;
+		line-height:17px;
+	 }
+	 #assess_type_input{
+	 	position: absolute;
+	 	left:123px;
+	 	top:15px;
+	 	width:500px;
+	 	
+	 	font-size:14.3px;
+		line-height:17px;
+	 }
+	 #wrap_inputs>hr {
+	 	position: absolute;
+	 	left:12px;
+	 	top:45px;
+	 	
+	 	width:719px;
+	 	
+	 }
+	 #assess_name{
+	 	position: absolute;
+	 	left:10px;
+	 	top:60px;
+	 	width:104px;
+	 	
+	 	font-size:14.3px;
+		line-height:17px;
+	 }
+	 #assess_name_input{
+	 	position: absolute;
+	 	left:129px;
+	 	top:60px;
+	 	width:104px;
+	 	
+	 }
+	 #assess_start_time_name{
+	 	position: absolute;
+	 	left:10px;
+	 	top:105px;
+	 	width:104px;
+	 	
+	 	font-size:14.3px;
+		line-height:17px;
+	 }
+	 #assess_start_time_input .input_date{
+	 	position: absolute;
+	 	left:124px;
+	 	top:100px;
+	 	width:80px;
+	 }
+	 #assess_start_time_input .input_time{
+	 	position: absolute;
+	 	left:217px;
+	 	top:100px;
+	 	width:80px;
+	 }
+	 #assess_end_time_name{
+	 	position: absolute;
+	 	left:350px;
+	 	top:105px;
+	 	width:104px;
+	 	
+	 	font-size:14.3px;
+		line-height:17px;
+	 }
+	 #assess_end_time_input .input_date{
+	 	position: absolute;
+	 	left:449px;
+	 	top:100px;
+	 	width:80px;
+	 }
+	 #assess_end_time_input .input_time{
+	 	position: absolute;
+	 	left:542px;
+	 	top:100px;
+	 	width:80px;
+	 }
+	 #assess_set_std_name{
+	 	position: absolute;
+	 	left:10px;
+	 	top:150px;
+	 	width:104px;
+	 	
+	 	font-size:14.3px;
+		line-height:17px;
+	 }
+	 
+	 #assess_set_input{
+	 	position: absolute;
+	 	left:37px;
+	 	top:174px;
+		height:41px;
+	 	width:695px;
+	 	
+	 	padding:10px;
+	 	
+	 	border:1px solid rgb(166,166,166);
+	 }
+	 #assess_sel_std_input{
+	 	position: absolute;
+	 	left:37px;
+	 	top:218px;
+		height:256px;
+	 	width:695px;
+	 	
+	 	border:1px solid rgb(166,166,166);
+	 }
+	 #assess_sel_std_input button{
+	 	margin:5px;
+	 	background:rgb(68, 84, 106);
+	 	border:1px solid rgb(166,166,166);
+	 	color:white;
+	 }
+	 #assess_sel_std_input hr{
+	 	width:685px;
+	 	border:1px solid rgb(166,166,166);
+	 }
+	 #submit{
+	 	position: absolute;
+	 	left:909px;
+	 	top:691px;
+		
+	 	margin:5px;
+	 	background:rgb(68, 84, 106);
+	 	border:1px solid rgb(166,166,166);
+	 	color:white;
+	 }
+</style>
