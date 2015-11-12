@@ -17,8 +17,14 @@ from auth_ext.funcs import *
 from assess.models import *
 from assess.funcs import *
 
-from datetime import date
+from stdnt.models import *
+from stdnt import strings as stdnt_string
+    
+from datetime import datetime, date
 import json
+
+import pytz
+from project import settings
 
 # Create your views here.
 def login(request):
@@ -251,8 +257,6 @@ def exam_result(request):
     ugi = UserGroupInfo.objects.filter(group__groupdetail__upper_group__groupdetail__upper_group=my_usergroupinfo.group, group__groupdetail__type="C")
     students = map(lambda x:x.user, ugi)
     
-    from stdnt.models import *
-    from stdnt import strings as stdnt_string
     
     els = ExamList.objects.all()
     for index in range(len(els)):
@@ -407,10 +411,98 @@ def create_assesstemp_wiz2(request):
             data = json.dumps({'status':"fail"})
             return HttpResponse(data, 'application/json')
         
-        if request.GET['method'] == 'get_item_info':
-            if 'itemid' in request.GET:
-                it = ItemTemplate.objects.get(cafa_it_id = request.GET['itemid'])
-                data = json.dumps({'status':'success', 'choices_in_a_row':it.choices_in_a_row})
+        if request.GET['method'] == 'get_std_info':
+            if 'clas_id' in request.GET:
+                clas_stds = []
+                for ugi in UserGroupInfo.objects.filter(group__id=request.GET['clas_id']):
+                    clas_stds.append({'id':ugi.user.id, 'name':ugi.user.userdetail.full_name})
+                
+                data = json.dumps({'status':'success', 'clas_stds':clas_stds})
+        if request.GET['method'] == 'get_ctid_and_set_assessment':
+            if ('at_id' and 'group_unit' and 'assess_type' and 'ids' and 'start' and 'end') in request.GET:
+                at = AssessmentTemplate.objects.get(id=request.GET['at_id'])
+                if not at.ct_id:
+                    miats = MappedItemAssessmentTemplate.objects.filter(at=at)
+                    item_ids = []
+                    for miat in miats:
+                        item_ids.append(miat.it.cafa_it_id)
+                        
+                    random = str(int(at.is_random_order))+str(int(at.is_fixed_item))+str(int(at.is_random_choice_order))
+                    data = json.dumps({
+                        'status':'success',
+                        'ct_id':'empty', 
+                        'name':at.name, 
+                        'item_ids':item_ids,
+                        'random':random,
+                    })
+                else:
+                    local_tz = pytz.timezone(settings.TIME_ZONE)
+                    if request.GET['group_unit'] == 'A':
+                        ga = GroupAssessment()
+                        ga.group = my_usergroupinfo.group
+                        ga.at = at
+                        ga.type = request.GET['assess_type']
+                        ga.start_time = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
+                        ga.end_time = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
+                        ga.save()
+                    elif request.GET['group_unit'] == 'C':
+                        ids = json.loads(request.GET['ids'])
+                        for id in ids:
+                            ga = GroupAssessment()
+                            ga.group = Group.objects.get(id=id)
+                            ga.at = at
+                            ga.type = request.GET['assess_type']
+                            ga.start_time = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
+                            ga.end_time = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
+                            ga.save()
+                    elif request.GET['group_unit'] == 'S':
+                        ids = json.loads(request.GET['ids'])
+                        for user_id in ids:
+                            ua = UserAssessment()
+                            ua.user = User.objects.get(id=user_id)
+                            ua.at = at
+                            ua.type = request.GET['assess_type']
+                            ua.start_time = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
+                            ua.end_time = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
+                            ua.save()
+                            
+                    data = json.dumps({'status':'success', 'ct_id':at.ct_id})
+        if request.GET['method'] == 'set_ct_id_and_at':
+            if ('at_id' and 'ct_id' and 'group_unit' and 'assess_type' and 'ids' and 'start' and 'end') in request.GET:
+                at = AssessmentTemplate.objects.get(id=request.GET['at_id'])
+                at.ct_id = request.GET['ct_id']
+                at.save()
+                local_tz = pytz.timezone(settings.TIME_ZONE)
+                if request.GET['group_unit'] == 'A':
+                    ga = GroupAssessment()
+                    ga.group = my_usergroupinfo.group
+                    ga.at = at
+                    ga.type = request.GET['assess_type']
+                    ga.start_time = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
+                    ga.end_time = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
+                    ga.save()
+                elif request.GET['group_unit'] == 'C':
+                    ids = json.loads(request.GET['ids'])
+                    for id in ids:
+                        ga = GroupAssessment()
+                        ga.group = Group.objects.get(id=id)
+                        ga.at = at
+                        ga.type = request.GET['assess_type']
+                        ga.start_time = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
+                        ga.end_time = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
+                        ga.save()
+                elif request.GET['group_unit'] == 'S':
+                    ids = json.loads(request.GET['ids'])
+                    for user_id in ids:
+                        ua = UserAssessment()
+                        ua.user = User.objects.get(id=user_id)
+                        ua.at = at
+                        ua.type = request.GET['assess_type']
+                        ua.start_time = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
+                        ua.end_time = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
+                        ua.save()
+                        
+                data = json.dumps({'status':'success'})
         return HttpResponse(data, 'application/json')
     
     ats = AssessmentTemplate.objects.filter(owner_group=my_usergroupinfo.group)
@@ -418,7 +510,17 @@ def create_assesstemp_wiz2(request):
     classes = Group.objects.filter(groupdetail__upper_group__groupdetail__upper_group=my_usergroupinfo.group, groupdetail__type="C")
     for index in range(len(classes)):
         classes[index].members_length = len(classes[index].usergroupinfo_set.all())
-     
+    
+    first_clas = classes[0]
+    first_clas_stds = []
+    for ugi in UserGroupInfo.objects.filter(group=first_clas):
+        first_clas_stds.append({'id':ugi.user.id, 'name':ugi.user.userdetail.full_name})
+    
+    date_now = datetime.now()
+    start = {'date' : date_now.strftime("%Y-%m-%d"), 'time' : date_now.strftime("%I:%M %p")}
+    next_month = datetime(date_now.year,date_now.month+1, date_now.day)
+    end = {'date' : next_month.strftime("%Y-%m-%d"), 'time' : start['time'] }
+    
     variables = RequestContext(request, {
         'tch_string' : tch_string,                                 
         'home_string' : home_string,
@@ -426,6 +528,10 @@ def create_assesstemp_wiz2(request):
         'my_usergroupinfo':my_usergroupinfo,
         'ats':ats,
         'classes':classes,
+        'first_clas_stds':json.dumps(first_clas_stds),
+        'first_clas_stds_length':len(first_clas_stds),
+        'start':start,
+        'end':end,
     })
     return render_to_response('tch/create_assesstemp_wiz2.html', variables)
 

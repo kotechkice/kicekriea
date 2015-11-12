@@ -133,12 +133,28 @@ class MappedItemAssessmentTemplate(models.Model):
         return self.at.name + '-' + str(self.it.cafa_it_id)
 
 class GroupAssessment(models.Model):
+    Types = (
+        ('D', 'Diagnosis'),
+        ('P', 'Practice'),
+    )
+    type = models.CharField(max_length=1, choices=Types, null=True)
+    
     at = models.ForeignKey(AssessmentTemplate)
     group = models.ForeignKey(Group)
-    #creator = models.ForeignKey(User)
-    #creation_time = models.DateTimeField(null=True)
+    
+    start_time = models.DateTimeField(null=True)
+    end_time = models.DateTimeField(null=True)
+    solving_order_num = models.IntegerField(null=True)
+    def __unicode__(self):
+        return self.at.name + '-' + self.group.groupdetail.nickname
 
 class UserAssessment(models.Model):
+    Types = (
+        ('D', 'Diagnosis'),
+        ('P', 'Practice'),
+    )
+    type = models.CharField(max_length=1, choices=Types, null=True)
+    
     at = models.ForeignKey(AssessmentTemplate)
     user = models.ForeignKey(User)
     ci_id = models.CharField(max_length=80, null=True)

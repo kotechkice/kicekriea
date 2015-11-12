@@ -76,8 +76,61 @@ def main(request):
         my_usergroupinfo_class = my_usergroupinfo_classes[0]
     else:
         my_usergroupinfo_class = None
-    examlist = []
+        
     
+    if request.is_ajax():
+        data = json.dumps({'status':"fail"})
+        if not 'method' in request.GET:
+            return HttpResponse(data, 'application/json')
+        if request.GET['method'] == 'call_ua':
+            if 'at_id' in request.GET:
+                at_id = request.GET['at_id']
+                ua_list = UserAssessment.objects.filter(at__id = at_id, user = my_info, end_time=None)
+                if len(ua_list) == 0:
+                    at_list = AssessmentTemplate.objects.filter(pk=at_id)
+                    if len(at_list) == 0:
+                        data = json.dumps({'status':"fail"})
+                    else:
+                        data = json.dumps({'status':"success", 'ua_id':'empty', 'ct_id':at_list[0].ct_id})
+                else:
+                    data = json.dumps({'status':"success", 'ua_id':ua_list[0].id})
+        
+        elif request.GET['method'] == 'create_ua':
+            if 'items' in request.GET and 'at_id' in request.GET and 'ci_id' in request.GET:
+                items =  json.loads(request.GET['items'])
+                at_list = AssessmentTemplate.objects.filter(pk=request.GET['at_id'])
+                ua_id = create_ua_from_itemdict_N_at(at_list[0], items, my_info, request.GET['ci_id'])
+                data = json.dumps({'status':"success", 'ua_id':ua_id})
+        '''
+        elif request.GET['method'] == 'get_itmes':
+            if 'exam_order' in request.GET:
+                items = {}
+                el_list = ExamList.objects.filter(exam_order = request.GET['exam_order'])
+                if len(el_list) != 0:
+                    el = el_list[0]
+                    ua_list = UserAssessment.objects.filter(at = el.at, user=my_info)
+                    guis=[]
+                    
+                    if len(ua_list) != 0:
+                        ua = ua_list[0]
+                        guis = ua.gradeduseritem_set.order_by('order').all()
+                        items['length'] = len(guis)
+                        for gui in guis:
+                            items[gui.order] ={
+                                'item_id' : gui.it.cafa_it_id,
+                                'seed' : gui.seed,
+                                'permutation' : gui.permutation,
+                                'item_permutation' : gui.item_permutation,
+                                'choices_in_a_row' : gui.it.choices_in_a_row,
+                                'response' : gui.response,
+                                'correctanswer' : gui.correctanswer,
+                                'is_correct' : gui.response == gui.correctanswer,
+                            }
+                    data = json.dumps({'status':"success", 'items':items})
+        '''
+        return HttpResponse(data, 'application/json')
+    
+    examlist = []
     for ga in GroupAssessment.objects.filter(group = my_usergroupinfo_class.group):
         examlist.append(ga.at)
         ua_list = UserAssessment.objects.filter(at=ga.at, user = my_info)
@@ -88,6 +141,7 @@ def main(request):
             examlist[-1].is_started = True
             if ua.end_time != None:
                 examlist[-1].is_finished = True
+                
     '''
     examlist = ExamList.objects.all()
     for i in range(len(examlist)):

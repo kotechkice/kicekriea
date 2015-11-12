@@ -1,12 +1,11 @@
 var solve_mode='m';
 var ua_id;
 $(document).on('click', '.exam_m', function(){
-    //test_dat = this;
+    test_dat = this;
     //console.log($(this).val());
     solve_mode='m';
     //at_id = $(this).attr("value");
-    console.log($(this).attr("value"));
-    var at_id = $(this).attr("value");
+    var at_id = $(this).parent().parent().attr('at_id');
     var data = {};
     data['method'] = 'call_ua';
     data['at_id'] = at_id;
@@ -20,14 +19,15 @@ $(document).on('click', '.exam_m', function(){
             if(msg['ua_id'] == 'empty'){
                 url = 'http://cafalab.com/asp/CreateCartridgeInstance.asp?ID='+msg['ct_id']+'&user={{ my_info.email }}';
                 console.log(url);
+                
                 $.get(url, function (get_data) {
-                    //console.log(get_data);
+                    console.log(get_data);
                     var ci_id = $($(get_data).find('ID')[0]).text();
                     //ci_id = 'KWS9/7/2015-7:35:48 AM-wogud86@naver.com-2627';
                     var getci_url = 'http://cafalab.com/asp/GetCartridgeInstance.asp?id='+ci_id;
                     console.log(getci_url);
                     $.get(getci_url, function (getci_data) {
-                        //console.log(getci_data);
+                        console.log(getci_data);
                         var json = getci_to_json(getci_data);
                         console.log(json);
                         $.ajax({
@@ -49,6 +49,7 @@ $(document).on('click', '.exam_m', function(){
                         });
                     });
                 });
+                
             } else {
                 ua_id = msg['ua_id'];
                 //$("#go_exist_exam_modal").modal('show');

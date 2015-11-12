@@ -8,6 +8,9 @@
 	{% include "tch/css/create_assesstemp_wiz2.css" %}
 {% endblock %}
 {% block script %}
+<script>
+	{% include "tch/script/create_assesstemp_wiz2.js" %}
+</script>
 {% endblock %}
 {% block contents %}
 <div class="kice_head">
@@ -61,8 +64,8 @@
 		평가 시작시간
 	</div>
 	<div id="assess_start_time_input">
-		<input type="text" class="input_date" value="2015-04-20"/>
-		<input type="text" class="input_time" value="오후 12:20" />
+		<input type="text" class="input_date" value="{{ start.date }}" />
+		<input type="text" class="input_time" value="{{ start.time }}" />
 	</div>
 	
 	<div id="assess_end_time_name">
@@ -70,8 +73,8 @@
 		평가 종료시간
 	</div>
 	<div id="assess_end_time_input">
-		<input type="text" class="input_date" value="2015-04-20"/>
-		<input type="text" class="input_time" value="오후 12:20" />
+		<input type="text" class="input_date" value="{{ end.date }}"/>
+		<input type="text" class="input_time" value="{{ end.time }}" />
 	</div>
 	
 	<div id="assess_set_std_name">
@@ -80,8 +83,8 @@
 	</div>
 	
 	<div id="assess_set_input">
-		<input type="radio" name="sel_set_mode" /> 전체학생&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="radio" name="sel_set_mode" /> 학급단위&nbsp;&nbsp;&nbsp;
+		<input type="radio" name="sel_set_mode" checked="checked" value="A" /> 전체학생&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="radio" name="sel_set_mode" value="C" /> 학급단위&nbsp;&nbsp;&nbsp;
 		<select>
 			{% for clas in classes %}
 			<option grp_id="{{clas.id}}">
@@ -98,20 +101,29 @@
 			</option>
 			{% endfor %}
 		</select>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		<input type="radio" name="sel_set_mode" /> 개별학생&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<input type="radio" name="sel_set_mode" value="S" /> 개별학생&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	</div>
 	
 	<div id="assess_sel_std_input">
 		<div align="right">
-			<button>전체선택</button>
-			<button>전체해제</button>
-			<button>선택완료</button>
+			<button id="sel_all_std">전체선택</button>
+			<button id="sel_cancel">전체해제</button>
+			<button id="sel_complte">선택완료</button>
 		</div>
 		<hr />
+		총 <span id="std_len">{{first_clas_stds_length}}</span>명 중
+		<table id="sel_std_input_table" align="center">
+			<tbody>
+				<tr>
+					<td> </td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	
 </div>
-<button id="submit">저장하기</button>
+<button id="submit">저장하기{{ datetime_now }}</button>
+
 {% endblock %}
 
 {% block footer %}
