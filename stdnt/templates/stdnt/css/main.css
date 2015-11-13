@@ -117,12 +117,12 @@
 		position: absolute;
 		left:249px;
 		top:210px;
-		height:621px;
+		/*height:621px;*/
 		width:767px;
 			
 		border:1px solid rgb(166,166,166);
 	}
-	
+	#practice_assess_name,
 	#jindan_assess_name{
 		/*position: absolute;
 		left:0px;
@@ -141,11 +141,12 @@
 		background:black;
 		border:1px solid black;
 	}
+	#practice_assess_status,
 	#jindan_assess_status{
-		position: absolute;
-		left:170px;
+		/*position: absolute;*/
+		/*left:170px;
 		top:20px;
-		height:26px;
+		height:26px;*/
 		
 			
 		padding:1px;
@@ -154,16 +155,18 @@
 		font-size:17.7px;
 		line-height:21px;
 	}
-	#unit_assess_table_name{
+	#unit_assess_table_name,
+	#standart_assess_table_name,
+	#practice_unit_assess_table_name{
 		margin-top:20px;
 		margin-left:10px;
 	}
 	
-	#unit_assess_table{
+	table{
 		margin-left:10px;
 		margin-right:10px;
 	}
-	#unit_assess_table th{
+	table th{
 		text-align:center;
 		font-size:14.3px;
 		line-height:17px;
@@ -172,27 +175,78 @@
 		border-right:2px solid rgb(200,200,200);
 		border-bottom:2px solid rgb(200,200,200);
 	}
-	#unit_assess_table td{
+	table td{
 		text-align:center;
 		font-size:12.6px;
 		line-height:15px;
 		border-right:2px solid rgb(200,200,200);
 		border-bottom:2px solid rgb(200,200,200);
 	}
-	#unit_assess_table .td-contents{
-		width:300px;
+	table .td-contents{
+		width:370px;
 	}
-	#unit_assess_table .td-itemnum{
+	table .td-itemnum{
 		width:50px;
 	}
-	#unit_assess_table .td-exe{
+	table .td-exe{
 		width:70px;
 	}
-	#unit_assess_table .td-result{
+	table .td-result{
 		width:50px;
 	}
-	#unit_assess_table .td-solve{
+	table .td-solve{
 		width:200px;
 		border-right:0px;
+	}
+	#standart_assess_table tr>th:nth-child(1){
+		width:100px;
+	}
+	#standart_assess_table tr>th:nth-child(2){
+		width:270px;
+	}
+	footer{
+		position: absolute;
+		left:249px;
+		width:767px;
+	}
+	.complte_btn{
+		background:rgb(169,209,142);
+		border:1px solid black;
+		color:white;	
+		margin:2px;
+		font-size:12px;
+		line-height:14px;
+	}
+	.exam_m{
+		background:rgb(68,84,106);
+		border:1px solid black;
+		color:white;
+		margin:2px;
+		font-size:12px;
+		line-height:14px;
+	}
+	.exam_p{
+		background:rgb(197,90,17);
+		border:1px solid black;
+		color:white;
+		margin:2px;
+		font-size:12px;
+		line-height:14px;
+	}
+	.result_btn{
+		background:rgb(68,84,106);
+		border:1px solid black;
+		color:white;
+		margin:2px;
+		font-size:12px;
+		line-height:14px;
+	}
+	.ans_sol_btn{
+		background:rgb(68,84,106);
+		border:1px solid black;
+		color:white;
+		margin:2px;
+		font-size:12px;
+		line-height:14px;
 	}
 </style>

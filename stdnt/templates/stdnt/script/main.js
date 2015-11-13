@@ -1,22 +1,34 @@
+{% include "stdnt/container/base.js" %}
+{% include "stdnt/container/manage_probs.js" %}
+
+$(document).ready(function(){
+    $('footer').css('top', $('#wrap_lists').position().top+$('#wrap_lists').height()+80);
+});
+    
 var solve_mode='m';
 var ua_id;
-$(document).on('click', '.exam_m', function(){
-    test_dat = this;
+$(document).on('click', '.exam_m, .exam_p', function(){
+    //test_dat = this;
+    //return false;
     //console.log($(this).val());
-    solve_mode='m';
+    if($(this).hasClass('exam_m')) solve_mode='m';
+    if($(this).hasClass('exam_p')) solve_mode='p';
+    
     //at_id = $(this).attr("value");
     var at_id = $(this).parent().parent().attr('at_id');
     var data = {};
     data['method'] = 'call_ua';
     data['at_id'] = at_id;
+    //return false;
     $.ajax({
         url : '/stdnt',
         dataType:"json",
         data : data
     }).done(function(msg){
         console.log(msg);
+        //return false;
         if(msg['status'] == 'success'){
-            if(msg['ua_id'] == 'empty'){
+            if(msg['ua_id'] == 'empty' || msg['start_time'] == 'empty'){
                 url = 'http://cafalab.com/asp/CreateCartridgeInstance.asp?ID='+msg['ct_id']+'&user={{ my_info.email }}';
                 console.log(url);
                 
@@ -30,22 +42,42 @@ $(document).on('click', '.exam_m', function(){
                         console.log(getci_data);
                         var json = getci_to_json(getci_data);
                         console.log(json);
+                        var data = {
+                            'method':'create_ua', 
+                            'items':JSON.stringify(json),
+                            'at_id':at_id,
+                            'ci_id':ci_id
+                        };
+                        if(msg['start_time'] == 'empty'){ 
+                            data = {
+                            'method':'create_gui', 
+                            'items':JSON.stringify(json),
+                            'at_id':at_id,
+                            'ci_id':ci_id,
+                            'ua_id':msg['ua_id'],
+                            };
+                        }
+                        console.log(data);
                         $.ajax({
                             url : '/stdnt',
                             dataType:"json",
-                            data : {
-                                'method':'create_ua', 
-                                'items':JSON.stringify(json),
-                                'at_id':at_id,
-                                'ci_id':ci_id
-                            }
+                            data : data,
                         }).done(function(create_ua_msg){
+                            
                             console.log(create_ua_msg);
-                            ua_id = create_ua_msg['ua_id'];
-                            switch(solve_mode){
-                            case 'm':
-                                $(location).attr('href','/stdnt/solve_itemeach/'+ua_id);
-                            }
+                            if(msg['status'] == 'success'){
+                                ua_id = create_ua_msg['ua_id'];
+                                switch(solve_mode){
+                                case 'm':
+                                    $(location).attr('href','/stdnt/solve_itemeach/'+ua_id);
+                                    break;
+                                case 'p':
+                                    $(location).attr('href','/stdnt/print_assess/'+ua_id);
+                                    break;
+                                }
+                             } else {
+                                 console.log(create_ua_msg);
+                             }
                         });
                     });
                 });
@@ -56,6 +88,10 @@ $(document).on('click', '.exam_m', function(){
                 switch(solve_mode){
                 case 'm':
                     $(location).attr('href','/stdnt/solve_itemeach/'+ua_id);
+                    break;
+                case 'p':
+                    $(location).attr('href','/stdnt/print_assess/'+ua_id);
+                    break;
                 }
             }
         }

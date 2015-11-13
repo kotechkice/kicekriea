@@ -1,0 +1,264 @@
+<style>
+	body{
+		font-family:'Malgun Gothic', 'Guilm', 'Arial';
+	}
+	
+	#kice_head_arrow{
+		position: absolute;
+		left:250px;
+		top:42px;
+		height:48px;
+		width:60px;
+	}
+	.kice_head_name_en_orange{
+		color:orange;
+	}
+	
+	#kice_head_name_ko{
+		position: absolute;
+		left:317px;
+		top:37px;
+		width:300px;
+		
+		font-size:30.3px;
+		line-height:36px;
+	}
+	
+	#kice_head_name_en{
+		position: absolute;
+		left:317px;
+		top:70px;
+		width:300px;
+		
+		font-size:17.7px;
+		line-height:21px;
+	}
+	#login_info{
+		position: absolute;
+		left:729px;
+		top:70px;
+		width:300px;
+		
+		font-size:12.6px;
+		line-height:15px;
+	}
+	#kice_head_line1{
+		position: absolute;
+		left:252px;
+		top:96px;
+		width:346px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(169, 209, 142);
+	}
+	#kice_head_line2{
+		position: absolute;
+		left:596px;
+		top:96px;
+		width:440px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(244, 177, 131);
+	}
+	
+	#kice_head2_name_ko{
+		position: absolute;
+		left:254px;
+		top:125px;
+		width:300px;
+		
+		font-size:17.7px;
+		line-height:21px;
+	}
+	#kice_head2_line1{
+		position: absolute;
+		left:252px;
+		top:147px;
+		width:157px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(31, 78, 121);
+	}
+	#kice_head2_line2{
+		position: absolute;
+		left:396px;
+		top:147px;
+		width:640px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(222, 235, 247);
+	}
+	.kice_sign1{
+		width:10px;
+		height:10px;
+	}
+	
+	#my_assess_list_name{
+		position: absolute;
+		left:252px;
+		top:170px;
+		width:783px;
+		
+		padding:10px;
+		
+		font-size:14.3px;
+		line-height:17px;
+		
+		border:1px solid rgb(166,166,166);
+	}
+	#my_assess_list_name table{
+		margin-top:10px;
+		margin-bottom:10px;
+	}
+	#my_assess_list_name table th, 
+	#my_assess_list_name table td{
+		text-align:center;
+		border-top:1px solid black;
+		border-bottom:1px solid black;
+	}
+	#my_assess_list_name thead>tr th:nth-child(1){
+		width:360px;
+		border-left:1px solid black;
+		border-right:1px solid black;
+	}
+	#my_assess_list_name th:nth-child(2){
+		width:100px;
+		background:rgb(222,235,247);
+	}
+	#my_assess_list_name th:nth-child(3){
+		width:100px;
+		background:rgb(189,215,238);
+	}
+	#my_assess_list_name th:nth-child(4){
+		width:100px;
+		background:rgb(157,195,230);
+	}
+	#my_assess_list_name th:nth-child(5){
+		width:100px;
+		border-right:1px solid black;
+		background:rgb(46,117,182);
+	}
+	#my_assess_list_name tr>td:nth-child(1){
+		border-left:1px solid black;
+		border-right:1px solid black;
+	}
+	#my_assess_list_name tr>td:nth-child(5){
+		border-right:1px solid black;
+	}
+	#my_assess_list_name tr>td:nth-child(2) div{
+		width:100%;
+		height:10px;
+		border-top:1px solid rgb(189,215,238);
+		border-bottom:1px solid rgb(189,215,238);
+		background:rgb(222,235,247);
+	}
+	#my_assess_list_name tr>td:nth-child(3) div{
+		width:100%;
+		height:10px;
+		border-top:1px solid rgb(157,195,230);
+		border-bottom:1px solid rgb(157,195,230);
+		background:rgb(189,215,238);
+	}
+	#my_assess_list_name tr>td:nth-child(4) div{
+		width:100%;
+		height:10px;
+		border-top:1px solid rgb(46,117,182);
+		border-bottom:1px solid rgb(46,117,182);
+		background:rgb(157,195,230);
+	}
+	#my_assess_list_name tr>td:nth-child(5) div{
+		width:100%;
+		height:10px;
+		border-top:1px solid rgb(46,117,182);
+		border-bottom:1px solid rgb(46,117,182);
+		background:rgb(46,117,182);
+	}
+	hr {
+		border:1px solid rgb(166,166,166);
+	}
+	#my_unit_list_name{
+		position: absolute;
+		left:252px;
+		/*top:170px;*/
+		width:783px;
+		
+		padding:10px;
+		
+		font-size:14.3px;
+		line-height:17px;
+		
+		border:1px solid rgb(166,166,166);
+	}
+	#my_unit_list_name table{
+		
+	}
+	
+	#my_unit_list_name table th, 
+	#my_unit_list_name table td{
+		text-align:center;
+		border-top:1px solid black;
+		border-bottom:1px solid black;
+	}
+	
+	#my_unit_list_name table th:first-child{
+		border-left:1px solid black;
+		border-right:1px solid black;
+	}
+	#my_unit_list_name table th:first-child{
+		border-left:1px solid black;
+		border-right:1px solid black;
+	}
+	#my_unit_list_name table th:nth-child(2){
+		background:rgb(222,235,247);
+	}
+	#my_unit_list_name table th:nth-child(3){
+		background:rgb(189,215,238);
+	}
+	#my_unit_list_name table th:nth-child(4){
+		background:rgb(157,195,230);
+	}
+	#my_unit_list_name table th:nth-child(5){
+		background:rgb(46,117,182);
+	}
+	
+	#my_assess_list_name th:nth-child(4){
+		background:rgb(157,195,230);
+	}
+	#my_assess_list_name th:nth-child(5){
+		border-right:1px solid black;
+		background:rgb(46,117,182);
+	}
+	#my_unit_list_name table th:last-child{
+		width:100px;
+		border-left:1px solid black;
+		border-right:1px solid black;
+	}
+	#my_unit_list_name table>tbody>tr:first-child>td:first-child{
+		width:40px;
+		border-left:1px solid black;
+		border-right:1px solid black;
+	}
+	#my_unit_list_name table>tbody>tr:first-child>td:nth-child(2){
+		width:300px;
+		border-left:1px solid black;
+		border-right:1px solid black;
+	}
+	#my_unit_list_name table>tbody>tr:nth-child(2)>td:first-child{
+		border-left:1px solid black;
+		border-right:1px solid black;
+	}
+	.percent_data{
+		width:80px;
+	}
+	#my_unit_list_name table td:last-child{
+		border-left:1px solid black;
+		border-right:1px solid black;
+	}
+	#my_unit_list_name table>tbody>tr>.percent_data:nth-child(1){
+		
+	}
+</style>

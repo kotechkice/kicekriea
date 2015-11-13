@@ -1,0 +1,155 @@
+{% extends "stdnt/container/base.html" %}
+{% block title %}온라인 풀기{% endblock %}
+{% block nav_list %}
+<li> <a href="/stdnt" class="nav">홈으로</a></li>
+<li> <a href="/stdnt/logout">로그아웃</a> </li>
+{% endblock %}
+
+{% block style %}
+<style>
+	table {
+		border:2px gray solid;
+	}
+	table th, td{
+		border:1px gray solid;
+		min-width:50px;
+		text-align:center;
+		font-size:20px;
+	}
+	
+</style>
+{% endblock %}
+{% block script %}
+<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	//	jax: ["input/TeX", "output/HTML-CSS"],
+	jax: ["input/TeX", "output/SVG"],
+	tex2jax: {
+	inlineMath: [['$','$']],
+	displayMath: [ ['$$','$$']],
+	processEscapes: true,
+	processEnvironments: true,
+	preview: "TeX"
+	},
+	"HTML-CSS": { availableFonts: ["STIX", "TeX"],
+	webFont: null },
+	"SVG": {
+	availableFonts: ["TeX"],
+	blacker: 0,
+	scale: 90
+	},
+	showMathMenu: false
+	});
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
+<script>
+	var test_dat;
+	function change_input (){
+		//test_dat = this;
+		//console.log(this);
+		var response = $(this).val();
+		var order = $(this).parent().parent().attr('order');
+		
+		$.ajax({
+	        url:'/stdnt/solve_itemeach/'+'{{ ua.id }}',
+	        dataType:'json',
+	        data:{
+	            'method':'save_response',
+	            'order':order,
+	            'response':response,
+	            'add_seconds':999,
+	            //'itemid_str' : $(data).find('Item').text()
+	        }
+	    }).done(function(msg){
+	    	//console.log(msg);
+	        if(msg['status'] == 'success'){
+	        } else {
+	        	console.log(msg);
+	        }
+	   	});
+	}
+	$(document).on('change', 'input', change_input);
+	
+	function click_td(){
+		//test_dat = this;
+		//console.log(this);
+		$(this).find(':radio').prop('checked', true).change();
+	}
+	$(document).on('click', 'td', click_td);
+	
+	function click_submit(){
+		console.log('submit');
+	    $.ajax({
+	        url : '/stdnt/solve_itemeach/'+'{{ua.id}}',
+	        dataType:"json",
+	        data : {'method':'get_responses'}
+	    }).done(function(msg){
+	        console.log(msg);
+	        if(msg['status'] == 'success'){
+	            //msg['responses'];
+	            //msg['ci_id'];
+	            url = 'http://cafalab.com/asp/GradeCartridgeInstance.asp?id='+msg['ci_id']+'&responses='+msg['responses'];
+	            $.get(url, function (result_data) {
+	                var correctanswer_str = $($(result_data).find('Keys')[0]).text();
+	                console.log(result_data);
+	                console.log(correctanswer_str);
+	                $.ajax({
+	                    url : '/stdnt/solve_itemeach/'+'{{ua.id}}',
+	                    dataType:"json",
+	                    data : {'method':'input_correctanswers', 'correctanswers':correctanswer_str}
+	                }).done(function(final_msg){
+	                    console.log(final_msg);
+	                    if(final_msg['status'] == 'success'){
+	                        $(location).attr('href','/stdnt');
+	                    }
+	                });
+	            });
+	        }
+	    });
+	}
+	$(document).on('click', '#submit', click_submit);
+</script>
+{% endblock %}
+{% block containor %}
+
+<div class="container text-center">
+	<div class="row">
+		<h2>{{ ua.at.name }}</h2>
+	</div>
+	<div class="row">
+		<table align="center">
+			<thead>
+				<tr>
+					<th>Question</th>
+					<th>①</th>
+					<th>②</th>
+					<th>③</th>
+					<th>④</th>
+					<th>⑤</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for gui in guis %}
+				<tr order="{{ gui.order }}">
+					<td>{{ gui.order }}</td>
+					<td><input type="radio" name="order_{{gui.order}}" value='A' {% ifequal gui.response 'A' %}checked{% endifequal %} /></td>
+					<td><input type="radio" name="order_{{gui.order}}" value='B' {% ifequal gui.response 'B' %}checked{% endifequal %} /></td>
+					<td><input type="radio" name="order_{{gui.order}}" value='C' {% ifequal gui.response 'C' %}checked{% endifequal %} /></td>
+					<td><input type="radio" name="order_{{gui.order}}" value='D' {% ifequal gui.response 'D' %}checked{% endifequal %} /></td>
+					<td><input type="radio" name="order_{{gui.order}}" value='E' {% ifequal gui.response 'E' %}checked{% endifequal %} /></td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<br />
+	
+	<div class="row">
+		<!--button class="btn btn-default">닫기<small>(자동저장 됨)</small></button-->
+		<button class="btn btn-primary" id='submit'>답안 제출</button>
+	</div>
+</div>
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

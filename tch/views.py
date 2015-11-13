@@ -410,7 +410,7 @@ def create_assesstemp_wiz2(request):
         if not 'method' in request.GET:
             data = json.dumps({'status':"fail"})
             return HttpResponse(data, 'application/json')
-        
+       
         if request.GET['method'] == 'get_std_info':
             if 'clas_id' in request.GET:
                 clas_stds = []
@@ -442,8 +442,8 @@ def create_assesstemp_wiz2(request):
                         ga.group = my_usergroupinfo.group
                         ga.at = at
                         ga.type = request.GET['assess_type']
-                        ga.start_time = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
-                        ga.end_time = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
+                        ga.period_start = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
+                        ga.period_end = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
                         ga.save()
                     elif request.GET['group_unit'] == 'C':
                         ids = json.loads(request.GET['ids'])
@@ -452,8 +452,8 @@ def create_assesstemp_wiz2(request):
                             ga.group = Group.objects.get(id=id)
                             ga.at = at
                             ga.type = request.GET['assess_type']
-                            ga.start_time = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
-                            ga.end_time = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
+                            ga.period_start = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
+                            ga.period_end = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
                             ga.save()
                     elif request.GET['group_unit'] == 'S':
                         ids = json.loads(request.GET['ids'])
@@ -462,8 +462,8 @@ def create_assesstemp_wiz2(request):
                             ua.user = User.objects.get(id=user_id)
                             ua.at = at
                             ua.type = request.GET['assess_type']
-                            ua.start_time = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
-                            ua.end_time = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
+                            ua.period_start = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
+                            ua.period_end = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
                             ua.save()
                             
                     data = json.dumps({'status':'success', 'ct_id':at.ct_id})
@@ -471,6 +471,7 @@ def create_assesstemp_wiz2(request):
             if ('at_id' and 'ct_id' and 'group_unit' and 'assess_type' and 'ids' and 'start' and 'end') in request.GET:
                 at = AssessmentTemplate.objects.get(id=request.GET['at_id'])
                 at.ct_id = request.GET['ct_id']
+                #print request.GET['ct_id']
                 at.save()
                 local_tz = pytz.timezone(settings.TIME_ZONE)
                 if request.GET['group_unit'] == 'A':
@@ -478,8 +479,8 @@ def create_assesstemp_wiz2(request):
                     ga.group = my_usergroupinfo.group
                     ga.at = at
                     ga.type = request.GET['assess_type']
-                    ga.start_time = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
-                    ga.end_time = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
+                    ga.period_start = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
+                    ga.period_end = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
                     ga.save()
                 elif request.GET['group_unit'] == 'C':
                     ids = json.loads(request.GET['ids'])
@@ -488,8 +489,8 @@ def create_assesstemp_wiz2(request):
                         ga.group = Group.objects.get(id=id)
                         ga.at = at
                         ga.type = request.GET['assess_type']
-                        ga.start_time = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
-                        ga.end_time = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
+                        ga.period_start = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
+                        ga.period_end = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
                         ga.save()
                 elif request.GET['group_unit'] == 'S':
                     ids = json.loads(request.GET['ids'])
@@ -498,8 +499,8 @@ def create_assesstemp_wiz2(request):
                         ua.user = User.objects.get(id=user_id)
                         ua.at = at
                         ua.type = request.GET['assess_type']
-                        ua.start_time = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
-                        ua.end_time = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
+                        ua.period_start = local_tz.localize(datetime.strptime(request.GET['start'], "%Y-%m-%d %H:%M"))
+                        ua.period_end = local_tz.localize(datetime.strptime(request.GET['end'], "%Y-%m-%d %H:%M"))
                         ua.save()
                         
                 data = json.dumps({'status':'success'})

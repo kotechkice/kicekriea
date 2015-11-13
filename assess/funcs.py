@@ -1,6 +1,16 @@
 from assess.models import *
 from django.utils import timezone
-
+'''
+def create_ua_from_at(at, user, ci_id, type, start, end):
+    ua = UserAssessment()
+    ua.user = user
+    ua.at = at
+    ua.type = type
+    ua.period_start = start
+    ua.period_end = end
+    ua.save()
+''' 
+    
 def create_ua_from_itemdict_N_at(at, itemdict, user, ci_id):
     ua = UserAssessment()
     ua.at = at
@@ -11,7 +21,7 @@ def create_ua_from_itemdict_N_at(at, itemdict, user, ci_id):
     ua.solving_seconds = 0
     ua.save()
     for index in range(1, len(itemdict)+1):
-        print itemdict[str(index)]
+        #print itemdict[str(index)]
         gui = GradedUserItem()
         gui.ua = ua
         itnum = int(itemdict[str(index)]['ItemID'])

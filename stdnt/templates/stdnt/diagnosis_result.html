@@ -1,0 +1,153 @@
+{% extends "stdnt/container/base.html" %}
+{% block title %}온라인 문항관리 시스템{% endblock %}
+{% block navbar %}
+{% endblock %}
+{% block style %}
+	{% include "stdnt/css/diagnosis_result.css" %}
+{% endblock %}
+{% block script %}
+<script>
+	$(document).ready(function(){
+		$('#my_unit_list_name').css('top', $('#my_assess_list_name').position().top+$('#my_assess_list_name').height()+30);
+		
+	});
+</script>
+{% endblock %}
+{% block containor %}
+
+<div class="kice_head">
+	<img id="kice_head_arrow" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_arrow.jpg" />
+	<div id="kice_head_name_ko">온라인 문항관리 시스템</div>
+	<div id="kice_head_name_en">
+		<span class="kice_head_name_en_orange">O</span>nline 
+		<span class="kice_head_name_en_orange">I</span>tem
+		<span class="kice_head_name_en_orange">M</span>anagement
+		<span class="kice_head_name_en_orange">S</span>ystem
+	</div>
+	<div id="login_info">
+		<b>{{ my_usergroupinfo_school.group.groupdetail.nickname }} {{ my_info.userdetail.full_name }} 학생</b> 
+		환영합니다. (로그인중)
+	</div>
+	<div id="diagnosis_exp">
+		<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+		진단용 형성평가
+	</div>
+	<div id="practice_link">
+		<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+		학습용 형성평가
+	</div>
+	<hr id="kice_head_line1" />
+	<hr id="kice_head_line2" />
+</div>
+
+<div class="kice_head2">
+	<div id="kice_head2_name_ko">진단용 형성평가 결과</div>
+	<hr id="kice_head2_line1" />
+	<hr id="kice_head2_line2" />
+</div>
+
+<div id="standard-result">
+	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+	성취기준별 진단 결과
+</div>
+
+
+<div id="my_assess_list_name">
+	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+	<b>성취기준별 진단결과</b>
+	<table align="center">
+		<thead>
+			<tr>
+				<th><b>성취기준</b></th>
+				<th><b>미도달</b></th>
+				<th><b>하</b></th>
+				<th><b>중</b></th>
+				<th><b>상</b></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					수학2211<br />
+					(함수의 뜻을 알고, 그 그래프를 이해한다.)
+				</td>
+				<td>
+					<div> </div>
+				</td>
+				<td>
+					<div> </div>
+				</td>
+				<td>
+					<div> </div>
+				</td>
+				<td>
+					<div> </div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+	<b>성취기준 학습 도움말</b>
+	<hr />
+	수학 2211(함수의 뜻을 알고, 그 그래프를 이해한다)을 ‘중’ 수준까지 도달하였습니다.<br />
+	다음 단계인 ‘상’수준까지 도달하기 위한 나만의 목표를 세워보세요. <br />
+	목표를 달성하기 위한 방법으로 지금 학습한 수학2211을 복습하여, 함수 관계의 다양한 표현 방식과 표현 방식별 유의사항을 숙달하기를 추천합니다.<br />
+</div>
+<div id="my_unit_list_name">
+	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+	<b>단원별 진단결과</b>
+	<table align="center">
+		<thead>
+			<tr>
+				<th colspan="2">단원</th>
+				<th class="percent_data">0%</th>
+				<th class="percent_data">25%</th>
+				<th class="percent_data">50%</th>
+				<th class="percent_data">75%</th>
+				<th class="percent_data">100%</th>
+				<th>숙달도(%)</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td rowspan="2">함수</td>
+				<td>전체</td>
+				<td class="percent_data"><div> </div></td>
+				<td class="percent_data"><div> </div></td>
+				<td class="percent_data"><div> </div></td>
+				<td class="percent_data"><div> </div></td>
+				<td class="percent_data"><div> </div></td>
+				<td> 75 </td>
+			</tr>
+			<tr>
+				<td>수학2211<br />
+					(함수의 뜻을 알고, 그 그래프를 이해한다.)
+				</td>
+				<td class="percent_data"><div> </div></td>
+				<td class="percent_data"><div> </div></td>
+				<td class="percent_data"><div> </div></td>
+				<td class="percent_data"><div> </div></td>
+				<td class="percent_data"><div> </div></td>
+				<td> 75 </td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<div id="wrap_lists">
+	
+</div>
+<!--div class="container text-center">
+	<div class="row h3 text-center">
+	학생 메인 페이지
+	</div>
+	<div class="row">
+		<button class="btn btn-primary">형성 평가</button>
+	</div>
+	<div class="row">
+		<a href="/stdnt/exam_list"><button class="btn btn-primary btn-lg">진단 평가</button></a>
+	</div>
+</div-->
+{% endblock %}
+
+{% block footer %}
+{% endblock %}

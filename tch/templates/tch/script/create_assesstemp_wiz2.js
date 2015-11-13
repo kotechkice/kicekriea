@@ -114,7 +114,11 @@ function click_submit(){
             start += start_list[1] + ':' + start_list[2];
             break;
         case '오후':
-            start += (Number(start_list[1])+12) + ':' + start_list[2];
+            if(Number(start_list[1]) < 12){
+                start += (Number(start_list[1])+12) + ':' + start_list[2];
+            } else {
+                start += start_list[1] + ':' + start_list[2];
+            }
             break;
         default:
             $('#assess_start_time_input .input_time').css('border', '1px solid red');
@@ -147,7 +151,11 @@ function click_submit(){
             end += end_time;
             break;
         case '오후':
-            end_time = (Number(end_list[1])+12) + ':' + end_list[2];
+            if(Number(end_list[1]) < 12){
+                end_time = (Number(end_list[1])+12) + ':' + end_list[2];
+            } else {
+                end_time = end_list[1] + ':' + end_list[2];
+            }
             end += end_time;
             break;
         default:
@@ -156,7 +164,7 @@ function click_submit(){
     }
     
     //$('#assess_start_time_input .input_date').css('border', '1px solid red')
-    var assess_type = $('input[name=assess_type]').val();
+    var assess_type = $(':radio[name=assess_type]:checked').val();
     var at_id = $('#assess_name_input select option:selected').attr('at_id');
     var group_unit = $(':radio[name="sel_set_mode"]:checked').val();
     var ids = [];
@@ -188,20 +196,21 @@ function click_submit(){
             //'itemid_str' : $(data).find('Item').text()
         }
     }).done(function(msg){
-        //console.log(msg);
+        console.log(msg);
         //test_dat = msg;
         if(msg['status'] == 'success'){
             if(msg['ct_id'] == 'empty'){
                //msg['item_ids'].join(', ');
                var url = 'http://cafalab.com/asp/CreateCartridgeTemplate.asp?items=';
-               url += msg['item_ids'].join(', ')+'&random=101&finish='+end_date+'%20'+end_time;
+               url += msg['item_ids'].join(', ')+'&random=101';
+               //url += '&finish='+end_date+'%20'+end_time;
                url += '&name='+msg['name'];
-               //console.log(url);
+               console.log(url);
                
                $.get(url, function (get_data) {
-                    //console.log(get_data);
+                    console.log(get_data);
                     var ct_id = $($(get_data).find('ID')[0]).text();
-                    //console.log(ct_id);
+                    console.log(ct_id);
                     //var ct_id = 3693;
                     //ci_id = 'KWS9/7/2015-7:35:48 AM-wogud86@naver.com-2627';
                     

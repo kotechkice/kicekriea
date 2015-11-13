@@ -93,94 +93,103 @@ def main(request):
                     else:
                         data = json.dumps({'status':"success", 'ua_id':'empty', 'ct_id':at_list[0].ct_id})
                 else:
-                    data = json.dumps({'status':"success", 'ua_id':ua_list[0].id})
-        
+                    ua = ua_list[0]
+                    start_time = ua.start_time
+                    if ua.start_time == None:
+                        start_time = 'empty'
+                    else:
+                        start_time = ua.start_time.strftime("%Y-%m-%d %H:%M")
+                    data = json.dumps({
+                        'status':"success", 
+                        'ua_id':ua.id, 
+                        'start_time':start_time, 
+                        'ct_id':ua.at.ct_id
+                    })
         elif request.GET['method'] == 'create_ua':
             if 'items' in request.GET and 'at_id' in request.GET and 'ci_id' in request.GET:
                 items =  json.loads(request.GET['items'])
                 at_list = AssessmentTemplate.objects.filter(pk=request.GET['at_id'])
                 ua_id = create_ua_from_itemdict_N_at(at_list[0], items, my_info, request.GET['ci_id'])
                 data = json.dumps({'status':"success", 'ua_id':ua_id})
-        '''
-        elif request.GET['method'] == 'get_itmes':
-            if 'exam_order' in request.GET:
-                items = {}
-                el_list = ExamList.objects.filter(exam_order = request.GET['exam_order'])
-                if len(el_list) != 0:
-                    el = el_list[0]
-                    ua_list = UserAssessment.objects.filter(at = el.at, user=my_info)
-                    guis=[]
-                    
-                    if len(ua_list) != 0:
-                        ua = ua_list[0]
-                        guis = ua.gradeduseritem_set.order_by('order').all()
-                        items['length'] = len(guis)
-                        for gui in guis:
-                            items[gui.order] ={
-                                'item_id' : gui.it.cafa_it_id,
-                                'seed' : gui.seed,
-                                'permutation' : gui.permutation,
-                                'item_permutation' : gui.item_permutation,
-                                'choices_in_a_row' : gui.it.choices_in_a_row,
-                                'response' : gui.response,
-                                'correctanswer' : gui.correctanswer,
-                                'is_correct' : gui.response == gui.correctanswer,
-                            }
-                    data = json.dumps({'status':"success", 'items':items})
-        '''
+        elif request.GET['method'] == 'create_gui':
+            if ('items' and 'at_id' and 'ci_id' and 'ua_id') in request.GET:
+                ua = UserAssessment.objects.get(id = request.GET['ua_id'])
+                itemdict =  json.loads(request.GET['items'])
+                at = AssessmentTemplate.objects.get(id=request.GET['at_id'])
+                ua.ci_id = request.GET['ci_id']
+                ua.start_time = timezone.now()
+                ua.solving_order_num = 1
+                ua.solving_seconds = 0
+                ua.save()
+                for index in range(1, len(itemdict)+1):
+                    gui = GradedUserItem()
+                    gui.ua = ua
+                    itnum = int(itemdict[str(index)]['ItemID'])
+                    exist_list = ItemTemplate.objects.filter(cafa_it_id=itnum)
+                    if len(exist_list) == 0:
+                        it = ItemTemplate()
+                        it.cafa_it_id = itnum
+                        it.save()
+                    else:
+                        it = exist_list[0]
+                    gui.it = it
+                    #it.choices_in_a_row = itemdict[str(index)]['NumChoices']
+                    it.save()
+                    gui.order = index
+                    gui.seed = int(itemdict[str(index)]['Seed'])
+                    gui.permutation = ''.join(itemdict[str(index)]['Permutation'].split(',')) 
+                    gui.response = 'x'
+                    gui.correctanswer = 'x'
+                    gui.elapsed_time = 0
+                    gui.save()
+                data = json.dumps({'status':"success", 'ua_id':ua.id})
         return HttpResponse(data, 'application/json')
     
+    def make_assess(data):
+        ua_list = UserAssessment.objects.filter(at=data, user = my_info)
+        data.is_started = False
+        data.is_finished = False
+        data.level = 'N'
+        if len(ua_list) != 0:
+            ua = ua_list[0]
+            data.is_started = True
+            if ua.end_time != None:
+                data.is_finished = True
+                data.level = ua.level
+        return data
     examlist = []
-    for ga in GroupAssessment.objects.filter(group = my_usergroupinfo_class.group):
-        examlist.append(ga.at)
-        ua_list = UserAssessment.objects.filter(at=ga.at, user = my_info)
-        examlist[-1].is_started = False
-        examlist[-1].is_finished = False
-        if len(ua_list) != 0:
-            ua = ua_list[0]
-            examlist[-1].is_started = True
-            if ua.end_time != None:
-                examlist[-1].is_finished = True
-                
-    '''
-    examlist = ExamList.objects.all()
-    for i in range(len(examlist)):
-        ua_list = UserAssessment.objects.filter(at=examlist[i].at, user = my_info)
-        examlist[i].is_started = False
-        examlist[i].is_finished = False
-        if len(ua_list) != 0:
-            ua = ua_list[0]
-            examlist[i].is_started = True
-            if ua.end_time != None:
-                examlist[i].is_finished = True
-                ae_list = AssessEaxm.objects.filter(ua=ua)
-                if len(ae_list) != 0:
-                    ae = ae_list[0]
-                    examlist[i].is_high = False
-                    examlist[i].is_middle = False
-                    examlist[i].is_low = False
-                    examlist[i].is_fail = False
-                    if ae.level == 'H':
-                        examlist[i].help_str = examlist[i].help_h
-                        examlist[i].is_high = True
-                    elif ae.level == 'M':
-                        examlist[i].help_str = examlist[i].help_m
-                        examlist[i].is_middle = True
-                    elif ae.level == 'L':
-                        examlist[i].help_str = examlist[i].help_l
-                        examlist[i].is_low = True
-                    elif ae.level == 'F':
-                        examlist[i].help_str = examlist[i].help_f
-                        examlist[i].is_fail = True
-                    examlist[i].level = stdnt_string.LEVEL[ae.level]
-    '''
-    
+    for ga in GroupAssessment.objects.filter(group = my_usergroupinfo_school.group, type = 'D'):
+        #print '.'+str(ga.at.id)
+        examlist.append(make_assess(ga.at))
+    for ga in GroupAssessment.objects.filter(group = my_usergroupinfo_class.group, type = 'D'):
+        #print ','+str(ga.at.id)
+        examlist.append(make_assess(ga.at))
+    for ua in UserAssessment.objects.filter(user = my_info, type = 'D'):
+        #print ua.at.id
+        #print ua.at in examlist
+        if not ua.at in examlist:
+            examlist.append(make_assess(ua.at))
+    D_examlist = examlist
+    examlist = []
+    for ga in GroupAssessment.objects.filter(group = my_usergroupinfo_school.group, type = 'P'):
+        #print '.'+str(ga.at.id)
+        examlist.append(make_assess(ga.at))
+    for ga in GroupAssessment.objects.filter(group = my_usergroupinfo_class.group, type = 'P'):
+        #print ','+str(ga.at.id)
+        examlist.append(make_assess(ga.at))
+    for ua in UserAssessment.objects.filter(user = my_info, type = 'P'):
+        #print ua.at.id
+        #print ua.at in examlist
+        if not ua.at in examlist:
+            examlist.append(make_assess(ua.at))
+    P_examlist = examlist
     variables = RequestContext(request, {
         'home_string' : home_string,
         'stdnt_string':stdnt_string,
         'my_info':my_info,
         'my_usergroupinfo_school':my_usergroupinfo_school,
-        'examlist':examlist,
+        'D_examlist':D_examlist,
+        'P_examlist':P_examlist,
     })
     return render_to_response('stdnt/main.html', variables)
 
@@ -415,9 +424,10 @@ def solve_itemeach(request, ua_id):
             return HttpResponse(data, 'application/json')
         if request.GET['method'] == 'init_order':
             order_num = 1
+            num_item = ua.at.num_item
             if ua.solving_order_num != None:
                 order_num = ua.solving_order_num
-                num_item = ua.at.num_item
+                
             responses_str = ''.join(map(lambda x:x.response, ua.gradeduseritem_set.all()))
             data = json.dumps({'status':"success", 'order':order_num, 'num_item':num_item, 'responses':responses_str})
         elif request.GET['method'] == 'get_itemid':
@@ -457,7 +467,8 @@ def solve_itemeach(request, ua_id):
                     gui = ua.gradeduseritem_set.get(order=index)
                     gui.correctanswer = correctanswer_str[index-1]
                     gui.save()
-                assess_user_by_exam(ua)
+                #assess_user_by_exam(ua)
+                ua.assess_level()
                 data = json.dumps({'status':"success"});
         elif request.GET['method'] == 'set_permutation':
             if 'order' in request.GET and 'permutation_str' in request.GET:
@@ -493,3 +504,78 @@ def report(request, at_id):
     })
     return render_to_response('stdnt/report.html', variables)
 
+def diagnosis_result(request):
+    if not request.user.is_authenticated():
+        return redirect('/stdnt/login')
+    
+    my_info = request.user
+    my_usergroupinfo_schools = my_info.usergroupinfo_set.filter(group__groupdetail__type='S')
+    if len(my_usergroupinfo_schools) > 0:
+        my_usergroupinfo_school = my_usergroupinfo_schools[0]
+    else:
+        my_usergroupinfo_school = None
+    
+    my_usergroupinfo_classes = my_info.usergroupinfo_set.filter(group__groupdetail__type='C')
+    if len(my_usergroupinfo_classes) > 0:
+        my_usergroupinfo_class = my_usergroupinfo_classes[0]
+    else:
+        my_usergroupinfo_class = None
+    
+    variables = RequestContext(request, {
+        'home_string' : home_string,
+        'stdnt_string':stdnt_string,
+        'my_info':my_info,
+        'my_usergroupinfo_school':my_usergroupinfo_school,
+    })
+    return render_to_response('stdnt/diagnosis_result.html', variables)
+
+def print_assess(request, ua_id):
+    #if not request.user.is_authenticated():
+    #    return redirect('/stdnt/login')
+    
+    #my_info = request.user
+    ua = UserAssessment.objects.get(id=ua_id)
+    if request.is_ajax():
+        data = json.dumps({'status':"fail"})
+        if not 'method' in request.GET:
+            data = json.dumps({'status':"fail"})
+            return HttpResponse(data, 'application/json')
+        
+        if request.GET['method'] == 'get_item_info':
+            if 'itemid' in request.GET:
+                it = ItemTemplate.objects.get(cafa_it_id = request.GET['itemid'])
+                data = json.dumps({'status':'success', 'choices_in_a_row':it.choices_in_a_row})
+        return HttpResponse(data, 'application/json')
+    
+    #ua.gradeduseritem_set.order_by('order').all()
+    #responses_str = ''.join(map(lambda x:x.response, ua.gradeduseritem_set.all()))
+    #item_ids_str = ', '.join(map(lambda x:str(x.it.cafa_it_id), ua.gradeduseritem_set.all()))
+    item_ids = map(lambda x:x.it.cafa_it_id, ua.gradeduseritem_set.order_by('order').all())
+    variables = RequestContext(request, {
+        'home_string' : home_string,
+        'stdnt_string':stdnt_string,
+        'ua_id':ua_id,
+        'ua':ua,
+        'item_ids':json.dumps(item_ids),
+        #'my_info':my_info,
+    })
+    return render_to_response('stdnt/print_assess.html', variables)
+
+def input_response(request, ua_id):
+    ua = UserAssessment.objects.get(id=ua_id)
+    item_info = []
+    
+    #for gui in ua.gradeduseritem_set.order_by('order').all():
+    #    pass
+    
+    variables = RequestContext(request, {
+        'home_string' : home_string,
+        'stdnt_string':stdnt_string,
+        #'ua_id':ua_id,
+        'ua':ua,
+        'guis':ua.gradeduseritem_set.order_by('order').all(),
+        
+        #'item_ids':json.dumps(item_ids),
+        #'my_info':my_info,
+    })
+    return render_to_response('stdnt/input_response.html', variables)
