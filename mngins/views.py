@@ -622,4 +622,12 @@ def assesstemp(request):
         'home_string' : home_string,
         'atc0_s':atc0_s,
     })
-    return render_to_response('mngins/assesstemp.html', variables) 
+    return render_to_response('mngins/assesstemp.html', variables)
+
+def itemtemp_edit(request):
+    
+    variables = RequestContext(request, {
+        'mngins_string' : mngins_string,
+        'home_string' : home_string,
+    })
+    return  render_to_response('mngins/itemtemp_edit.html', variables)

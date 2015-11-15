@@ -1,0 +1,265 @@
+{% extends "mngins/container/base.html" %}
+{% block title %}문항 템플릿 카테고리 관리{% endblock %}
+{% block style %}
+<style>
+	  td, th {
+	  	text-align:center;
+	  }
+	  .test_prob{
+	  	/*width:400px;*/
+	  }
+	  .test_prob table{
+	  	width:100%;
+	  }
+	  .test_prob td {
+	  	width:33%;
+	  	text-align:left;
+	  }
+	  #basic_option_table td{
+	  	text-align:left;
+	  }
+	  .param_option_num{
+	  	width:40px;
+	  }
+	  .param_option_condition{
+	  	width:250px;
+	  }
+	  #points_input{
+	  	width:50px;
+	  }
+	  #description_input{
+	  	width:500px;
+	  }
+	  #question_input{
+	  	width:600px;
+	  	height:150px;
+	  }
+	  .choices_option{
+	  	width:300px;
+	  }
+	  #solution_step_input{
+	  	width:600px;
+	  	height:100px;
+	  }
+	  #param_table{
+	  	width:650px;
+	  }
+	  .PT>td:eq(0){
+	  	width:60px;
+	  }
+</style>
+{% endblock %}
+{% block script %}
+<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	//	jax: ["input/TeX", "output/HTML-CSS"],
+	jax: ["input/TeX", "output/SVG"],
+	tex2jax: {
+	inlineMath: [['$','$']],
+	displayMath: [ ['$$','$$']],
+	processEscapes: true,
+	processEnvironments: true,
+	preview: "TeX"
+	},
+	"HTML-CSS": { availableFonts: ["STIX", "TeX"],
+	webFont: null },
+	"SVG": {
+	availableFonts: ["TeX"],
+	blacker: 0,
+	scale: 90
+	},
+	showMathMenu: false
+	});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
+
+<script>
+	{% include "mngins/script/itemtemp_edit.js" %}
+</script>
+{% endblock %}
+{% block containor %}
+<div class="container">
+	<h3>문항 템플릿 내용 관리</h3><br />
+	
+	<div class="row">
+		<b>Question</b><br />
+		<textarea id="question_input">What is the value of $x+y$ when $x=@1@$, $y=@2@$?</textarea>
+	</div>
+	<div class="row">
+		<b>Parameters</b><br />
+		<table id="param_table">
+			<tr class="PT">
+				<td><b>@1@ :&nbsp;</b> </td>
+				<td>
+					Min<input type="number" value="2" class="param_option_num option_min" />
+					Max<input type="number" value="6" class="param_option_num option_max" />
+					Precision<input type="number" value="2" class="param_option_num option_pre" />
+				</td>
+				<td>Condition <input type="text" class="param_option_condition" /></td>
+			</tr>
+			<tr class="PT">
+				<td><b>@2@ :&nbsp;</b> </td>
+				<td>
+					Min<input type="number" value="1" class="param_option_num option_min" />
+					Max<input type="number" value="7" class="param_option_num option_max" />
+					Precision<input type="number" class="param_option_num option_pre" />
+				</td>
+				<td>Condition <input type="text" class="param_option_condition" /></td>
+			</tr>
+			<tr class="PT">
+				<td><b>@3@ :&nbsp;</b> </td>
+				<td>
+					Min<input type="number" class="param_option_num option_min" />
+					Max<input type="number" class="param_option_num option_max" />
+					Precision<input type="number" class="param_option_num option_pre" />
+				</td>
+				<td>Condition <input type="text" class="param_option_condition" /></td>
+			</tr>
+			<tr class="PT">
+				<td><b>@4@ :&nbsp;</b> </td>
+				<td>
+					Min<input type="number" class="param_option_num option_min" />
+					Max<input type="number" class="param_option_num option_max" />
+					Precision<input type="number" class="param_option_num option_pre" />
+				</td>
+				<td>Condition <input type="text" class="param_option_condition" /></td>
+			</tr>
+			<tr class="PT">
+				<td><b>@5@ :&nbsp;</b> </td>
+				<td>
+					Min<input type="number" class="param_option_num option_min" />
+					Max<input type="number" class="param_option_num option_max" />
+					Precision<input type="number" class="param_option_num option_pre" />
+				</td>
+				<td>Condition <input type="text" class="param_option_condition" /></td>
+			</tr>
+			<tr class="PT">
+				<td><b>@6@ :&nbsp;</b> </td>
+				<td>
+					Min<input type="number" class="param_option_num option_min" />
+					Max<input type="number" class="param_option_num option_max" />
+					Precision<input type="number" class="param_option_num option_pre" />
+				</td>
+				<td>Condition <input type="text" class="param_option_condition" /></td>
+			</tr>
+			<tr class="PT">
+				<td><b>@7@ :&nbsp;</b> </td>
+				<td>
+					Min<input type="number" class="param_option_num option_min" />
+					Max<input type="number" class="param_option_num option_max" />
+					Precision<input type="number" class="param_option_num option_pre" />
+				</td>
+				<td>Condition <input type="text" class="param_option_condition" /></td>
+			</tr>
+			<tr class="PT">
+				<td><b>@8@ :&nbsp;</b> </td>
+				<td>
+					Min<input type="number" class="param_option_num option_min" />
+					Max<input type="number" class="param_option_num option_max" />
+					Precision<input type="number" class="param_option_num option_pre" />
+				</td>
+				<td>Condition <input type="text" class="param_option_condition" /></td>
+			</tr>
+			<tr class="PT">
+				<td><b>@9@ :&nbsp;</b> </td>
+				<td>
+					Min<input type="number" class="param_option_num option_min" />
+					Max<input type="number" class="param_option_num option_max" />
+					Precision<input type="number" class="param_option_num option_pre" />
+				</td>
+				<td>Condition <input type="text" class="param_option_condition" /></td>
+			</tr>
+			<tr class="PT">
+				<td><b>@10@ :&nbsp;</b> </td>
+				<td>
+					Min<input type="number" class="param_option_num option_min" />
+					Max<input type="number" class="param_option_num option_max" />
+					Precision<input type="number" class="param_option_num option_pre" />
+				</td>
+				<td>Condition <input type="text" class="param_option_condition" /></td>
+			</tr>
+			<tr class="PT">
+				<td><b>@11@ :&nbsp;</b> </td>
+				<td>
+					Min<input type="number" class="param_option_num option_min" />
+					Max<input type="number" class="param_option_num option_max" />
+					Precision<input type="number" class="param_option_num option_pre" />
+				</td>
+				<td>Condition <input type="text" class="param_option_condition" /></td>
+			</tr>
+			<tr class="PT">
+				<td><b>@12@ :&nbsp;</b> </td>
+				<td>
+					Min<input type="number" class="param_option_num option_min" />
+					Max<input type="number" class="param_option_num option_max" />
+					Precision<input type="number" class="param_option_num option_pre" />
+				</td>
+				<td>Condition <input type="text" class="param_option_condition" /></td>
+			</tr>
+		</table>
+	</div><br />
+	<div class="row">
+		<b>Choices</b><br />
+		<table>
+			<tr id="C1">
+				<td>A.&nbsp;</td>
+				<td><input type="text" value="$@1@+@2@$" class="choices_option" /></td>
+			</tr>
+			<tr id="C2">
+				<td>B.&nbsp;</td>
+				<td><input type="text" value="$@1@$" class="choices_option" /></td>
+			</tr>
+			<tr id="C3">
+				<td>C.&nbsp;</td>
+				<td><input type="text" value="$@2@$" class="choices_option" /></td>
+			</tr>
+			<tr id="C4">
+				<td>D.&nbsp;</td>
+				<td><input type="text" value="$@1@*@2@$" class="choices_option" /></td>
+			</tr>
+			<tr id="C5">
+				<td>E.&nbsp;</td>
+				<td><input type="text" value="$@1@^@2@$" class="choices_option" /></td>
+			</tr>
+		</table>
+	</div><br />
+	<div class="row">
+		<b>Answer : </b>
+		<select id="answer_select">
+			<option value="A">A</option>
+			<option value="B">B</option>
+			<option value="C">C</option>
+			<option value="D">D</option>
+			<option value="E">E</option>
+		</select>
+	</div><br />
+	<div class="row">
+		<b>Solution</b><br />
+		<textarea id="solution_step_input">Because $x=@1@$, $y=@2@$, we substitue $@1@$ for $x$ and $@2@$ for $y$. Then $x+y = {@1@} + {@2@} = @1@+@2@$</textarea>
+	</div><br />
+	<div class="row">
+		<button class="btn btn-primary" id="create_btn">Create</button>
+	</div><br />
+	<div class="row">
+		<div class="test_prob panel panel-default">
+			<div class="panel-heading"><b>Seed : </b><span class="test_seed"> </span><br /></div>
+			<div class="panel-body">
+				<b>Question : </b><br />
+				<span class="test_question"> </span>
+				<div class="choices">
+					<div class="col-sm-4">A. <span class="test_choice"> </span></div>
+					<div class="col-sm-4">B. <span class="test_choice"> </span></div>
+					<div class="col-sm-4">C. <span class="test_choice"> </span></div>
+					<div class="col-sm-4">D. <span class="test_choice"> </span></div>
+					<div class="col-sm-4">E. <span class="test_choice"> </span></div>
+				</div>
+				<div class="col-sm-12">
+					<b>Solution</b><br />
+					<span class="test_solution"> </span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

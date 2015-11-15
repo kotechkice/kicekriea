@@ -12,5 +12,6 @@ urlpatterns = patterns('',
     url(r'^itemtemp_update$', itemtemp_update, name='itemtemp_update'),
     url(r'^itemtemp_category$', itemtemp_category, name='itemtemp_category'),
     url(r'^assesstemp$', assesstemp, name='assesstemp'),
+    url(r'^itemtemp_edit$', itemtemp_edit, name='itemtemp_edit'),
     
 )
