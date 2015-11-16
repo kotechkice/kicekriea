@@ -351,14 +351,25 @@ def itemtemp_category(request):
                     if myitc.description:
                         description = myitc.description
                     
+                    help_h = ''
+                    help_m = ''
+                    help_l = ''
+                    help_f = ''
+                    
+                    itclhs = ItemTemplateCategoryLevelHelp.objects.filter(itc=myitc)
+                    if len(itclhs) != 0:
+                        help_h = itclhs[0].help_h 
+                        help_m = itclhs[0].help_m 
+                        help_l = itclhs[0].help_l 
+                        help_f = itclhs[0].help_f 
+                        
                     next_levels = ItemTemplateCategoryLevelLabel.objects.filter(level = int(label_level)+1)
                     next_level_label = {'name':'', 'type':'N', 'mark':'None'}
                     if len(next_levels) != 0:
                         next_level_label['name'] = next_levels[0].name
                         next_level_label['type'] = next_levels[0].type
                         next_level_label['mark'] = next_levels[0].mark
-                    
-                    
+
                     
                     mitcs = MappedItemTemplateCategory.objects.filter(itc__id = request.GET['itc_id'])
                     #itids_in_itc = map(lambda x:x.it.cafa_it_id, mitcs)
@@ -380,6 +391,10 @@ def itemtemp_category(request):
                         'itcs':itcs,
                         'itids_in_itc':itids_in_itc,
                         'description':description,
+                        'help_h':help_h,
+                        'help_m':help_m,
+                        'help_l':help_l,
+                        'help_f':help_f,
                     })
                     #data = json.dumps({'status':"success"})
         if request.GET['method'] == 'change_category_type':
@@ -545,10 +560,25 @@ def itemtemp_category(request):
                     'changed_order':changed_order
                 })
         if request.GET['method'] == 'change_category_description':
-            if ('id' and 'description') in request.GET:
+            if ('id' and 'description' and 'help_h' and 'help_m' and 'help_l' and 'help_f') in request.GET:
                 itc = ItemTemplateCategory.objects.get(id=request.GET['id'])
                 itc.description = request.GET['description']
-                #itc.save()
+                itclhs = ItemTemplateCategoryLevelHelp.objects.filter(itc=itc)
+                
+                if len(itclhs) == 0:
+                    pass
+                    itclh = ItemTemplateCategoryLevelHelp()
+                    itclh.itc = itc
+                else:
+                    itclh = itclhs[0]
+                #request.GET['help_h']
+                itclh.help_h = request.GET['help_h']
+                itclh.help_m = request.GET['help_m']
+                itclh.help_l = request.GET['help_l']
+                itclh.help_f = request.GET['help_f']
+                
+                itc.save()
+                itclh.save()
                 data = json.dumps({'status':"success"})
             #data = json.dumps({'status':"success"})
         if request.GET['method'] == 'add_items_to_category':

@@ -48,6 +48,16 @@ class AssessmentTemplate(models.Model):
     
     def __unicode__(self):
         return self.name
+    
+    def get_itcs(self):
+        its = map(lambda x:x.it, self.mappeditemassessmenttemplate_set.all())
+        itcs = []
+        for it in its:
+            mitcs = it.mappeditemtemplatecategory_set.all()
+            for mitc in mitcs:
+                if not mitc.itc in itcs:
+                    itcs.append(mitc.itc)
+        return itcs
 
 class ItemTemplateCategoryLevelLabel(models.Model):
     MarkTyeps = (
@@ -91,7 +101,15 @@ class ItemTemplateCategory(models.Model):
     
     def __unicode__(self):
         return unicode(self.name) or u''
-  
+
+class ItemTemplateCategoryLevelHelp(models.Model):
+    itc = models.OneToOneField(ItemTemplateCategory)
+    
+    help_h = models.TextField(null=True)
+    help_m = models.TextField(null=True)
+    help_l = models.TextField(null=True)
+    help_f = models.TextField(null=True)
+    
   
 class ItemTemplate(models.Model):
     AnswerTypes = (

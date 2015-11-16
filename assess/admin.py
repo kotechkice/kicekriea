@@ -9,7 +9,9 @@ admin.site.register(MappedItemTemplateCategory)
 
 admin.site.register(MappedItemAssessmentTemplate)
 admin.site.register(ItemTemplateCategory)
+admin.site.register(ItemTemplateCategoryLevelHelp)
 admin.site.register(ItemTemplateCategoryLevelLabel)
+
 admin.site.register(GroupAssessment)
 admin.site.register(UserAssessment)
 admin.site.register(GradedUserItem)
