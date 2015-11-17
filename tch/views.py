@@ -548,3 +548,149 @@ def create_assesstemp_wiz2(request):
     })
     return render_to_response('tch/create_assesstemp_wiz2.html', variables)
 
+
+def kice_assess_result(request):
+    if request.user.is_authenticated():
+        if len(request.user.usergroupinfo_set.filter(group__groupdetail__type='T')) == 0:
+            return redirect('/tch/logout')
+    else:
+        return redirect('/tch/login')
+    
+    my_info = request.user
+    my_usergroupinfo = my_info.usergroupinfo_set.get(group__groupdetail__type='S')
+    classes = Group.objects.filter(groupdetail__upper_group__groupdetail__upper_group=my_usergroupinfo.group, groupdetail__type="C")
+    
+    def get_finished_std_num(at, school):
+        std_list = []
+        finished_std_num = 0
+        gas = GroupAssessment.objects.filter(at = at)
+        for ga in gas:
+            ugis = UserGroupInfo.objects.filter(group = ga.group)
+            for ugi in ugis:
+                if not ugi.user in std_list:
+                    std_list.append(ugi.user)
+        ugis = UserGroupInfo.objects.filter(group = school)
+        for ugi in ugis:
+            uas = UserAssessment.objects.filter(at=at, user=ugi.user)
+            if len(uas) != 0 and not ugi.user in std_list:
+                std_list.append(ugi.user)
+        for std in std_list:
+            uas = UserAssessment.objects.filter(at=at, user=std)
+            if len(uas) != 0 and uas[0].end_time != None:
+                finished_std_num+=1
+        #print std_list
+        std_num = len(std_list)
+        finish_rate = finished_std_num*100/std_num
+        return finished_std_num, std_num, finish_rate
+    
+    examlist = []
+    DS_examlist = []
+    DU_examlist = []
+    
+    for ga in GroupAssessment.objects.filter(group = my_usergroupinfo.group, type = 'D'):
+        examlist.append(ga.at)
+        exam = ga.at
+        exam.finished_std_num, exam.std_num, exam.finish_rate = get_finished_std_num(ga.at, my_usergroupinfo.group)
+        if len(ga.at.get_itcs()) == 1:
+            DS_examlist.append(exam)
+        else:
+            DU_examlist.append(exam)
+    for clas in classes:
+        for ga in GroupAssessment.objects.filter(group = clas, type = 'D'):
+            examlist.append(ga.at)
+            exam = ga.at
+            exam.finished_std_num, exam.std_num, exam.finish_rate = get_finished_std_num(ga.at, my_usergroupinfo.group)
+            if len(ga.at.get_itcs()) == 1:
+                DS_examlist.append(exam)
+            else:
+                DU_examlist.append(exam)
+    for clas in classes:
+        for ugi in UserGroupInfo.objects.filter(group=clas):
+            for ua in UserAssessment.objects.filter(user = ugi.user, type = 'D'):
+                if not ua.at in examlist:
+                    examlist.append(ua.at)
+                    exam = ga.at
+                    exam.finished_std_num, exam.std_num, exam.finish_rate = get_finished_std_num(ga.at, my_usergroupinfo.group)
+                    if len(ga.at.get_itcs()) == 1:
+                        DS_examlist.append(exam)
+                    else:
+                        DU_examlist.append(exam)
+    
+    P_examlist = []
+    for ga in GroupAssessment.objects.filter(group = my_usergroupinfo.group, type = 'P'):
+        exam = ga.at
+        exam.finished_std_num, exam.std_num, exam.finish_rate = get_finished_std_num(ua.at, my_usergroupinfo.group)
+        P_examlist.append(exam)
+    for clas in classes:
+        for ga in GroupAssessment.objects.filter(group = clas, type = 'P'):
+            exam = ga.at
+            exam.finished_std_num, exam.std_num, exam.finish_rate = get_finished_std_num(ua.at, my_usergroupinfo.group)
+            P_examlist.append(exam)
+    print P_examlist
+    for clas in classes:
+        for ugi in UserGroupInfo.objects.filter(group=clas):
+            for ua in UserAssessment.objects.filter(user = ugi.user, type = 'P'):
+                print ugi.user.email, ua.at.name, ua.at in P_examlist
+                if not ua.at in P_examlist:
+                    exam = ua.at
+                    exam.finished_std_num, exam.std_num, exam.finish_rate = get_finished_std_num(ua.at, my_usergroupinfo.group)
+                    P_examlist.append(exam)
+                    print P_examlist
+     
+    variables = RequestContext(request, {
+        'tch_string' : tch_string,                                 
+        'home_string' : home_string,
+        'my_info':my_info,
+        'my_usergroupinfo':my_usergroupinfo,
+        'examlist':examlist,
+        'DS_examlist':DS_examlist,
+        'DU_examlist':DU_examlist,
+        'P_examlist':P_examlist,
+    })
+    return render_to_response('tch/kice_assess_result.html', variables)
+
+def kice_at_result(request, at_id):
+    if request.user.is_authenticated():
+        if len(request.user.usergroupinfo_set.filter(group__groupdetail__type='T')) == 0:
+            return redirect('/tch/logout')
+    else:
+        return redirect('/tch/login')
+    
+    my_info = request.user
+    my_usergroupinfo = my_info.usergroupinfo_set.get(group__groupdetail__type='S')
+    
+    at = AssessmentTemplate.objects.get(id=at_id)
+    
+    std_list = []
+    finished_std_num = 0
+    gas = GroupAssessment.objects.filter(at = at)
+    for ga in gas:
+        ugis = UserGroupInfo.objects.filter(group = ga.group)
+        for ugi in ugis:
+            if not ugi.user in std_list:
+                std_list.append(ugi.user)
+    ugis = UserGroupInfo.objects.filter(group = my_usergroupinfo.group)
+    for ugi in ugis:
+        uas = UserAssessment.objects.filter(at=at, user=ugi.user)
+        if len(uas) != 0 and not ugi.user in std_list:
+            std_list.append(ugi.user)
+    for std in std_list:
+        std.is_finished = False
+        uas = UserAssessment.objects.filter(at=at, user=std)
+        if len(uas) != 0 and uas[0].end_time != None:
+            std.is_finished = True
+            finished_std_num+=1
+        
+    std_num = len(std_list)
+    finish_rate = finished_std_num*100/std_num
+    variables = RequestContext(request, {
+        'tch_string' : tch_string,                                 
+        'home_string' : home_string,
+        'at':at,
+        'std_list':std_list,
+        'finished_std_num':finished_std_num,
+        'std_num':std_num,
+        'finish_rate':finish_rate,
+    })
+    return render_to_response('tch/kice_at_result.html', variables)
+    

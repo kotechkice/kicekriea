@@ -1,0 +1,20 @@
+{{ at }}<br />
+
+
+개별학생의 수행상태<br />
+
+평가명<br />
+
+학습용 형성평가 - 이름<br />
+
+수행상태<br />
+
+수행인원 : {{ finished_std_num }}/{{ std_num }} | 수행률 {{finish_rate}}%<br />
+
+이름, 수행상태<br />
+
+{% for std in std_list %}
+	{{ std.email }}, {{std.is_finished}}<br />
+{% endfor %}
+
+
