@@ -5,18 +5,26 @@ $(document).ready(function(){
     $('footer').css('top', $('#wrap_lists').position().top+$('#wrap_lists').height()+80);
 });
     
-var solve_mode='m';
+var solve_mode='M';
 var ua_id;
 $(document).on('click', '.exam_m, .exam_p', function(){
     //test_dat = this;
     //return false;
     //console.log($(this).val());
-    if($(this).hasClass('exam_m')) solve_mode='m';
-    if($(this).hasClass('exam_p')) solve_mode='p';
+    if($(this).hasClass('exam_m')) solve_mode='M';
+    if($(this).hasClass('exam_p')) solve_mode='P';
     
     //at_id = $(this).attr("value");
     var at_id = $(this).parent().parent().attr('at_id');
     var data = {};
+    
+    var solve_type = 'P'; 
+    switch($(this).parent().parent().parent().parent().attr('id')){
+        case 'unit_assess_table':
+        case 'standart_assess_table':
+            solve_type = 'D';
+            break;
+    }
     data['method'] = 'call_ua';
     data['at_id'] = at_id;
     //return false;
@@ -46,7 +54,8 @@ $(document).on('click', '.exam_m, .exam_p', function(){
                             'method':'create_ua', 
                             'items':JSON.stringify(json),
                             'at_id':at_id,
-                            'ci_id':ci_id
+                            'ci_id':ci_id,
+                            'type':solve_type,
                         };
                         if(msg['start_time'] == 'empty'){ 
                             data = {
@@ -66,15 +75,17 @@ $(document).on('click', '.exam_m, .exam_p', function(){
                             
                             console.log(create_ua_msg);
                             if(msg['status'] == 'success'){
+                                
                                 ua_id = create_ua_msg['ua_id'];
                                 switch(solve_mode){
-                                case 'm':
+                                case 'M':
                                     $(location).attr('href','/stdnt/solve_itemeach/'+ua_id);
                                     break;
-                                case 'p':
+                                case 'P':
                                     $(location).attr('href','/stdnt/print_assess/'+ua_id);
                                     break;
                                 }
+                                
                              } else {
                                  console.log(create_ua_msg);
                              }
@@ -86,10 +97,10 @@ $(document).on('click', '.exam_m, .exam_p', function(){
                 ua_id = msg['ua_id'];
                 //$("#go_exist_exam_modal").modal('show');
                 switch(solve_mode){
-                case 'm':
+                case 'M':
                     $(location).attr('href','/stdnt/solve_itemeach/'+ua_id);
                     break;
-                case 'p':
+                case 'P':
                     $(location).attr('href','/stdnt/print_assess/'+ua_id);
                     break;
                 }
@@ -97,4 +108,14 @@ $(document).on('click', '.exam_m, .exam_p', function(){
         }
     });
     return false;
+});
+
+
+
+$(document).on('click', '#unit_assess_table .result_btn, #standart_assess_table .result_btn', function(){
+    $(location).attr('href','/stdnt/diagnosis_result');
+});
+
+$(document).on('click', '#practice_unit_assess_table .result_btn', function(){
+    $(location).attr('href','/stdnt/practice_result');
 });

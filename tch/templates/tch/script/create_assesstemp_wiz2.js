@@ -229,7 +229,7 @@ function click_submit(){
                         }
                     }).done(function(create_ua_msg){
                         console.log(create_ua_msg);
-                        if(msg['create_ua_msg'] == 'success'){
+                        if(create_ua_msg['status'] == 'success'){
                             //$(location).attr('href','/tch');
                             $(location).attr('href','/tch');
                         } else {

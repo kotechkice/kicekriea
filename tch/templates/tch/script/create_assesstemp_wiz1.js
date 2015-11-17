@@ -217,3 +217,70 @@ function click_save_btn(){
     });
 }
 $(document).on('click', '#save_btn', click_save_btn);
+
+function select_itc(){
+    //test_dat = this;
+    var itc_id = $(this).find('option:selected').attr('itc_id');
+    var id_str = $(this).attr('id');
+    $.ajax({
+        url:'/tch/create_assesstemp_wiz1',
+        dataType:'json',
+        data:{
+            'method':'sel_itc',
+            'itc_id':itc_id,
+        }
+    }).done(function(msg){
+        console.log(msg);
+        test_dat = msg;
+        if(msg['status'] == 'success'){
+        //    $(location).attr('href','/tch');
+            var html = '';
+            if(msg['belong_itcs'].length == 0){
+                html = '<option itc_id="-1">--</option>';
+            }
+            for(var i=0; i< msg['belong_itcs'].length; i++){
+                 html += '<option itc_id='+msg['belong_itcs'][i]['id'] +'>';
+                 html += msg['belong_itcs'][i]['name'] + '</option>';
+            }
+            switch(id_str){
+                case 'academy_select':
+                    $('#standard_select').html('<option itc_id="-1">--</option>');
+                    $('#unit_select').html('<option itc_id="-1">--</option>');
+                    $('#course_select').html(html);
+                    if(msg['belong_itcs'].length != 0) $('#course_select').change();
+                    break;
+                case 'course_select':
+                    $('#standard_select').html('<option itc_id="-1">--</option>');
+                    $('#unit_select').html(html);
+                    if(msg['belong_itcs'].length != 0) $('#unit_select').change();
+                    break;
+                case 'unit_select':
+                    $('#standard_select').html(html);
+                    if(msg['belong_itcs'].length != 0) $('#standard_select').change();
+                    break;
+                case 'standard_select':
+                    break;
+            }
+        } else {
+            console.log(msg);
+        }
+    });
+}
+$(document).on('change', '#academy_select, #course_select, #unit_select', select_itc);
+
+
+function click_show_assess_preview_btn(){
+    //console.log('click');
+    //$($('#selected_item_list_table tbody .td-itemid')[0]).text()
+    var items = $('#selected_item_list_table tbody .td-itemid');
+    var url = '/tch/assess_preview/?';
+    url += 'title='+$('#assess_name').val();
+    url += '&itemids=';
+    for(var i=0; i<items.length; i++){
+        url += $(items[i]).text();
+        if(i != items.length-1) url += ',';
+    }
+    window.open(url);
+}
+$(document).on('click', '#show_assess_preview_btn', click_show_assess_preview_btn);
+

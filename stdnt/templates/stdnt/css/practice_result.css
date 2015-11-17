@@ -186,9 +186,8 @@
 	#my_unit_list_name{
 		position: absolute;
 		left:252px;
-		/*top:170px;*/
+		top:170px;
 		width:783px;
-		
 		font-size:14.3px;
 		line-height:17px;
 		
@@ -299,8 +298,9 @@
 		font-size:14px;
 		line-height:14px;
 		
+		color:black;
 		border:1px solid black;
-		background-color:rgb(242,242,242);
+		
 	}
 	#practice_link{
 		position: absolute;
@@ -314,5 +314,6 @@
 		color:black;
 		border:1px solid black;
 		padding-left:2px;
+		background-color:rgb(242,242,242);
 	}
 </style>

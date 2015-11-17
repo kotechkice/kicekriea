@@ -1,0 +1,90 @@
+<style>
+	body{
+		font-family:'Malgun Gothic', 'Guilm', 'Arial';
+	}
+	
+	#kice_head_arrow{
+		position: absolute;
+		left:250px;
+		top:42px;
+		height:48px;
+		width:60px;
+	}
+	.kice_head_name_en_orange{
+		color:orange;
+	}
+	
+	#kice_head_name_ko{
+		position: absolute;
+		left:317px;
+		top:37px;
+		width:300px;
+		
+		font-size:30.3px;
+		line-height:36px;
+	}
+	
+	#kice_head_name_en{
+		position: absolute;
+		left:317px;
+		top:70px;
+		width:300px;
+		
+		font-size:17.7px;
+		line-height:21px;
+	}
+	#kice_head_line1{
+		position: absolute;
+		left:252px;
+		top:96px;
+		width:346px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(169, 209, 142);
+	}
+	#kice_head_line2{
+		position: absolute;
+		left:596px;
+		top:96px;
+		width:440px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(244, 177, 131);
+	}
+	
+	#kice_head2_name_ko{
+		position: absolute;
+		left:254px;
+		top:125px;
+		width:300px;
+		
+		font-size:17.7px;
+		line-height:21px;
+	}
+	#kice_head2_line1{
+		position: absolute;
+		left:252px;
+		top:147px;
+		width:157px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(31, 78, 121);
+	}
+	#kice_head2_line2{
+		position: absolute;
+		left:396px;
+		top:147px;
+		width:640px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(222, 235, 247);
+	}
+	.kice_sign1{
+		width:10px;
+		height:10px;
+	}
+</style>

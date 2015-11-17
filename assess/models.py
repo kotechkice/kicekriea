@@ -223,7 +223,16 @@ class UserAssessment(models.Model):
         self.level = 'N'
         self.save()
         return True
-
+    def percent_point_all(self):
+        correct_num = len(self.gradeduseritem_set.filter(response = F('correctanswer')))
+        all_item_num = len(self.gradeduseritem_set.all())
+        return correct_num/float(all_item_num)
+    
+    def percent_point_itc(self, itc):
+        itc_its = map(lambda x:x.it, MappedItemTemplateCategory.objects.filter(itc = itc))
+        correct_its = map(lambda x:x.it, self.gradeduseritem_set.filter(response = F('correctanswer')))
+        all_its = map(lambda x:x.it, self.gradeduseritem_set.all())
+        return len(set(itc_its)&set(correct_its))/float(len(set(itc_its)&set(all_its)))
 class GradedUserItem(models.Model):
     ua = models.ForeignKey(UserAssessment)
     it = models.ForeignKey(ItemTemplate)

@@ -106,11 +106,15 @@ def main(request):
                         'ct_id':ua.at.ct_id
                     })
         elif request.GET['method'] == 'create_ua':
-            if 'items' in request.GET and 'at_id' in request.GET and 'ci_id' in request.GET:
-                items =  json.loads(request.GET['items'])
-                at_list = AssessmentTemplate.objects.filter(pk=request.GET['at_id'])
-                ua_id = create_ua_from_itemdict_N_at(at_list[0], items, my_info, request.GET['ci_id'])
-                data = json.dumps({'status':"success", 'ua_id':ua_id})
+            if ('items' and 'at_id' and 'ci_id' and 'type') in request.GET:
+                if request.GET['type'] == 'D' or request.GET['type'] == 'P':
+                    items =  json.loads(request.GET['items'])
+                    at_list = AssessmentTemplate.objects.filter(pk=request.GET['at_id'])
+                    ua_id = create_ua_from_itemdict_N_at(at_list[0], items, my_info, request.GET['ci_id'])
+                    ua = UserAssessment.objects.get(id=ua_id)
+                    ua.type = 'D'
+                    ua.save()
+                    data = json.dumps({'status':"success", 'ua_id':ua_id})
         elif request.GET['method'] == 'create_gui':
             if ('items' and 'at_id' and 'ci_id' and 'ua_id') in request.GET:
                 ua = UserAssessment.objects.get(id = request.GET['ua_id'])
@@ -158,38 +162,59 @@ def main(request):
                 data.level = ua.level
         return data
     examlist = []
+    DS_examlist = []
+    DU_examlist = []
     for ga in GroupAssessment.objects.filter(group = my_usergroupinfo_school.group, type = 'D'):
-        #print '.'+str(ga.at.id)
         examlist.append(make_assess(ga.at))
+        if len(ga.at.get_itcs()) == 1:
+            DS_examlist.append(make_assess(ga.at))
+            DS_examlist[-1].itc = ga.at.get_itcs()[0]
+        else:
+            DU_examlist.append(make_assess(ga.at))
     for ga in GroupAssessment.objects.filter(group = my_usergroupinfo_class.group, type = 'D'):
-        #print ','+str(ga.at.id)
         examlist.append(make_assess(ga.at))
+        if len(ga.at.get_itcs()) == 1:
+            DS_examlist.append(make_assess(ga.at))
+            DS_examlist[-1].itc = ga.at.get_itcs()[0]
+        else:
+            DU_examlist.append(make_assess(ga.at))
     for ua in UserAssessment.objects.filter(user = my_info, type = 'D'):
-        #print ua.at.id
-        #print ua.at in examlist
         if not ua.at in examlist:
             examlist.append(make_assess(ua.at))
+            if len(ua.at.get_itcs()) == 1:
+                DS_examlist.append(make_assess(ua.at))
+                DS_examlist[-1].itc = ua.at.get_itcs()[0]
+            else:
+                DU_examlist.append(make_assess(ua.at))
     D_examlist = examlist
+    D_finished_len = len([x for x in examlist if x.is_finished == True])
+    D_not_finished_len = len(examlist) - D_finished_len
+    
     examlist = []
     for ga in GroupAssessment.objects.filter(group = my_usergroupinfo_school.group, type = 'P'):
-        #print '.'+str(ga.at.id)
         examlist.append(make_assess(ga.at))
     for ga in GroupAssessment.objects.filter(group = my_usergroupinfo_class.group, type = 'P'):
-        #print ','+str(ga.at.id)
         examlist.append(make_assess(ga.at))
     for ua in UserAssessment.objects.filter(user = my_info, type = 'P'):
-        #print ua.at.id
-        #print ua.at in examlist
         if not ua.at in examlist:
             examlist.append(make_assess(ua.at))
     P_examlist = examlist
+    P_finished_len = len([x for x in examlist if x.is_finished == True])
+    P_not_finished_len = len(examlist) - P_finished_len
+    
     variables = RequestContext(request, {
         'home_string' : home_string,
         'stdnt_string':stdnt_string,
         'my_info':my_info,
         'my_usergroupinfo_school':my_usergroupinfo_school,
         'D_examlist':D_examlist,
+        'D_finished_len':D_finished_len,
+        'D_not_finished_len':D_not_finished_len,
+        'DS_examlist':DS_examlist,
+        'DU_examlist':DU_examlist,
         'P_examlist':P_examlist,
+        'P_finished_len':P_finished_len,
+        'P_not_finished_len':P_not_finished_len,
     })
     return render_to_response('stdnt/main.html', variables)
 
@@ -341,11 +366,15 @@ def exam_list(request):
             else :
                 data = json.dumps({'status':"fail"})
         elif request.GET['method'] == 'create_ua':
-            if 'items' in request.GET and 'at_id' in request.GET and 'ci_id' in request.GET:
-                items =  json.loads(request.GET['items'])
-                at_list = AssessmentTemplate.objects.filter(pk=request.GET['at_id'])
-                ua_id = create_ua_from_itemdict_N_at(at_list[0], items, my_info, request.GET['ci_id'])
-                data = json.dumps({'status':"success", 'ua_id':ua_id})
+            if ('items' and 'at_id' and 'ci_id' and 'type') in request.GET:
+                if request.GET['type'] == 'D' or request.GET['type'] == 'P':
+                    items =  json.loads(request.GET['items'])
+                    at_list = AssessmentTemplate.objects.filter(pk=request.GET['at_id'])
+                    #ua_id = create_ua_from_itemdict_N_at(at_list[0], items, my_info, request.GET['ci_id'])
+                    #ua = UserAssessment.objects.get(id=ua_id)
+                    #ua.type = 'D'
+                    #ua.save()
+                    #data = json.dumps({'status':"success", 'ua_id':ua_id})
         elif request.GET['method'] == 'get_itmes':
             if 'exam_order' in request.GET:
                 items = {}
@@ -510,6 +539,7 @@ def diagnosis_result(request):
     
     my_info = request.user
     my_usergroupinfo_schools = my_info.usergroupinfo_set.filter(group__groupdetail__type='S')
+    
     if len(my_usergroupinfo_schools) > 0:
         my_usergroupinfo_school = my_usergroupinfo_schools[0]
     else:
@@ -521,13 +551,90 @@ def diagnosis_result(request):
     else:
         my_usergroupinfo_class = None
     
+    finished_ua_list = UserAssessment.objects.filter(user=my_info, type='D').exclude(end_time=None)
+    s_ua_list = [] # standard
+    u_ua_list = [] # unit
+    for ua in finished_ua_list:
+        ua_itcs = ua.at.get_itcs()
+        if len(ua_itcs) == 1: # standard
+            s_ua = ua
+            s_ua.itc = ua_itcs[0]
+            
+            itclhs = ItemTemplateCategoryLevelHelp.objects.filter(itc=ua.itc)
+            
+            s_ua.levelhelp = 'None'
+            if len(itclhs) != 0:
+                if s_ua.level == 'H':
+                    s_ua.levelhelp = itclhs[0].help_h
+                elif s_ua.level == 'I':
+                    s_ua.levelhelp = itclhs[0].help_m
+                elif s_ua.level == 'E':
+                    s_ua.levelhelp = itclhs[0].help_l
+                elif s_ua.level == 'F':
+                    s_ua.levelhelp = itclhs[0].help_f
+            s_ua_list.append(ua)
+        else:# unit
+            ua.itcs = []
+            ua.percent_point_all = int(round(ua.percent_point_all() * 100))
+            for ua_itc in ua_itcs:
+                ua.itcs.append({
+                    'name':ua_itc.name,
+                    'description':ua_itc.description,
+                    'percent_point': int(round(ua.percent_point_itc(ua_itc) * 100))
+                })
+            ua.rowspan = len(ua_itcs) + 1
+            u_ua_list.append(ua)
+    
     variables = RequestContext(request, {
         'home_string' : home_string,
         'stdnt_string':stdnt_string,
         'my_info':my_info,
         'my_usergroupinfo_school':my_usergroupinfo_school,
+        's_ua_list':s_ua_list,
+        'u_ua_list':u_ua_list,
     })
     return render_to_response('stdnt/diagnosis_result.html', variables)
+
+def practice_result(request):
+    my_info = request.user
+    my_usergroupinfo_schools = my_info.usergroupinfo_set.filter(group__groupdetail__type='S')
+    
+    
+    finished_ua_list = UserAssessment.objects.filter(user=my_info, type='P').exclude(end_time=None)
+    ua_list = []
+    for ua in finished_ua_list:
+        ua_itcs = ua.at.get_itcs()
+        ua.itcs = []
+        ua.percent_point_all = int(round(ua.percent_point_all() * 100))
+        for ua_itc in ua_itcs:
+            ua.itcs.append({
+                'name':ua_itc.name,
+                'description':ua_itc.description,
+                'percent_point': int(round(ua.percent_point_itc(ua_itc) * 100))
+            })
+        ua.rowspan = len(ua_itcs) + 1
+        ua_list.append(ua)
+    
+    if len(my_usergroupinfo_schools) > 0:
+        my_usergroupinfo_school = my_usergroupinfo_schools[0]
+    else:
+        my_usergroupinfo_school = None
+    
+    my_usergroupinfo_classes = my_info.usergroupinfo_set.filter(group__groupdetail__type='C')
+    if len(my_usergroupinfo_classes) > 0:
+        my_usergroupinfo_class = my_usergroupinfo_classes[0]
+    else:
+        my_usergroupinfo_class = None
+    
+    
+    variables = RequestContext(request, {
+        'home_string' : home_string,
+        'stdnt_string':stdnt_string,
+        'my_info':my_info,
+        'my_usergroupinfo_school':my_usergroupinfo_school,
+        'ua_list':ua_list,
+    })
+    return render_to_response('stdnt/practice_result.html', variables)
 
 def print_assess(request, ua_id):
     #if not request.user.is_authenticated():

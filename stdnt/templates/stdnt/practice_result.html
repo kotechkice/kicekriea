@@ -3,11 +3,11 @@
 {% block navbar %}
 {% endblock %}
 {% block style %}
-	{% include "stdnt/css/diagnosis_result.css" %}
+	{% include "stdnt/css/practice_result.css" %}
 {% endblock %}
 {% block script %}
 <script>
-	{% include "stdnt/script/diagnosis_result.js" %}
+	{% include "stdnt/script/practice_result.js" %}
 </script>
 {% endblock %}
 {% block containor %}
@@ -25,84 +25,29 @@
 		<b>{{ my_usergroupinfo_school.group.groupdetail.nickname }} {{ my_info.userdetail.full_name }} 학생</b> 
 		환영합니다. (로그인중)
 	</div>
-	<div id="diagnosis_exp">
-		&nbsp;
-		<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
-		진단용 형성평가
-	</div>
-	<a href='/stdnt/practice_result'>
-		<div id="practice_link">
-			학습용 형성평가
+	<a href='/stdnt/diagnosis_result'>
+		<div id="diagnosis_exp">
+			&nbsp;
+			<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+			진단용 형성평가
 		</div>
 	</a>
+	</div>
+	<div id="practice_link">
+		학습용 형성평가
+	</div>
 	<hr id="kice_head_line1" />
 	<hr id="kice_head_line2" />
 </div>
 
 <div class="kice_head2">
-	<div id="kice_head2_name_ko">진단용 형성평가 결과</div>
+	<div id="kice_head2_name_ko">학습용 형성평가 결과</div>
 	<hr id="kice_head2_line1" />
 	<hr id="kice_head2_line2" />
 </div>
 
-<!--div id="standard-result">
-	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
-	성취기준별 진단 결과
-</div-->
-
-<div id="my_assess_list_name">
-	{% for s_ua in s_ua_list %}
-	<div class="my_assess_standard">
-		<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
-		<b>성취기준별 진단결과</b>
-		<table align="center">
-			<thead>
-				<tr>
-					<th><b>성취기준</b></th>
-					<th><b>미도달</b></th>
-					<th><b>하</b></th>
-					<th><b>중</b></th>
-					<th><b>상</b></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>
-						{{ s_ua.at.name }}<br />
-						({{ s_ua.itc.description }})
-					</td>
-					<td>
-						{% ifequal s_ua.level "F" %}<div> </div>{% endifequal %}
-						{% ifequal s_ua.level "E" %}<div> </div>{% endifequal %}
-						{% ifequal s_ua.level "I" %}<div> </div>{% endifequal %}
-						{% ifequal s_ua.level "H" %}<div> </div>{% endifequal %}
-					</td>
-					<td>
-						{% ifequal s_ua.level "E" %}<div> </div>{% endifequal %}
-						{% ifequal s_ua.level "I" %}<div> </div>{% endifequal %}
-						{% ifequal s_ua.level "H" %}<div> </div>{% endifequal %}
-					</td>
-					<td>
-						{% ifequal s_ua.level "I" %}<div> </div>{% endifequal %}
-						{% ifequal s_ua.level "H" %}<div> </div>{% endifequal %}
-					</td>
-					<td>
-						{% ifequal s_ua.level "H" %}<div> </div>{% endifequal %}
-					</td>
-				</tr>
-				
-			</tbody>
-		</table>
-		<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
-		<b>성취기준 학습 도움말</b>
-		<hr />
-		{{ s_ua.levelhelp }}
-	</div>
-	{% endfor %}
-</div>
-
 <div id="my_unit_list_name">
-	{% for u_ua in u_ua_list %}
+	{% for ua in ua_list %}
 	<div class="my_unit_standard">
 		<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
 		<b>단원별 진단결과</b>
@@ -120,16 +65,16 @@
 			</thead>
 			<tbody>
 				<tr>
-					<td rowspan="{{u_ua.rowspan}}">{{ u_ua.at.name }}</td>
+					<td rowspan="{{ua.rowspan}}">{{ ua.at.name }}</td>
 					<td>전체</td>
 					<td class="percent_data percent_0"><div> </div></td>
 					<td class="percent_data percent_25"><div> </div></td>
 					<td class="percent_data percent_50"><div> </div></td>
 					<td class="percent_data percent_75"><div> </div></td>
 					<td class="percent_data percent_100"><div> </div></td>
-					<td class="mastery_point">{{ u_ua.percent_point_all }}</td>
+					<td class="mastery_point">{{ ua.percent_point_all }}</td>
 				</tr>
-				{% for itc in u_ua.itcs %}
+				{% for itc in ua.itcs %}
 				<tr>
 					<td><span class="std_name">{{ itc.name }}</span><br />
 						({{ itc.description }})

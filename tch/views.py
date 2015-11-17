@@ -347,12 +347,22 @@ def create_assesstemp_wiz1(request):
                 
                 create_its_from_itnum_list_N_at(at, item_ids)
                 data = json.dumps({'status':'success'})
+        if request.GET['method'] == 'sel_itc':
+            if ('itc_id') in request.GET:
+                itc = ItemTemplateCategory.objects.get(id=request.GET['itc_id'])
+                belong_itc_objects = ItemTemplateCategory.objects.filter(upper_itc=itc)
+                belong_itcs = []
+                for belong_itc_object in belong_itc_objects:
+                    belong_itcs.append({ 'id':belong_itc_object.id, 'name':belong_itc_object.name})
+                data = json.dumps({'status':'success', 'belong_itcs':belong_itcs})
         return HttpResponse(data, 'application/json')
     
     itcll0_s = ItemTemplateCategoryLevelLabel.objects.get(level=0)
     itc0_open = ItemTemplateCategory.objects.filter(level_label = itcll0_s, order=1)
     itc1_s = ItemTemplateCategory.objects.filter(upper_itc=itc0_open).order_by('order')
     itc2_s = ItemTemplateCategory.objects.filter(upper_itc = itc1_s[0]).order_by('order')
+    itc3_s = ItemTemplateCategory.objects.filter(upper_itc = itc2_s[0]).order_by('order')
+    itc4_s = ItemTemplateCategory.objects.filter(upper_itc = itc3_s[0]).order_by('order')
     
     variables = RequestContext(request, {
         'tch_string' : tch_string,                                 
@@ -362,6 +372,8 @@ def create_assesstemp_wiz1(request):
         #'itc0_s':itc0_s,
         'itc1_s':itc1_s,
         'itc2_s':itc2_s,
+        'itc3_s':itc3_s,
+        'itc4_s':itc4_s,
     })
     return render_to_response('tch/create_assesstemp_wiz1.html', variables)
 

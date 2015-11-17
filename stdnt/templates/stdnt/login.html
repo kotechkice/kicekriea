@@ -1,11 +1,9 @@
 {% extends "stdnt/container/base.html" %}
 {% block title %}{{ stdnt_string.LOGIN_PAGE }}{% endblock %}
-{% block nav_list %}
-<li> <a href="/" class="nav">메인으로</a></li>
+{% block navbar %}
 {% endblock %}
 {% block style %}
-<style>
-</style>
+	{% include "stdnt/css/login.css" %}
 {% endblock %}
 {% block script %}
 <script>
@@ -41,6 +39,20 @@
 </script>
 {% endblock %}
 {% block containor %}
+
+<div class="kice_head">
+	<img id="kice_head_arrow" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_arrow.jpg" />
+	<div id="kice_head_name_ko">온라인 문항관리 시스템</div>
+	<div id="kice_head_name_en">
+		<span class="kice_head_name_en_orange">O</span>nline 
+		<span class="kice_head_name_en_orange">I</span>tem
+		<span class="kice_head_name_en_orange">M</span>anagement
+		<span class="kice_head_name_en_orange">S</span>ystem
+	</div>
+	<hr id="kice_head_line1" />
+	<hr id="kice_head_line2" />
+</div>
+
 <div class="container text-center">
 	<div class="row h3">
 	{{ stdnt_string.LOGIN_PAGE }}

@@ -12,6 +12,7 @@ urlpatterns = patterns('',
     url(r'^solve_itemeach/([0-9]+)/$', solve_itemeach, name='solve_itemeach'),
     url(r'^report/([0-9]+)/$', report, name='report'),
     url(r'^diagnosis_result/$', diagnosis_result, name='diagnosis_result'),
+    url(r'^practice_result/$', practice_result, name='practice_result'),
     url(r'^print_assess/([0-9]+)/$', print_assess, name='print_assess'),
     url(r'^input_response/([0-9]+)/$', input_response, name='input_response'),
     

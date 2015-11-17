@@ -46,10 +46,9 @@
 		진단용 형성평가
 	</span>
 	<span id="jindan_assess_status">
-		■ 완료한 평가 수 : 1개 &nbsp;&nbsp;&nbsp;&nbsp;
-		□ 아직 완료하지 못한 평가 수 : 1개
+		■ 완료한 평가 수 : {{D_finished_len}}개 &nbsp;&nbsp;&nbsp;&nbsp;
+		□ 아직 완료하지 못한 평가 수 : {{D_not_finished_len}}개
 	</span>
-	
 	<div id="unit_assess_table_name">
 		<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
 		단원별 평가 목록
@@ -65,7 +64,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for exam in D_examlist %}
+			{% for exam in DU_examlist %}
 			<tr at_id="{{ exam.id }}">
 				<td class="td-contents">{{ exam.name }}</td>
 				<td class="td-itemnum">{{ exam.num_item }}</td>
@@ -128,6 +127,53 @@
 				<th class="td-solve">진단</th>
 			</tr>
 		</thead>
+		<tbody>
+			{% for exam in DS_examlist %}
+			<tr at_id="{{ exam.id }}">
+				<td class="td-standard">{{ exam.name }}</td>
+				<td class="td-contents">{{ exam.itc.description }}</td>
+				<td class="td-itemnum">{{ exam.num_item }}</td>
+				<td class="td-exe">
+					{% if exam.is_finished %}
+					<button class="complte_btn">
+						시행완료
+					</button>
+					{% else %}
+					<button class="exam_m">
+						온라인
+					</button><br />
+					<button class="exam_p">
+						오프라인
+					</button>
+					{% endif %}
+				</td>
+				<td class="td-result">
+					{% if not exam.is_finished %}
+						진단안됨
+					{% else %}
+						{% ifequal exam.level "N" %}진단불가{% endifequal %}
+						{% ifequal exam.level "F" %}미달{% endifequal %}
+						{% ifequal exam.level "E" %}하{% endifequal %}
+						{% ifequal exam.level "I" %}중{% endifequal %}
+						{% ifequal exam.level "H" %}상{% endifequal %}
+					{% endif %}
+					
+				</td>
+				<td class="td-solve">
+					{% if not exam.is_finished %}
+					먼저 풀이를 하세요.
+					{% else %}
+					<button class="result_btn">
+						진단결과
+					</button>
+					<button class="ans_sol_btn">
+						정답해설
+					</button>
+					{% endif %}
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
 	</table>
 	
 	<br />
@@ -135,8 +181,8 @@
 		학습용 형성평가
 	</span>
 	<span id="practice_assess_status">
-		■ 완료한 평가 수 : 1개 &nbsp;&nbsp;&nbsp;&nbsp;
-		□ 아직 완료하지 못한 평가 수 : 1개
+		■ 완료한 평가 수 : {{P_finished_len}}개 &nbsp;&nbsp;&nbsp;&nbsp;
+		□ 아직 완료하지 못한 평가 수 : {{P_not_finished_len}}개
 	</span>
 	
 	<div id="practice_unit_assess_table_name">
