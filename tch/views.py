@@ -84,8 +84,23 @@ def main(request):
     for index in range(class_len):
         std_len += len(classes[index].usergroupinfo_set.all())
     
-    len_P = len(AssessmentTemplate.objects.filter(owner_group = my_usergroupinfo.group, type='P'))
-    len_D = len(AssessmentTemplate.objects.filter(owner_group = my_usergroupinfo.group, type='D'))
+    P_ats = AssessmentTemplate.objects.filter(owner_group = my_usergroupinfo.group, type='P')
+    len_P = len(P_ats)
+    
+    ing_len_P = 0
+    for at in P_ats:
+        if len(UserAssessment.objects.filter(at=at)) > 0 or len(GroupAssessment.objects.filter(at = at)) > 0:
+            ing_len_P += 1
+    ready_len_P = len_P - ing_len_P
+    
+    D_ats = AssessmentTemplate.objects.filter(owner_group = my_usergroupinfo.group, type='D')
+    len_D = len(D_ats)
+    
+    ing_len_D = 0
+    for at in D_ats:
+        if len(UserAssessment.objects.filter(at=at)) > 0 or len(GroupAssessment.objects.filter(at = at)) > 0:
+            ing_len_D += 1
+    ready_len_D = len_D - ing_len_D
     
     variables = RequestContext(request, {
         'tch_string' : tch_string,                                 
@@ -97,7 +112,11 @@ def main(request):
         'class_len':class_len,
         'std_len':std_len,
         'len_P':len_P,
+        'ready_len_P':ready_len_P,
+        'ing_len_P':ing_len_P,
         'len_D':len_D,
+        'ready_len_D':ready_len_D,
+        'ing_len_D':ing_len_D,
     })
     return render_to_response('tch/main.html', variables)
 
