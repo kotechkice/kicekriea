@@ -1,4 +1,4 @@
-{% extends "stdnt/container/base.html" %}
+{% extends "tch/container/base.html" %}
 {% block title %}온라인 문항관리 시스템{% endblock %}
 {% block navbar %}
 {% endblock %}
@@ -7,7 +7,7 @@
 {% endblock %}
 {% block script %}
 <script>
-	{% include "stdnt/script/main.js" %}
+	{% include "tch/script/kice_assess_result.js" %}
 </script>
 {% endblock %}
 {% block containor %}
@@ -36,15 +36,17 @@
 </div>
 
 <div id="wrap_lists">
-	평가구분
+	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+	평가구분&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 	<input type="radio" name="assess_type" value="D" checked />진단용 형성평가
 	&nbsp;&nbsp;&nbsp;
 	<input type="radio" name="assess_type" value="P" />학습용 형성평가
 	
 	<hr />	
 	<div id="sel_assess">
+		<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
 		평가선택
-		<table class="table">
+		<table align="center">
 			<thead>
 				<tr>
 					<th>선택</th>
@@ -74,7 +76,7 @@
 				</tr>
 				{% endfor %}
 				{% for exam in P_examlist %}
-				<tr at_id="{{ exam.id }}">
+				<tr at_id="{{ exam.id }}" hidden>
 					<td><input type="radio" name="sel_assess" /></td>
 					<td>단원평가 - {{ exam.name }}</td>
 					<td>{{ exam.finished_std_num }}/{{ exam.std_num }}</td>

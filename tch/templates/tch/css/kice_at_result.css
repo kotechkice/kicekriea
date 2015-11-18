@@ -96,6 +96,15 @@
 		width:10px;
 		height:10px;
 	}
+	
+	footer {
+		position: absolute;
+		left:249px;
+		/*top:170px;*/
+		/*height:621px;*/
+		width:767px;
+		visibility:hidden;
+	}
 	#wrap_lists{
 		position: absolute;
 		left:249px;
@@ -106,46 +115,43 @@
 		padding:10px;
 		border:1px solid rgb(166,166,166);
 	}
-	#wrap_lists button{
-		color:white;
-		background:rgb(68, 84, 106);
+	#name_div{
+		padding:10px;
 		border:1px solid rgb(166,166,166);
-		margin:2px;
 	}
-	
-	#wrap_lists table th,
-	#wrap_lists table td{
+	#detail_info{
+		padding:10px;
+		border:1px solid rgb(166,166,166);
+	}
+	#detail_info table th,
+	#detail_info table td{
+		height:30px;
 		border:1px solid black;
 		text-align:center;
 	}
-	#wrap_lists table th{
-		background:rgb(202, 202, 202);
+	#detail_info table th{
+		background:rgb(232, 232, 232);
 	}
-	#wrap_lists table th:nth-child(1),
-	#wrap_lists table td:nth-child(1){
-		width:50px;
+	#detail_info table th:nth-child(1),
+	#detail_info table td:nth-child(1){
+		width:100px;
 		border-left:0px solid black;
 	}
-	#wrap_lists table th:nth-child(2){
-		width:300px;
-	}
-	#wrap_lists table th:nth-child(3){
+	#detail_info table th:nth-child(2){
 		width:100px;
 	}
-	#wrap_lists table th:nth-child(4){
+	#detail_info table th:nth-child(3){
 		width:100px;
 	}
-	#wrap_lists table th:last-child,
-	#wrap_lists table td:last-child{
+	#detail_info table th:nth-child(4){
+		width:100px;
+	}
+	#detail_info table th:nth-child(5){
+		width:200px;
+	}
+	#detail_info table th:last-child,
+	#detail_info table td:last-child{
 		width:100px;
 		border-right:0px solid black;
-	}
-	footer {
-		position: absolute;
-		left:249px;
-		/*top:170px;*/
-		/*height:621px;*/
-		width:767px;
-		visibility:hidden;
 	}
 </style>

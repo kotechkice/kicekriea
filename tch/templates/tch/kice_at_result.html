@@ -1,20 +1,109 @@
-{{ at }}<br />
+{% extends "tch/container/base.html" %}
+{% block title %}온라인 문항관리 시스템{% endblock %}
+{% block navbar %}
+{% endblock %}
+{% block style %}
+	{% include "tch/css/kice_at_result.css" %}
+{% endblock %}
+{% block script %}
+<script>
+	{% include "tch/script/kice_at_result.js" %}
+</script>
+{% endblock %}
+{% block containor %}
+
+<div class="kice_head">
+	<img id="kice_head_arrow" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_arrow.jpg" />
+	<div id="kice_head_name_ko">온라인 문항관리 시스템</div>
+	<div id="kice_head_name_en">
+		<span class="kice_head_name_en_orange">O</span>nline 
+		<span class="kice_head_name_en_orange">I</span>tem
+		<span class="kice_head_name_en_orange">M</span>anagement
+		<span class="kice_head_name_en_orange">S</span>ystem
+	</div>
+	<div id="login_info">
+		<b>{{ my_usergroupinfo.group.groupdetail.nickname }} {{ my_info.userdetail.full_name }} 선생님</b> 
+		환영합니다. (로그인중)
+	</div>
+	<hr id="kice_head_line1" />
+	<hr id="kice_head_line2" />
+</div>
+
+<div class="kice_head2">
+	<div id="kice_head2_name_ko">평가 관리</div>
+	<hr id="kice_head2_line1" />
+	<hr id="kice_head2_line2" />
+</div>
+
+<div id="wrap_lists">
+	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+	개별학생의 수행상태
+	<hr /><br />
+	<div id="name_div">
+		<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+		평가명 <br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<u>
+		{% ifequal type 'D' %}
+			진단용 형성평가 >
+			{% if itc_num_1 %}
+			성취기준
+			{% else %}
+			단원평가
+			{% endif %}
+			- {{ at.name }}
+		{% endifequal %}
+		{% ifequal type 'P' %}
+		학습용 형성평가 > 단원평가 - {{ at.name }}
+		{% endifequal %}
+		</u><br /><br />
+		
+		<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+		수행상태 <br />
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		수행인원 : {{ finished_std_num }}/{{ std_num }} 
+		&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;
+		수행률 : {{finish_rate}}%<br />
+	</div><br />
+	<div id="detail_info">
+		<table align="center">
+			<thead>
+				<tr>
+					<th>이름</th>
+					<th>학년</th>
+					<th>반</th>
+					<th>학번</th>
+					<th>성취기준</th>
+					<th>개별수행상태</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for std in std_list %}
+				<tr>
+					<td>{{std.userdetail.full_name}}</td>
+					<td>{{std.grad.groupdetail.nickname}}</td>
+					<td>{{std.clas.groupdetail.nickname}}</td>
+					<td>{{std.std_num}}</td>
+					<td>
+						{% for itc in std.itcs %}
+							{{itc.name}}<br />
+						{% endfor %}
+					</td>
+					<td>
+						{% if std.is_finished %}
+							완료
+						{% else %}
+							미완료
+						{% endif %}
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}
 
 
-개별학생의 수행상태<br />
-
-평가명<br />
-
-학습용 형성평가 - 이름<br />
-
-수행상태<br />
-
-수행인원 : {{ finished_std_num }}/{{ std_num }} | 수행률 {{finish_rate}}%<br />
-
-이름, 수행상태<br />
-
-{% for std in std_list %}
-	{{ std.email }}, {{std.is_finished}}<br />
-{% endfor %}
 
 

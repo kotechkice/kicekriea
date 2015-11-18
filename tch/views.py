@@ -676,21 +676,38 @@ def kice_at_result(request, at_id):
             std_list.append(ugi.user)
     for std in std_list:
         std.is_finished = False
-        uas = UserAssessment.objects.filter(at=at, user=std)
-        if len(uas) != 0 and uas[0].end_time != None:
-            std.is_finished = True
-            finished_std_num+=1
         
+        std_school_usergroupinfo = std.usergroupinfo_set.get(group__groupdetail__type='S')
+        std.std_num = std_school_usergroupinfo.user_id_of_group
+        
+        std.clas = std.usergroupinfo_set.get(group__groupdetail__type='C').group
+        std.grad = std.clas.groupdetail.upper_group
+        
+        std.itcs = at.get_itcs()
+        
+        uas = UserAssessment.objects.filter(at=at, user=std)
+        
+        if len(uas) != 0:
+            type = uas[0].type
+            if uas[0].end_time != None:
+                std.is_finished = True
+                finished_std_num+=1
+    
+    itc_num_1 = len(at.get_itcs()) == 1
     std_num = len(std_list)
     finish_rate = finished_std_num*100/std_num
     variables = RequestContext(request, {
         'tch_string' : tch_string,                                 
         'home_string' : home_string,
+        'my_info':my_info,
+        'my_usergroupinfo':my_usergroupinfo,
         'at':at,
         'std_list':std_list,
         'finished_std_num':finished_std_num,
         'std_num':std_num,
         'finish_rate':finish_rate,
+        'type':type,
+        'itc_num_1':itc_num_1,
     })
     return render_to_response('tch/kice_at_result.html', variables)
     
