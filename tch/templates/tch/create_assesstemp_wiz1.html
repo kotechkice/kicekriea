@@ -1,5 +1,7 @@
 {% extends "tch/container/base.html" %}
-{% block title %}형성평가 생성 마법사 1단계{% endblock %}
+{% block title %}온라인 문항관리 시스템{% endblock %}
+{% block navbar %}
+{% endblock %}
 {% block style %}
 	{% include "tch/css/create_assesstemp_wiz1.css" %}
 {% endblock %}
@@ -31,106 +33,91 @@ MathJax.Hub.Config({
 </script>
 {% endblock %}
 {% block containor %}
-<div class="container">
-	<div id="account_info">
-		<b>{{ my_usergroupinfo.group.groupdetail.nickname }} {{ my_info.userdetail.full_name }} 선생님</b> 환영합니다.
+
+<div class="kice_head">
+	<img id="kice_head_arrow" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_arrow.jpg" />
+	<div id="kice_head_name_ko">온라인 문항관리 시스템</div>
+	<div id="kice_head_name_en">
+		<span class="kice_head_name_en_orange">O</span>nline 
+		<span class="kice_head_name_en_orange">I</span>tem
+		<span class="kice_head_name_en_orange">M</span>anagement
+		<span class="kice_head_name_en_orange">S</span>ystem
 	</div>
-	<div class="row" id="menu-label">
-		<b>평가제작</b>
+	<div id="login_info">
+		<b>{{ my_usergroupinfo.group.groupdetail.nickname }} {{ my_info.userdetail.full_name }} 선생님</b> 
+		환영합니다. (로그인중)
 	</div>
-	<hr id="line-one"> </hr>
+	<hr id="kice_head_line1" />
+	<hr id="kice_head_line2" />
+</div>
+
+<div class="kice_head2">
+	<div id="kice_head2_name_ko">평가제작</div>
+	<hr id="kice_head2_line1" />
+	<hr id="kice_head2_line2" />
+</div>
+
+<div id="wrap_inputs">
+	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+	평가구분&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="radio" name="assess_type" value="P" checked /> 학습용 형성평가
+	&nbsp;&nbsp;&nbsp;
+	<input type="radio" name="assess_type" value="D" /> 진단용 형성평가
+	<hr />
 	
-	<div id="wrap_inputs">
-		<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
-		평가구분 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-		
-		<input type="radio" name="assess_type" value="P" checked /> 학습용 형성평가
-		&nbsp;&nbsp;&nbsp;
-		<input type="radio" name="assess_type" value="D" /> 진단용 형성평가
-		
-		<hr style="height: 2px; border: 0; background: #CCCCCC; width:100%;" />
-		
-		<table id="select_category_table">
-			<tr>
-				<td class="td-label">
-					<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
-					학교급
-				</td>
-				<td>
-					<select id="academy_select">
-						{% for itc1 in itc1_s %}
-						<option itc_id="{{itc1.id}}">{{ itc1.name }}</option>
-						{% endfor %}
-					</select>
-				</td>
-				<td class="td-label">
-					<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
-					과목명
-				</td>
-				<td>
-					<select id="course_select">
-						<!--option itc_id="-1">모두</option-->
-						{% for itc2 in itc2_s %}
-						<option itc_id="{{itc2.id}}">{{ itc2.name }}</option>
-						{% endfor %}
-					</select>
-				</td>
-				<td style="border-right:1px black solid">
-					
-				</td>
-				<td>
-					
-				</td>
-			</tr>
-			<tr>
-				<td class="td-label">
-					<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
-					단 원
-				</td>
-				<td>
-					<select id="unit_select">
-						{% for itc3 in itc3_s %}
-						<option itc_id="{{itc3.id}}">{{ itc3.name }}</option>
-						{% endfor %}
-					</select>
-				</td>
-				<td class="td-label">
-					<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
-					성취기준
-				</td>
-				<td>
-					<select id="standard_select">
-						{% for itc4 in itc4_s %}
-						<option itc_id="{{itc4.id}}">{{ itc4.name }}</option>
-						{% endfor %}
-					</select>
-				</td>
-				<td style="border-right:1px black solid">
-					<button class="btn btn-default btn-xs" id="search_btn">
-						문항검색
-					</button>
-				</td>
-				<td>
-					<button class="btn btn-default btn-xs">
-						내문항 보기
-					</button>
-				</td>
-			</tr>
-		</table>
-		
-		<hr />
-		
-		<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
+	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+	학 교 급&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<select id="academy_select">
+		{% for itc1 in itc1_s %}
+		<option itc_id="{{itc1.id}}">{{ itc1.name }}</option>
+		{% endfor %}
+	</select>
+	
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+	과 목 명&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<select id="course_select">
+		{% for itc2 in itc2_s %}
+		<option itc_id="{{itc2.id}}">{{ itc2.name }}</option>
+		{% endfor %}
+	</select><br />
+	
+	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+	단&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;원&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<select id="unit_select">
+		{% for itc3 in itc3_s %}
+		<option itc_id="{{itc3.id}}">{{ itc3.name }}</option>
+		{% endfor %}
+	</select>
+	
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+	성취기준&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<select id="standard_select">
+		{% for itc4 in itc4_s %}
+		<option itc_id="{{itc4.id}}">{{ itc4.name }}</option>
+		{% endfor %}
+	</select>
+	
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<button id="search_btn">
+		문항검색
+	</button>
+	
+	<hr />
+	
+	<div>
+		<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
 		문항 검색 결과
 		<div id="search_result_div">
 			<table id="search_additional_condition">
 				<tr>
-					<td>추가 검색 조건</td>
-					<td><b>난이도</b></td>
+					<td>검색 조건</td>
+					<td><b>난이도</b>&nbsp;&nbsp;&nbsp;</td>
 					<td class="checked_diff"><input type="checkbox" />어려움</td>
 					<td class="checked_diff"><input type="checkbox" />보통</td>
 					<td class="checked_diff"><input type="checkbox" />쉬움</td>
-					<td class="checked_diff"><input type="checkbox" />결정안됨</td>
+					<!--td class="checked_diff"><input type="checkbox" />결정안됨</td-->
 					<td>
 						
 					</td>
@@ -143,16 +130,13 @@ MathJax.Hub.Config({
 					<td> </td>
 					<td> </td>
 					<td>
-						<button class="btn btn-default btn-xs" id="research_btn">
+						<button id="research_btn">
 							재검색
 						</button>
 					</td>
 				</tr>
 			</table>
-			
-			<hr style="height: 1px; border: 0; background: #CCCCCC; width:100%;" />
-			<br />
-			
+			<hr /> <br />
 			<table class="table" id="searched_item_list_table">
 				<thead>
 					<tr class="tr-header">
@@ -165,25 +149,21 @@ MathJax.Hub.Config({
 					</tr>
 				</thead>
 				<tbody>
-					<!--tr>
-						<td><input type="checkbox" /></td>
-						<td class="td-itemid">1900</td>
-						<td class="td-diff">쉬움</td>
-						<td class="td-ability">지식</td>
-						<td class="td-type">선다형</td>
-						<td class="td-mng">
-							<button class="btn btn-primary btn-xs show_item_value">미리보기</button>
-						</td>
-					</tr-->
 				</tbody>
 			</table>
+			
 			<div align="right">
-				<button class="btn btn-default btn-sm" id="select_searched_items_btn">
+				<button id="select_searched_items_btn">
 					선택된 문항 담기
 				</button>
+				<button id="show_assess_preview_btn">
+				검사지 미리보기
+			</button>
 			</div>
 		</div>
-		<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
+	</div>
+	<div id='items_in_cart' hidden>
+		<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
 		담긴 문항
 		<table class="table" id="selected_item_list_table">
 			<thead>
@@ -196,31 +176,21 @@ MathJax.Hub.Config({
 				</tr>
 			</thead>
 			<tbody>
-				<!--tr>
-					<td class="td-itemid">1900</td>
-					<td class="td-diff">쉬움</td>
-					<td class="td-ability">지식</td>
-					<td class="td-type">선다형</td>
-					<td class="td-mng">
-						<button class="btn btn-primary btn-xs show_item_value">미리보기</button>
-						<button class="btn btn-primary btn-xs del_selected_item">삭제</button>
-					</td>
-				</tr-->
 			</tbody>
 		</table>
-		<div align="right">
-			<button class="btn btn-default btn-sm" id="show_assess_preview_btn">
-				검사지 미리보기
-			</button>
-		</div>
-	</div><br />
-	<span class="glyphicon glyphicon-leaf" aria-hidden="true"> </span>
-	평가명&nbsp;&nbsp;&nbsp;&nbsp;
-	<input type="text" id="assess_name" /><br />
-	<button class="btn btn-primary btn-sm" id="save_btn">
-		완료
+	</div>
+	<br />
+	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+	평 가 명&nbsp;&nbsp;&nbsp;&nbsp;
+	<input type="text" id="assess_name" />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<button id="save_btn">
+		저장하기
 	</button>
 </div>
-
-
 {% endblock %}

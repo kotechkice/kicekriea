@@ -1,89 +1,221 @@
 <style>
-	.navbar {
-		margin-bottom:0px;
+	body{
+		font-family:'Malgun Gothic', 'Guilm', 'Arial';
 	}
-	#account_info{
-		text-align:right;
-		font-size:0.8em;
+	
+	#kice_head_arrow{
+		position: absolute;
+		left:250px;
+		top:84px;
+		height:48px;
+		width:60px;
 	}
-	#line-one{
-		margin: 0px;
-		margin-bottom: 30px;
-	    width: 100%;
-	    height: 5px;
+	.kice_head_name_en_orange{
+		color:orange;
+	}
+	
+	#kice_head_name_ko{
+		position: absolute;
+		left:317px;
+		top:79px;
+		width:300px;
+		
+		font-size:30.3px;
+		line-height:36px;
+	}
+	
+	#kice_head_name_en{
+		position: absolute;
+		left:317px;
+		top:112px;
+		width:300px;
+		
+		font-size:17.7px;
+		line-height:21px;
+	}
+	#login_info{
+		position: absolute;
+		left:729px;
+		top:110px;
+		width:300px;
+		
+		font-size:12.6px;
+		line-height:15px;
+	}
+	#kice_head_line1{
+		position: absolute;
+		left:252px;
+		top:138px;
+		width:346px;
+		
+		height: 5px;
 	    border: 0;
-	    background: #aaaaaa;
-	    
-	    background-image: -webkit-gradient(linear, 0 0, 100% 0, from(#8888ff), to(#ffffff),color-stop(50%, #ddddff));
-	    background-image: -webkit-linear-gradient(left, #8888ff, #ddddff, #ffffff);
-	    background-image: -moz-linear-gradient(left, #8888ff, #ddddff, #ffffff);
-	    background-image: -ms-linear-gradient(left, #8888ff, #ddddff, #ffffff);
-	    background-image: -o-linear-gradient(left, #8888ff, #ddddff, #ffffff);
+		background:rgb(169, 209, 142);
 	}
-	#menu-label{
-		text-align:left;
-		margin-left:0px;
+	#kice_head_line2{
+		position: absolute;
+		left:596px;
+		top:138px;
+		width:440px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(244, 177, 131);
 	}
+	
+	#kice_head2_name_ko{
+		position: absolute;
+		left:254px;
+		top:167px;
+		width:300px;
+		
+		font-size:17.7px;
+		line-height:21px;
+	}
+	#kice_head2_line1{
+		position: absolute;
+		left:252px;
+		top:189px;
+		width:157px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(31, 78, 121);
+	}
+	#kice_head2_line2{
+		position: absolute;
+		left:396px;
+		top:189px;
+		width:640px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(222, 235, 247);
+	}
+	
 	#wrap_inputs{
-		border: 1px solid #CCCCCC;
+		position: absolute;
+		left:249px;
+		top:219px;
+		/*height:508px;*/
+		width:783px;
+		
 		padding:10px;
+		border:1px solid rgb(166,166,166);
+		
+		line-height:30px;
 	}
-	td, th {
-	  	/*text-align:center;*/
-	  	/*border: 1px solid #CCCCCC;*/
+	.kice_sign1{
+		width:10px;
+		height:10px;
 	}
-	.td-label{
-		padding-right:10px;
-	}
+	
 	select {
 		width:100px;
 		margin-right:50px;
 	}
-	#select_category_table button{
-		margin-left:10px;
-		margin-right:10px;
+	
+	#search_btn{
+		background:rgb(220,220,220);
+		/*border:1px solid black;*/
+		line-height:15px;
+		width:80px;
 	}
-	#searched_item_list_table>thead>tr>th{
-		border: 2px solid #ddd;
-	  	background-color:#EEEEEE;
-	  	text-align:center;
-	} 
-	#searched_item_list_table>tbody>tr>td{
-		text-align:center;
-	  	border:1px solid #ddd;
-	}
-	#search_result_div{
-		border: 1px solid #CCCCCC;
-		padding:10px;
+	
+	#search_result {
 		margin:10px;
+		padding:10px;
+		border:1px solid rgb(166,166,166);
+		
 	}
+	
 	#search_additional_condition td{
 		padding-right:10px;
 	}
-	
-	#selected_item_list_table>thead>tr>th{
-		border: 2px solid #ddd;
-	  	background-color:#EEEEEE;
-	  	text-align:center;
+	#research_btn{
+		background:rgb(220,220,220);
+		/*border:1px solid black;*/
+		line-height:15px;
+		margin-left:270px;
+		width:80px;
 	}
-	#selected_item_list_table>tbody>tr>td{
+	#search_result_div{
+		border:1px solid rgb(166,166,166);
+	}
+	
+	#search_result_div{
+		padding:10px;
+	}
+	
+	.table>thead>tr>th{
+		border:1px solid black;
+		border-bottom:1px solid black;
+		background:rgb(232, 232, 232);
 		text-align:center;
-	  	border:1px solid #ddd;
+	}
+	.table>thead:first-child>tr:first-child>th{
+		border-top:2px solid black;
+	}
+	.table td{
+		border:1px solid black;
+		text-align:center;
+	}
+	.table td a{
+		color:black;
+	}
+	.table>thead>tr>th:first-child,
+	.table td:first-child{
+		border-left:0;
+	}
+	.table>thead>tr>th:last-child,
+	.table td:last-child{
+		border-right:0;
 	}
 	
-	#save_btn{
-		float:right;
-	}
-	
-	.item_detail_tr div{
-	  	max-width:500px;
-	  	text-align:left;
-	  }
-	  .item_detail_tr div table td {
-	  	text-align:left;
-	  	border:0px;
-	  }
-	#search_additional_condition input[type=checkbox]{
-		margin-right:5px;
-	}
+	.table button{
+	 	background:rgb(68, 84, 106);
+	 	border:1px solid rgb(166,166,166);
+	 	color:white;
+	 	font-size:13px;
+	 	line-height:18px;
+	 }
+	 
+	#select_searched_items_btn,
+	#show_assess_preview_btn,{
+	 	background:rgb(242, 242, 242);
+	 	border:1px solid rgb(166,166,166);
+	 	color:black;
+	 	font-size:13px;
+	 	line-height:18px;
+	 }
+	 
+	 #save_btn{
+	 	background:rgb(68, 84, 106);
+	 	border:1px solid rgb(166,166,166);
+	 	color:white;
+	 	font-size:15px;
+	 	line-height:18px;
+	 }
+	 
+	 #items_in_cart{
+	 	border:1px solid rgb(166,166,166);
+	 	margin-top:10px;
+	 	padding:10px;
+	 }
+	 
+	 footer {
+	    /*position: absolute;*/
+	    /*bottom: 0;*/
+	    position: absolute;
+	 	top:869px;
+	    left:249px;
+	 	width:785px;
+	 }
+	 /*
+	 footer>.container{
+	 	position: absolute;
+	 	left:249px;
+	 	width:785px;
+	 	padding:0px;
+	 }*/
 </style>

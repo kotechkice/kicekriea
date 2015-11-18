@@ -6,7 +6,7 @@
 	#kice_head_arrow{
 		position: absolute;
 		left:250px;
-		top:42px;
+		top:84px;
 		height:48px;
 		width:60px;
 	}
@@ -17,7 +17,7 @@
 	#kice_head_name_ko{
 		position: absolute;
 		left:317px;
-		top:37px;
+		top:79px;
 		width:300px;
 		
 		font-size:30.3px;
@@ -27,16 +27,25 @@
 	#kice_head_name_en{
 		position: absolute;
 		left:317px;
-		top:70px;
+		top:112px;
 		width:300px;
 		
 		font-size:17.7px;
 		line-height:21px;
 	}
+	#login_info{
+		position: absolute;
+		left:729px;
+		top:110px;
+		width:300px;
+		
+		font-size:12.6px;
+		line-height:15px;
+	}
 	#kice_head_line1{
 		position: absolute;
 		left:252px;
-		top:96px;
+		top:138px;
 		width:346px;
 		
 		height: 5px;
@@ -46,46 +55,12 @@
 	#kice_head_line2{
 		position: absolute;
 		left:596px;
-		top:96px;
+		top:138px;
 		width:440px;
 		
 		height: 5px;
 	    border: 0;
 		background:rgb(244, 177, 131);
-	}
-	
-	#kice_head2_name_ko{
-		position: absolute;
-		left:254px;
-		top:125px;
-		width:300px;
-		
-		font-size:17.7px;
-		line-height:21px;
-	}
-	#kice_head2_line1{
-		position: absolute;
-		left:252px;
-		top:147px;
-		width:157px;
-		
-		height: 5px;
-	    border: 0;
-		background:rgb(31, 78, 121);
-	}
-	#kice_head2_line2{
-		position: absolute;
-		left:396px;
-		top:147px;
-		width:640px;
-		
-		height: 5px;
-	    border: 0;
-		background:rgb(222, 235, 247);
-	}
-	.kice_sign1{
-		width:10px;
-		height:10px;
 	}
 	
 	#wrap_inputs{
@@ -132,7 +107,7 @@
 	
 	#find_btn {
 		margin-top:20px;
-		margin-left:200px;
+		margin-left:270px;
 	}
 	
 	#find_btn button {
@@ -146,8 +121,6 @@
 		
 		background:rgb(217,217,217);
 		border:1px solid rgb(180,180,180);
-		
-		color:black;
 	}
 	footer {
 	    /*position: absolute;*/
@@ -157,4 +130,36 @@
 	    left:249px;
 	 	width:785px;
 	 }
+/*
+	.panel-primary {
+		border-color: #4682b4;
+	}
+	.panel-heading{
+		text-align:left;
+	}
+	.panel-body{
+		text-align:center;
+	}
+	#login-input{
+		
+	}
+	#submit_td{
+		width:60px;
+	}
+	#submit{
+		height:100%;
+	}
+	#submit>div{
+		background-color:#4682b4;
+		border: 2px solid #e6e6fa;
+		text-align:center;
+		color:white;
+		display: inline-table;
+		width: 100%;
+		line-height: 50px;
+	}
+	#submit>div>p{
+		vertical-align:middle;
+		margin:0px;
+	}*/
 </style>

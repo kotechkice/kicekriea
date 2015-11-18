@@ -5,11 +5,20 @@ var alphabet = "ABCDEFGHIJK";
 var circle_num = '①②③④⑤⑥';
 var num_from_alpha = {'A':1, 'B':2, 'C':3, 'D':4, 'E':5};
 
+function set_footer(){
+    $('footer').css('top',$('#wrap_inputs').position().top+$('#wrap_inputs').height()+100);
+}
+
+$(document).ready(function(){
+    set_footer();
+});
+
 function click_search_btn(){
     test_dat = this;
     //console.log(this);
     var selected_id = -1;
-    var selects = $('#select_category_table select');
+    //var selects = $('#select_category_table select');
+    var selects = $('select');
     for(var i=0; i<selects.length;i++){
         if( $(selects[i]).find('option:selected').attr('itc_id') != -1){
             selected_id = $(selects[i]).find('option:selected').attr('itc_id');
@@ -34,7 +43,7 @@ function click_search_btn(){
             for(var i=0; i<msg['it_infos'].length; i++){
                 html = '';
                 html += '<tr><td><input type="checkbox" /></td>';
-                html += '<td class="td-itemid">'+ msg['it_infos'][i]['itemid'] +'</td>';
+                html += '<td class="td-itemid"><u>'+ msg['it_infos'][i]['itemid'] +'</u></td>';
                 
                 html += '<td class="td-diff">';
                 switch(msg['it_infos'][i]['difficulty']){
@@ -53,11 +62,12 @@ function click_search_btn(){
                 }
                 html += '</td><td class="td-type">선다형</td>';
                 html += '<td class="td-mng">';
-                html += '<button class="btn btn-primary btn-xs show_item_value">미리보기</button>';
+                html += '<button class="show_item_value">미리보기</button>';
                 //html += '<a href="#" class="del_category_one">카테고리에서 삭제</a>';
                 html += '</td></tr>';
                 //console.log(html);
                 $("#searched_item_list_table>tbody").append(html);
+                set_footer();
             }
         } else {
             console.log(msg);
@@ -113,6 +123,7 @@ function click_show_item_value_link(){
         //html_dat = '<tr class=item_detail_tr><td rowspan="'+td_length+'">hello</td></tr>';
         //$(this_var).parent().parent().after(html_dat);
         MathJax.Hub.Typeset();
+        set_footer();
     });
     return false;
 }
@@ -154,6 +165,7 @@ function click_research_btn(){
             $(search_item_tr[i]).hide();
         }
     }
+    set_footer();
 }
 $(document).on('click', '#research_btn',click_research_btn);
 
@@ -175,6 +187,8 @@ function click_select_searched_items_btn(){
             $('#selected_item_list_table>tbody>tr:last>td:last').append(' <button class="btn btn-primary btn-xs del_selected_item">삭제</button>');
         }
     }
+    $('#items_in_cart').show();
+    set_footer();
 }
 $(document).on('click', '#select_searched_items_btn', click_select_searched_items_btn);
 
