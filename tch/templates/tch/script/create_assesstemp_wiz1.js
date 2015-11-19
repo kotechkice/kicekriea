@@ -205,7 +205,8 @@ function click_save_btn(){
     item_ids = [];
     var selected_item_tr = $('#selected_item_list_table>tbody>tr');
     for(var i=0; i<selected_item_tr.length; i++){
-        item_ids.push($(selected_item_tr[i]).find('.td-itemid').text());
+        var itemid = $(selected_item_tr[i]).find('.td-itemid').text();
+        if(itemid != '') item_ids.push(itemid);
     }
     //console.log(item_ids);
     

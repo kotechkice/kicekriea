@@ -55,7 +55,9 @@ def create_its_from_itnum_str_N_at(at, itnum_str):
     
 def create_its_from_itnum_list_N_at(at, itnum_list):
     order = 1
+    #print itnum_list
     for itnum in itnum_list:
+        #print itnum
         exist_list = ItemTemplate.objects.filter(cafa_it_id=itnum)
         if len(exist_list) == 0:
             it = ItemTemplate()
