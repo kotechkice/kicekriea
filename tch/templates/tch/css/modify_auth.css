@@ -122,9 +122,11 @@
 		position: absolute;
 		left:249px;
 		top:270px;
-		height:670px;
+		height:870px;
 		width:767px;
-			
+		
+		overflow:scroll;
+		
 		padding:10px;
 		border:1px solid rgb(166,166,166);
 	}
