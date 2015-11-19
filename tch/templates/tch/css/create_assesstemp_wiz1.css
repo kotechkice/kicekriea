@@ -202,7 +202,20 @@
 	 	margin-top:10px;
 	 	padding:10px;
 	 }
-	 
+	 .item_detail_tr{
+	 	text-align:left;
+	 }
+	 .item_detail_tr table{
+	 	width:500px;
+	 	
+	 }
+	 .item_detail_tr td{
+	 	border:0;
+	 	text-align:left;
+	 }
+	 .item_detail_tr>td{
+	 	border-bottom:1px solid black;
+	 }
 	 footer {
 	    /*position: absolute;*/
 	    /*bottom: 0;*/

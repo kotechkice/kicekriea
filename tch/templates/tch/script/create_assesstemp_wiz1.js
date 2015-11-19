@@ -62,7 +62,7 @@ function click_search_btn(){
                 }
                 html += '</td><td class="td-type">선다형</td>';
                 html += '<td class="td-mng">';
-                html += '<button class="show_item_value">미리보기</button>';
+                html += '<button class="show_item_value">내용보기</button>';
                 //html += '<a href="#" class="del_category_one">카테고리에서 삭제</a>';
                 html += '</td></tr>';
                 //console.log(html);
@@ -89,10 +89,10 @@ function click_show_item_value_link(){
     if(parent_tr.next().hasClass('item_detail_tr')){
         if(parent_tr.next().is(":visible")){
             parent_tr.next().hide();
-            $(this).text('미리보기');
+            $(this).text('내용보기');
         } else {
             parent_tr.next().show();
-            $(this).text('미리보기 닫기');
+            $(this).text('내용닫기');
         }
         return false;
     } else {
