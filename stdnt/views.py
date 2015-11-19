@@ -498,12 +498,12 @@ def solve_itemeach(request, ua_id):
                     gui.save()
                 #assess_user_by_exam(ua)
                 ua.assess_level()
-                data = json.dumps({'status':"success"});
+                data = json.dumps({'status':"success"})
         elif request.GET['method'] == 'set_permutation':
             if 'order' in request.GET and 'permutation_str' in request.GET:
                 gui = ua.gradeduseritem_set.get(order=request.GET['order'])
                 set_item_permutation_in_gui(gui, request.GET['permutation_str'])
-                data = json.dumps({'status':"success", 'item_permutation':gui.item_permutation});
+                data = json.dumps({'status':"success", 'item_permutation':gui.item_permutation})
         return HttpResponse(data, 'application/json')
     
     
@@ -674,6 +674,38 @@ def input_response(request, ua_id):
     
     #for gui in ua.gradeduseritem_set.order_by('order').all():
     #    pass
+    if request.is_ajax():
+        data = json.dumps({'status':"fail"})
+        if not 'method' in request.GET:
+            return HttpResponse(data, 'application/json')
+        if request.GET['method'] == 'save_response':
+            if 'order' in request.GET and 'response' in request.GET and 'add_seconds' in request.GET:
+                order_num=request.GET['order']
+                add_seconds = int(request.GET['add_seconds'])
+                ua.solving_seconds += add_seconds
+                ua.save()
+                gui = ua.gradeduseritem_set.get(order=order_num)
+                gui.response = request.GET['response']
+                gui.elapsed_time += add_seconds
+                gui.save()
+                data = json.dumps({'status':"success"});
+        elif request.GET['method'] == 'get_responses':
+            responses_str = ''.join(map(lambda x:x.response, ua.gradeduseritem_set.all()))
+            data = json.dumps({'status':"success", 'responses':responses_str, 'ci_id':ua.ci_id})
+        elif request.GET['method'] == 'input_correctanswers':
+            if 'correctanswers' in request.GET and ua.end_time == None:
+                correctanswer_str = request.GET['correctanswers']
+                ua.end_time = timezone.now()
+                ua.save()
+                for index in range(1, len(correctanswer_str)+1):
+                    gui = ua.gradeduseritem_set.get(order=index)
+                    gui.correctanswer = correctanswer_str[index-1]
+                    gui.save()
+                #assess_user_by_exam(ua)
+                ua.assess_level()
+                data = json.dumps({'status':"success"});
+                
+        return HttpResponse(data, 'application/json')
     
     variables = RequestContext(request, {
         'home_string' : home_string,
