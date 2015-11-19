@@ -683,8 +683,10 @@ def kice_at_result(request, at_id):
     std_list = []
     finished_std_num = 0
     gas = GroupAssessment.objects.filter(at = at)
+    type = at.type
     for ga in gas:
         ugis = UserGroupInfo.objects.filter(group = ga.group)
+        type = ga.type
         for ugi in ugis:
             if not ugi.user in std_list:
                 std_list.append(ugi.user)
