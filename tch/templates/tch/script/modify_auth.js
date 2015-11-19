@@ -1,3 +1,7 @@
+$(document).ready(function(){
+    $('footer').css('top', $('#wrap_lists').position().top + $('#wrap_lists').height()+100);
+});
+
 $(document).on("click", "#add_new_tch", function(){
     $("#add_tch_modal").modal('show');
 });
