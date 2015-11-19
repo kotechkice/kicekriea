@@ -1,0 +1,73 @@
+{% extends "stdnt/container/base.html" %}
+{% block title %}{{ stdnt_string.LOGIN_PAGE }}{% endblock %}
+{% block navbar %}
+{% endblock %}
+{% block style %}
+	{% include "stdnt/css/test_another_aig_item.css" %}
+{% endblock %}
+{% block footer %}
+{% endblock %}
+{% block script %}
+<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	//	jax: ["input/TeX", "output/HTML-CSS"],
+	jax: ["input/TeX", "output/SVG"],
+	tex2jax: {
+	inlineMath: [['$','$']],
+	displayMath: [ ['$$','$$']],
+	processEscapes: true,
+	processEnvironments: true,
+	preview: "TeX"
+	},
+	"HTML-CSS": { availableFonts: ["STIX", "TeX"],
+	webFont: null },
+	"SVG": {
+	availableFonts: ["TeX"],
+	blacker: 0,
+	scale: 90
+	},
+	showMathMenu: false
+	});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
+
+<script>
+	{% include "stdnt/script/test_another_aig_item.js" %}
+</script>
+{% endblock %}
+{% block containor %}
+<div id="wrap_lists">
+	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+	유사문항 연습하기
+	
+	<div class="sub_title">
+		기본문항 : <span id="order_num">10</span>번
+	</div>
+	<div id="cop-question">
+		loading
+	</div>
+	
+	<div id="choice-area">
+		<div id="cop-choice" class="btn-group-vertical" data-toggle="buttons">
+			<label class='btn btn-default text-left'>
+				<input type='radio' name='options' autocomplete='off' value='A'/>① <span id="choice-1"> </span></label>
+			<label class='btn btn-default text-left'>
+				<input type='radio' name='options' autocomplete='off' value='B'/>② <span id="choice-2"> </span></label>
+			<label class='btn btn-default text-left'>
+				<input type='radio' name='options' autocomplete='off' value='C'/>③ <span id="choice-3"> </span></label>
+			<label class='btn btn-default text-left'>
+				<input type='radio' name='options' autocomplete='off' value='D'/>④ <span id="choice-4"> </span></label>
+			<label class='btn btn-default text-left'>
+				<input type='radio' name='options' autocomplete='off' value='E'/>⑤ <span id="choice-5"> </span></label>
+		</div>
+	</div>
+	
+	<br /><br />
+	정답 : <span id="answer_text" hidden> </span>
+	<hr />	
+	
+	<button id="show_answer_btn">정답확인</button>
+	<button id="repeat_train">다시풀기</button>
+</div>
+{% endblock %}

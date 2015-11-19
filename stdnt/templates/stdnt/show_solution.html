@@ -1,0 +1,67 @@
+{% extends "stdnt/container/base.html" %}
+{% block title %}{{ stdnt_string.LOGIN_PAGE }}{% endblock %}
+{% block navbar %}
+{% endblock %}
+{% block style %}
+	{% include "stdnt/css/show_solution.css" %}
+{% endblock %}
+{% block footer %}
+{% endblock %}
+{% block script %}
+<script type="text/x-mathjax-config">
+	MathJax.Hub.Config({
+	//	jax: ["input/TeX", "output/HTML-CSS"],
+	jax: ["input/TeX", "output/SVG"],
+	tex2jax: {
+	inlineMath: [['$','$']],
+	displayMath: [ ['$$','$$']],
+	processEscapes: true,
+	processEnvironments: true,
+	preview: "TeX"
+	},
+	"HTML-CSS": { availableFonts: ["STIX", "TeX"],
+	webFont: null },
+	"SVG": {
+	availableFonts: ["TeX"],
+	blacker: 0,
+	scale: 90
+	},
+	showMathMenu: false
+	});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_SVG-full"></script>
+
+<script>
+	{% include "stdnt/script/show_solution.js" %}
+</script>
+{% endblock %}
+{% block containor %}
+<div id="wrap_lists">
+	<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+	해설보기
+	
+	<table id="result_table">
+		<tr>
+			<td>문항번호</td>
+			<td id="td-order">1</td>
+			<td>정답</td>
+			<td id="td-correctanswer">1</td>
+			<td>나의 답</td>
+			<td id="td-response">1</td>
+		</tr>
+	</table>
+	
+	<div class="sub_title">
+		문제
+	</div>
+	<div id="question">
+		loading
+	</div>
+	<div class="sub_title">
+		해설
+	</div>
+	<div id="solution">
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+<style>
+	.kice_sign1{
+		width:10px;
+		height:10px;
+	}
+	
+	#wrap_lists{
+		/*border:1px solid black;*/
+		width:500px;
+		padding:10px;
+	}
+	
+	#result_table{
+		margin-top:5px;
+		margin-bottom:20px;
+	}
+	#result_table td {
+		border:1px solid black;
+		width:80px;
+		height:25px;
+		text-align:center;
+	}
+	.sub_title{
+		background:#EEEEEE;
+		
+		padding-left:10px;
+		margin-bottom:20px;
+	}
+</style>
