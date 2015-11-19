@@ -119,3 +119,13 @@ $(document).on('click', '#unit_assess_table .result_btn, #standart_assess_table 
 $(document).on('click', '#practice_unit_assess_table .result_btn', function(){
     $(location).attr('href','/stdnt/practice_result');
 });
+
+
+
+$(document).on('click', '#unit_assess_table .ans_sol_btn, #standart_assess_table .ans_sol_btn', function(){
+    $(location).attr('href','/stdnt/diagnosis_ans');
+});
+
+$(document).on('click', '#practice_unit_assess_table .ans_sol_btn', function(){
+    $(location).attr('href','/stdnt/practice_ans');
+});

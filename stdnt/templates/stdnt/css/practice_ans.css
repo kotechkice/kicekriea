@@ -1,0 +1,180 @@
+<style>
+	body{
+		font-family:'Malgun Gothic', 'Guilm', 'Arial';
+	}
+	
+	#kice_head_arrow{
+		position: absolute;
+		left:250px;
+		top:42px;
+		height:48px;
+		width:60px;
+	}
+	.kice_head_name_en_orange{
+		color:orange;
+	}
+	
+	#kice_head_name_ko{
+		position: absolute;
+		left:317px;
+		top:37px;
+		width:300px;
+		
+		font-size:30.3px;
+		line-height:36px;
+	}
+	
+	#kice_head_name_en{
+		position: absolute;
+		left:317px;
+		top:70px;
+		width:300px;
+		
+		font-size:17.7px;
+		line-height:21px;
+	}
+	#login_info{
+		position: absolute;
+		left:729px;
+		top:70px;
+		width:300px;
+		
+		font-size:12.6px;
+		line-height:15px;
+	}
+	#kice_head_line1{
+		position: absolute;
+		left:252px;
+		top:96px;
+		width:346px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(169, 209, 142);
+	}
+	#kice_head_line2{
+		position: absolute;
+		left:596px;
+		top:96px;
+		width:440px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(244, 177, 131);
+	}
+	
+	#kice_head2_name_ko{
+		position: absolute;
+		left:254px;
+		top:125px;
+		width:300px;
+		
+		font-size:17.7px;
+		line-height:21px;
+	}
+	#kice_head2_line1{
+		position: absolute;
+		left:252px;
+		top:147px;
+		width:157px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(31, 78, 121);
+	}
+	#kice_head2_line2{
+		position: absolute;
+		left:396px;
+		top:147px;
+		width:640px;
+		
+		height: 5px;
+	    border: 0;
+		background:rgb(222, 235, 247);
+	}
+	.kice_sign1{
+		width:10px;
+		height:10px;
+	}
+	footer{
+		position: absolute;
+		left:252px;
+		width:640px;
+		top:769px;
+	}
+	#diagnosis_exp{
+		position: absolute;
+		left:800px;
+		top:85px;
+		width:120px;
+		
+		font-size:14px;
+		line-height:14px;
+		
+		color:black;
+		border:1px solid black;
+		
+	}
+	#practice_link{
+		position: absolute;
+		left:930px;
+		top:85px;
+		width:100px;
+		
+		font-size:14px;
+		line-height:14px;
+		
+		color:black;
+		border:1px solid black;
+		padding-left:2px;
+		
+		background-color:rgb(242,242,242);
+	}
+	
+	#wrap_lists{
+		position: absolute;
+		left:252px;
+		top:170px;
+		width:783px;
+		
+		/*border:1px solid black;*/
+	}
+	
+	.my_assess_standard{
+		border:1px solid black;
+		padding:10px;
+		margin-bottom:10px;
+	}
+	.my_assess_title{
+		font-size:15px;
+		margin-top:10px;
+		margin-bottom:10px;
+	}
+	.my_assess_detail{
+		background:rgb(242,242,242);
+		border-bottom:2px solid rgb(166,166,166);
+	}
+	
+	.td-blue{
+		background:rgb(157,195,230);
+	}
+	.td-orange{
+		background:rgb(244,177,131);
+	}
+	
+	.table{
+		margin-top:10px;
+		
+	}
+	.table>thead:first-child>tr:first-child>th,
+	.table>thead>tr>th{
+		border:1px solid black;
+		text-align:center;
+	}
+	.table>tbody>tr>td{
+		padding:4px;
+		border:1px solid black;
+		text-align:center;
+		font-size:14px
+	}
+</style>

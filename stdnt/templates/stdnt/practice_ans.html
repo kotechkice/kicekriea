@@ -3,11 +3,11 @@
 {% block navbar %}
 {% endblock %}
 {% block style %}
-	{% include "stdnt/css/diagnosis_ans.css" %}
+	{% include "stdnt/css/practice_ans.css" %}
 {% endblock %}
 {% block script %}
 <script>
-	{% include "stdnt/script/diagnosis_ans.js" %}
+	{% include "stdnt/script/practice_ans.js" %}
 </script>
 {% endblock %}
 {% block containor %}
@@ -25,16 +25,16 @@
 		<b>{{ my_usergroupinfo_school.group.groupdetail.nickname }} {{ my_info.userdetail.full_name }} 학생</b> 
 		환영합니다. (로그인중)
 	</div>
-	<div id="diagnosis_exp">
-		&nbsp;
-		<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
-		진단용 형성평가
-	</div>
-	<a href='/stdnt/practice_ans'>
-		<div id="practice_link">
-			학습용 형성평가
+	<a href='/stdnt/diagnosis_ans'>
+		<div id="diagnosis_exp">
+			&nbsp;
+			<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
+			진단용 형성평가
 		</div>
 	</a>
+	<div id="practice_link">
+		학습용 형성평가
+	</div>
 	<hr id="kice_head_line1" />
 	<hr id="kice_head_line2" />
 </div>
@@ -47,65 +47,6 @@
 
 
 <div id="wrap_lists">
-	{% for s_ua in s_ua_list %}
-	<div class="my_assess_standard">
-		<div class="my_assess_title">
-			<img class="kice_sign1" src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_sign1.jpg" />
-			<b>성취기준별 평가 정답해설</b>
-		</div>
-		<div class="my_assess_detail">
-			<b>성취기준</b> : [{{s_ua.at.name}}] {{ s_ua.itc.description }}
-		</div>
-		
-		<table class="table">
-			<thead>
-				<tr>
-					<th>문항</th>
-					{% for gui in s_ua.guis %}
-					<th {% if gui.correct %}class="td-blue"{% else %}class="td-orange"{% endif %}>
-						{{ gui.order }}
-					</th>
-					{% endfor %}
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>정답</td>
-					{% for gui in s_ua.guis %}
-					<td>{{gui.correctanswer}}</td>
-					{% endfor %}
-				</tr>
-				<tr>
-					<td>나의 답</td>
-					{% for gui in s_ua.guis %}
-					<td>{{gui.response}}</td>
-					{% endfor %}
-				</tr>
-				<tr>
-					<td>해설보기</td>
-					{% for gui in s_ua.guis %}
-					<td>
-						<a target="_blank" href="/stdnt/show_solution/?itemid={{ gui.it.cafa_it_id }}&seed={{ gui.seed }}&order={{ gui.order }}&correctanswer={{ gui.correctanswer}}&response={{ gui.response }}&permutation={{ gui.permutation }}&item_permutation={{ gui.item_permutation}}&choices_in_a_row={{ gui.it.choices_in_a_row }}">
-							<img src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_doc.jpg" height="30px"/>
-						</a>
-					</td>
-					{% endfor %}
-				</tr>
-				<tr>
-					<td>유사문항<br />연습하기</td>
-					{% for gui in s_ua.guis %}
-					<td>
-						<a target="_blank" href="/stdnt/test_another_aig_item/?itemid={{ gui.it.cafa_it_id }}&order={{ gui.order }}">
-							<img src="https://s3-ap-northeast-1.amazonaws.com/kriea/kice/kice_pencil.jpg" height="30px"/>
-						</a>
-					</td>
-					{% endfor %}
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	{% endfor %}
-	
 	{% for u_ua in u_ua_list %}
 	<div class="my_assess_unit">
 		<div class="my_assess_title">

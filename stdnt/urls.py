@@ -18,5 +18,6 @@ urlpatterns = patterns('',
     url(r'^diagnosis_ans/$', diagnosis_ans, name='diagnosis_ans'),
     url(r'^show_solution/$', show_solution, name='show_solution'),
     url(r'^test_another_aig_item/$', test_another_aig_item, name='test_another_aig_item'),
+    url(r'^practice_ans/$', practice_ans, name='practice_ans'),
     
 )

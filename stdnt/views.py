@@ -738,6 +738,43 @@ def diagnosis_ans(request):
     })
     return render_to_response('stdnt/diagnosis_ans.html', variables)
 
+def practice_ans(request):
+    if not request.user.is_authenticated():
+        return redirect('/stdnt/login')
+    
+    my_info = request.user
+    my_usergroupinfo_schools = my_info.usergroupinfo_set.filter(group__groupdetail__type='S')
+    
+    if len(my_usergroupinfo_schools) > 0:
+        my_usergroupinfo_school = my_usergroupinfo_schools[0]
+    else:
+        my_usergroupinfo_school = None
+    
+    my_usergroupinfo_classes = my_info.usergroupinfo_set.filter(group__groupdetail__type='C')
+    if len(my_usergroupinfo_classes) > 0:
+        my_usergroupinfo_class = my_usergroupinfo_classes[0]
+    else:
+        my_usergroupinfo_class = None
+    
+    finished_ua_list = UserAssessment.objects.filter(user=my_info, type='P').exclude(end_time=None)
+    u_ua_list = [] # unit
+    for ua in finished_ua_list:
+        u_ua = ua
+        u_ua.guis = ua.gradeduseritem_set.order_by('order').all()
+        for i in range(len(u_ua.guis)):
+            u_ua.guis[i].correct = u_ua.guis[i].response == u_ua.guis[i].correctanswer
+        u_ua_list.append(u_ua)
+      
+            
+    variables = RequestContext(request, {
+        'home_string' : home_string,
+        'stdnt_string':stdnt_string,
+        'my_info':my_info,
+        'my_usergroupinfo_school':my_usergroupinfo_school,
+        'u_ua_list':u_ua_list,
+    })
+    return render_to_response('stdnt/practice_ans.html', variables)
+
 def show_solution(request):
     
     variables = RequestContext(request, {
