@@ -638,12 +638,12 @@ def kice_assess_result(request):
     P_examlist = []
     for ga in GroupAssessment.objects.filter(group = my_usergroupinfo.group, type = 'P'):
         exam = ga.at
-        exam.finished_std_num, exam.std_num, exam.finish_rate = get_finished_std_num(ua.at, my_usergroupinfo.group)
+        exam.finished_std_num, exam.std_num, exam.finish_rate = get_finished_std_num(ga.at, my_usergroupinfo.group)
         P_examlist.append(exam)
     for clas in classes:
         for ga in GroupAssessment.objects.filter(group = clas, type = 'P'):
             exam = ga.at
-            exam.finished_std_num, exam.std_num, exam.finish_rate = get_finished_std_num(ua.at, my_usergroupinfo.group)
+            exam.finished_std_num, exam.std_num, exam.finish_rate = get_finished_std_num(ga.at, my_usergroupinfo.group)
             P_examlist.append(exam)
     print P_examlist
     for clas in classes:
