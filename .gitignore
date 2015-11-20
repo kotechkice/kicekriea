@@ -8,5 +8,4 @@
 .coverage
 local_settings.py
 /static
-rdb_backup
 db_backup
