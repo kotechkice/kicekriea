@@ -137,7 +137,8 @@
 		/*border:1px solid black;*/
 	}
 	
-	.my_assess_standard{
+	.my_assess_standard,
+	.my_assess_unit{
 		border:1px solid black;
 		padding:10px;
 		margin-bottom:10px;
