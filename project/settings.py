@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+DBBACKUP_STORAGE = 'dbbackup.storage.filesystem_storage'
+DBBACKUP_STORAGE_OPTIONS = {'location': 'db_backup'}
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -45,6 +47,7 @@ INSTALLED_APPS = (
     'mngins',
     'tch',
     'sample',
+    'dbbackup',  # django-dbbackup
 )
 
 MIDDLEWARE_CLASSES = (
