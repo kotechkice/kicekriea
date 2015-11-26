@@ -1,10 +1,7 @@
 {% extends "stdnt/container/base.html" %}
 {% block title %}온라인 풀기{% endblock %}
-{% block nav_list %}
-<li> <a href="/stdnt" class="nav">홈으로</a></li>
-<li> <a href="/stdnt/logout">로그아웃</a> </li>
+{% block navbar %}
 {% endblock %}
-
 {% block style %}
 <style>
 	#main_container {
@@ -55,6 +52,7 @@
 {% endblock %}
 {% block containor %}
 <div class="container" id="main_container">
+	<br />
 	<div id="cop-count" class="text-center">1/?</div>
 	<div id="cop-question">
 		loading...

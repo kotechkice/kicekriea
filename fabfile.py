@@ -584,7 +584,7 @@ def set_project():
         
         apt('libmysqlclient-dev')
         pip("fabric django python-social-auth "
-            "gunicorn django-hosts mysql-python django-crontab pytz")
+            "gunicorn django-hosts mysql-python django-crontab pytz django-dbbackup")
     manage('migrate')
     
     manage('createsuperuser')

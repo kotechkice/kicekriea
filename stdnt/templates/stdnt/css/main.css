@@ -18,7 +18,7 @@
 		position: absolute;
 		left:317px;
 		top:37px;
-		width:300px;
+		width:350px;
 		
 		font-size:30.3px;
 		line-height:36px;
@@ -183,7 +183,7 @@
 		border-bottom:2px solid rgb(200,200,200);
 	}
 	table .td-contents{
-		width:370px;
+		width:300px;
 	}
 	table .td-itemnum{
 		width:50px;
