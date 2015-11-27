@@ -251,8 +251,9 @@
 	 }
 	 #submit{
 	 	position: absolute;
-	 	left:909px;
+	 	left:880px;
 	 	top:691px;
+		width:80px;
 		
 	 	margin:5px;
 	 	background:rgb(68, 84, 106);
