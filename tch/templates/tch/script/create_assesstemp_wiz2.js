@@ -247,8 +247,31 @@ function click_submit(){
 }
 $(document).on('click', '#submit', click_submit);
 
-
-
+function change_assess_type(){
+    //console.log('change');
+    var type = $(':radio[name=assess_type]:checked').val();
+    $.ajax({
+        url:'/tch/create_assesstemp_wiz2',
+        dataType:'json',
+        data:{
+            'method':'assess_type',
+            'type':type,
+        }
+    }).done(function(msg){
+        //console.log(msg);
+        //test_dat = msg;
+        
+        if(msg['status'] == 'success'){
+            var html = '';
+            ats = msg['ats'];
+            for(var i=0; i<ats.length; i++){
+                html += '<option at_id="' + ats[i]['id'] + '"">'+ ats[i]['name'] + '</option>';
+            }
+            $('#assess_name_input>select').html(html);
+        }
+    });
+}
+$(document).on('change', 'input[name=assess_type]', change_assess_type);
 
 
 

@@ -535,9 +535,16 @@ def create_assesstemp_wiz2(request):
                         ua.save()
                         
                 data = json.dumps({'status':'success'})
+        if request.GET['method'] == 'assess_type':
+            if 'type' in request.GET:
+                at_objs = AssessmentTemplate.objects.filter(owner_group=my_usergroupinfo.group, type=request.GET['type'])
+                ats = []
+                for at_obj in at_objs:
+                    ats.append({'id':at_obj.id, 'name':at_obj.name});
+                data = json.dumps({'status':'success', 'ats':ats})
         return HttpResponse(data, 'application/json')
     
-    ats = AssessmentTemplate.objects.filter(owner_group=my_usergroupinfo.group)
+    ats = AssessmentTemplate.objects.filter(owner_group=my_usergroupinfo.group, type='P')
     
     classes = Group.objects.filter(groupdetail__upper_group__groupdetail__upper_group=my_usergroupinfo.group, groupdetail__type="C")
     for index in range(len(classes)):
