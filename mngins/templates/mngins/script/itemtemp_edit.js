@@ -19,7 +19,7 @@ function set_test_result(num){
         }  
     }
     url += '&S1=' + $('#solution_step_input').val();
-    url = encodeURI(url).replace(/\+/g, '%2B');
+    url = encodeURI(url).replace(/\+/g, '%2B').replace(/\#/g,'%23');
     
     console.log(url);
     
@@ -34,6 +34,8 @@ function set_test_result(num){
         }
         $('.test_prob:eq('+num+') .test_solution').html($(data).find('Solution').text());
         MathJax.Hub.Typeset();
+        $('.panel-body div').css('margin-left', '0px');
+        
     }).fail(function(msg){
         //test_dat = msg;
         //console.log(msg['responseText']);
@@ -44,6 +46,7 @@ function set_test_result(num){
         }
         $('.test_prob:eq('+num+') .test_solution').html($(msg['responseText']).find('Solution').text());
         MathJax.Hub.Typeset();
+        $('.panel-body div').css('margin-left', '0px');
     });
 }
 function click_create_btn(){
