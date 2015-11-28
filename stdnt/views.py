@@ -112,7 +112,7 @@ def main(request):
                     at_list = AssessmentTemplate.objects.filter(pk=request.GET['at_id'])
                     ua_id = create_ua_from_itemdict_N_at(at_list[0], items, my_info, request.GET['ci_id'])
                     ua = UserAssessment.objects.get(id=ua_id)
-                    ua.type = 'D'
+                    ua.type = request.GET['type']
                     ua.save()
                     data = json.dumps({'status':"success", 'ua_id':ua_id})
         elif request.GET['method'] == 'create_gui':
