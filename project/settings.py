@@ -28,7 +28,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['kice.kriea.co.kr']
+ALLOWED_HOSTS = ['localhost']
 
 
 # Application definition
@@ -74,9 +74,9 @@ DATABASES = {
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         "ENGINE": "django.db.backends.mysql",
         "NAME":"kicekriea",
-        "USER":"kicemaster",
-        "PASSWORD":'j#jlIa81q',
-        "HOST": "kicekriea.cxitgipj8rwq.ap-northeast-1.rds.amazonaws.com",
+        "USER":"root",
+        "PASSWORD":'0000',
+        "HOST": "localhost",
         "PORT": "3306",
     }
 }
@@ -110,13 +110,13 @@ FABRIC = {
     "SSH_USER": "ubuntu", # SSH username for host deploying to
     "HOSTS": ALLOWED_HOSTS[:1], # List of hosts to deploy to (eg, first host)
     "DOMAINS": ALLOWED_HOSTS, # Domains for public site
-    "REPO_URL": "ubuntu@kice.kriea.co.kr:/opt/git/kicekriea.git", # Project's repo URL
+    "REPO_URL": "ubuntu@localhost:/opt/git/kicekriea.git", # Project's repo URL
     "VIRTUALENV_HOME":  "/home/ubuntu/.virtualenvs", # Absolute remote path for virtualenvs
     "PROJECT_NAME": "kice_kriea", # Unique identifier for project
     "REQUIREMENTS_PATH": "",#"requirements.txt", # Project's pip requirements
     "GUNICORN_PORT": 8000, # Port gunicorn will listen on
     "LOCALE": "en_US.UTF-8", # Should end with ".UTF-8"
-    "DB_PASS": "j#jlIa81q", # Live database password
+    "DB_PASS": "0000", # Live database password
     #"ADMIN_PASS": "default", # Live admin user password
     "SECRET_KEY": SECRET_KEY,
     #"NEVERCACHE_KEY": NEVERCACHE_KEY,

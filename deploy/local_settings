@@ -10,9 +10,9 @@ DATABASES = {
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         "ENGINE": "django.db.backends.mysql",
         "NAME":"kicekriea",
-        "USER":"kicemaster",
-        "PASSWORD":'j#jlIa81q',
-        "HOST": "kicekriea.cxitgipj8rwq.ap-northeast-1.rds.amazonaws.com",
+        "USER":"root",
+        "PASSWORD":'0000',
+        "HOST": "localhost",
         "PORT": "3306",
     }
 }
