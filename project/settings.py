@@ -28,7 +28,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['192.168.33.10']
 
 
 # Application definition
@@ -110,7 +110,7 @@ FABRIC = {
     "SSH_USER": "ubuntu", # SSH username for host deploying to
     "HOSTS": ALLOWED_HOSTS[:1], # List of hosts to deploy to (eg, first host)
     "DOMAINS": ALLOWED_HOSTS, # Domains for public site
-    "REPO_URL": "ubuntu@localhost:/opt/git/kicekriea.git", # Project's repo URL
+    "REPO_URL": "https://github.com/kotechkice/kicekriea.git", # Project's repo URL
     "VIRTUALENV_HOME":  "/home/ubuntu/.virtualenvs", # Absolute remote path for virtualenvs
     "PROJECT_NAME": "kice_kriea", # Unique identifier for project
     "REQUIREMENTS_PATH": "",#"requirements.txt", # Project's pip requirements
